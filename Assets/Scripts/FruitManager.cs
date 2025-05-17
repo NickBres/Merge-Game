@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 
 public class FruitManager : MonoBehaviour
@@ -8,11 +9,15 @@ public class FruitManager : MonoBehaviour
     [SerializeField] private Fruit[] fruitPrefabs;
     [SerializeField] private Fruit[] spawnableFruits;
     [SerializeField] private LineRenderer fruitSpawnLine;
+    
+    
     private Fruit currentFruit;
+    private Fruit nextFruit;
 
 
     [Header(" Settings ")]
     [SerializeField] private Transform fruitYSpawnPoint;
+    [SerializeField] private float spawnDelay = 0.5f;
     private bool canControl = false;
     private bool isControlling = false;
 
@@ -28,6 +33,7 @@ public class FruitManager : MonoBehaviour
     {
         canControl = true;
         HideLine();
+        nextFruit = spawnableFruits[Random.Range(0, spawnableFruits.Length)];
     }
 
     private void Update()
@@ -60,7 +66,13 @@ public class FruitManager : MonoBehaviour
 
     private void MouseDownCallback()
     {
-        currentFruit = SpawnFruit(spawnableFruits[Random.Range(0, spawnableFruits.Length)],GetSpawnPosition());
+        currentFruit = SpawnFruit(nextFruit, GetSpawnPosition());
+        nextFruit = spawnableFruits[Random.Range(0, spawnableFruits.Length)];
+    }
+
+    public Fruit getNextFruit()
+    {
+        return nextFruit;
     }
     private void MouseDragCallback()
     {
@@ -79,7 +91,7 @@ public class FruitManager : MonoBehaviour
 
     private void StartControlTimer()
     {
-        Invoke("StopControlTimer", .5f);
+        Invoke("StopControlTimer", spawnDelay);
     }
 
     private void StopControlTimer()

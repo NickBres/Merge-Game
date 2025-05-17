@@ -11,11 +11,11 @@ public class Fruit : MonoBehaviour
     public static Action<Fruit,Fruit> onCollisionWithFruit;
 
     private Rigidbody2D rb;
-    private Collider2D collider;
+    private Collider2D fruitCollider;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        collider = GetComponent<Collider2D>();
+        fruitCollider = GetComponent<Collider2D>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,7 +32,7 @@ public class Fruit : MonoBehaviour
     public void EnablePhysics()
     {
         rb.bodyType = RigidbodyType2D.Dynamic;
-        collider.enabled = true;
+        fruitCollider.enabled = true;
     }
 
     public void MoveTo(Vector3 newPosition)
