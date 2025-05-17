@@ -1,12 +1,9 @@
-using System;
-using Unity.Mathematics;
-using UnityEditor.Scripting;
 using UnityEngine;
 
 public class FruitManager : MonoBehaviour
 {
     [Header(" Elements ")]
-    [SerializeField] private Fruit fruitPrefab;
+    [SerializeField] private Fruit[] fruitPrefabs;
     [SerializeField] private LineRenderer fruitSpawnLine;
     private Fruit currentFruit;
 
@@ -75,7 +72,7 @@ public class FruitManager : MonoBehaviour
 
     private void StartControlTimer()
     {
-        Invoke("StopControlTimer", 1);
+        Invoke("StopControlTimer", .5f);
     }
 
     private void StopControlTimer()
@@ -85,7 +82,7 @@ public class FruitManager : MonoBehaviour
 
     private void SpawnFruit(Vector2 position)
     {
-        currentFruit = Instantiate(fruitPrefab, GetSpawnPosition(), Quaternion.identity);
+        currentFruit = Instantiate(fruitPrefabs[Random.Range(0, fruitPrefabs.Length)], GetSpawnPosition(), Quaternion.identity);
     }
 
     private Vector2 GetClickedWorldPosition()

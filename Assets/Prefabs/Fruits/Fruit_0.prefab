@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: -3797133296387751621}
   - component: {fileID: -3131911983270790588}
   m_Layer: 0
-  m_Name: Fruit
+  m_Name: Fruit_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,7 +117,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.00588, y: -0.06149, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8086900831918196500}
@@ -208,7 +208,7 @@ Animator:
   m_GameObject: {fileID: 7067737736262219735}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 21c80b8a71c9c4316852aff9f8b49fd5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
