@@ -6,24 +6,29 @@ using UnityEngine;
 public class FruitManager : MonoBehaviour
 {
     [Header(" Elements ")]
-    [SerializeField] private GameObject fruitPrefab;
+    [SerializeField] private Fruit fruitPrefab;
     [SerializeField] private LineRenderer fruitSpawnLine;
+    private Fruit currentFruit;
 
 
     [Header(" Settings ")]
     [SerializeField] private Transform fruitYSpawnPoint;
+    private bool canControl = false;
+    private bool isControlling = false;
 
     [Header(" Debug ")]
     [SerializeField] private bool enableGizmos;
 
     void Start()
     {
+        canControl = true;
         HideLine();
     }
 
     private void Update()
     {
-        ManagePlayerInput();
+        if (canControl)
+            ManagePlayerInput();
     }
 
     private void ManagePlayerInput()
@@ -31,13 +36,16 @@ public class FruitManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            MouseDawnCallback();
+            MouseDownCallback();
         }
         else if (Input.GetMouseButton(0))
         {
-            MouseDragCallback();
+            if (isControlling)
+                MouseDragCallback();
+            else
+                MouseDownCallback();
         }
-        else if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0) && isControlling)
         {
             MouseUpCallback();
         }
@@ -45,23 +53,39 @@ public class FruitManager : MonoBehaviour
         
     }
 
-    private void MouseDawnCallback()
+    private void MouseDownCallback()
     {
-        
+        SpawnFruit(GetSpawnPosition());
+        isControlling = true;
     }
     private void MouseDragCallback()
     {
         DisplayLine();
+        currentFruit.MoveTo(GetSpawnPosition());
     }
     private void MouseUpCallback()
     {
         HideLine();
-        SpawnFruit(GetClickedWorldPosition());
+        currentFruit.EnablePhysics();
+
+        canControl = false;
+        StartControlTimer();
+        isControlling = false;
+    }
+
+    private void StartControlTimer()
+    {
+        Invoke("StopControlTimer", 1);
+    }
+
+    private void StopControlTimer()
+    {
+        canControl = true;
     }
 
     private void SpawnFruit(Vector2 position)
     {
-        Instantiate(fruitPrefab, GetSpawnPosition(), Quaternion.identity);
+        currentFruit = Instantiate(fruitPrefab, GetSpawnPosition(), Quaternion.identity);
     }
 
     private Vector2 GetClickedWorldPosition()

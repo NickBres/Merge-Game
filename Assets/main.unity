@@ -267,12 +267,12 @@ GameObject:
   - component: {fileID: 440738102}
   - component: {fileID: 440738103}
   m_Layer: 0
-  m_Name: Drop Line
+  m_Name: Fruit Spawn Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &440738102
 Transform:
   m_ObjectHideFlags: 0
@@ -296,7 +296,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 440738101}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -680,8 +680,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1696118121}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1639290278
@@ -715,11 +714,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1696118121 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1154754868953112031, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
-  m_PrefabInstance: {fileID: 7743522729044350486}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1970140885
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,7 +760,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b8b7aa0ce6b941efbf4bd0b929aae3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitPrefab: {fileID: 7067737736262219735, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
+  fruitPrefab: {fileID: -3797133296387751621, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
+  fruitSpawnLine: {fileID: 440738103}
   fruitYSpawnPoint: {fileID: 1159389544}
   enableGizmos: 1
 --- !u!4 &2058908494 stripped
@@ -831,63 +826,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
---- !u!1001 &7743522729044350486
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1576880939}
-    m_Modifications:
-    - target: {fileID: 1154754868953112031, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154754868953112031, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154754868953112031, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154754868953112031, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154754868953112031, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154754868953112031, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154754868953112031, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154754868953112031, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154754868953112031, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154754868953112031, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7067737736262219735, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
-      propertyPath: m_Name
-      value: Fruit
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b87f127dea7e44210873e060a0f4d459, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
