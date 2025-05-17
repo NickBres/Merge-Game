@@ -1,9 +1,12 @@
+using NUnit.Framework;
 using UnityEngine;
 
 public class FruitManager : MonoBehaviour
 {
     [Header(" Elements ")]
+    [SerializeField] private Transform fruitsParent;
     [SerializeField] private Fruit[] fruitPrefabs;
+    [SerializeField] private Fruit[] spawnableFruits;
     [SerializeField] private LineRenderer fruitSpawnLine;
     private Fruit currentFruit;
 
@@ -15,6 +18,11 @@ public class FruitManager : MonoBehaviour
 
     [Header(" Debug ")]
     [SerializeField] private bool enableGizmos;
+
+    void Awake()
+    {
+        MergeManager.onMergeFruit += MergeFruits;
+    }
 
     void Start()
     {
@@ -52,8 +60,7 @@ public class FruitManager : MonoBehaviour
 
     private void MouseDownCallback()
     {
-        SpawnFruit(GetSpawnPosition());
-        isControlling = true;
+        currentFruit = SpawnFruit(spawnableFruits[Random.Range(0, spawnableFruits.Length)],GetSpawnPosition());
     }
     private void MouseDragCallback()
     {
@@ -80,9 +87,14 @@ public class FruitManager : MonoBehaviour
         canControl = true;
     }
 
-    private void SpawnFruit(Vector2 position)
+    private Fruit SpawnFruit(Fruit fruit, Vector2 position)
     {
-        currentFruit = Instantiate(fruitPrefabs[Random.Range(0, fruitPrefabs.Length)], GetSpawnPosition(), Quaternion.identity);
+        Fruit newFruit = Instantiate(fruit,
+            position,
+            Quaternion.identity,
+            fruitsParent);
+        isControlling = true;
+        return newFruit;
     }
 
     private Vector2 GetClickedWorldPosition()
@@ -107,6 +119,23 @@ public class FruitManager : MonoBehaviour
         fruitSpawnLine.enabled = true;
         fruitSpawnLine.SetPosition(0, GetSpawnPosition());
         fruitSpawnLine.SetPosition(1, GetSpawnPosition() + Vector2.down * 15);
+    }
+
+    private void MergeFruits(FruitType type, Vector2 spawnPosition)
+    {
+        Debug.Log("Merging fruits");
+        for (int i = 0; i < fruitPrefabs.Length; i++)
+        {
+            if (fruitPrefabs[i].GetFruitType() == type)
+            {
+                canControl = false;
+                StartControlTimer();
+                Fruit newFruit = SpawnFruit(fruitPrefabs[i], spawnPosition);
+                newFruit.EnablePhysics();
+                break;
+            }
+        }
+        
     }
 
 #if UNITY_EDITOR
