@@ -53,4 +53,9 @@ public class MergeManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         lastSender = null;
     }
+
+    void OnDestroy()
+    {
+        Animal.onCollisionWithAnimal -= CollisionBetweenFruitsCallback;
+    }
 }

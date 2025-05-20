@@ -6,6 +6,8 @@ public class Animal : MonoBehaviour
 {
     [Header(" Data ")]
     [SerializeField] private AnimalType type;
+    private bool canBeMerged = false;
+    private Vector2 storedVelocity;
 
     [Header(" Actions ")]
     public static Action<Animal, Animal> onCollisionWithAnimal;
@@ -24,7 +26,7 @@ public class Animal : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        Invoke("AllowMerge", 0.3f);
     }
 
     // Update is called once per frame
@@ -33,16 +35,26 @@ public class Animal : MonoBehaviour
 
     }
 
+    private void AllowMerge()
+    {
+        canBeMerged = true;
+    }
+
     public void EnablePhysics()
     {
+        rigidBody.linearVelocity = storedVelocity;
         rigidBody.bodyType = RigidbodyType2D.Dynamic;
         animalCollider.enabled = true;
+        rigidBody.freezeRotation = false;
     }
 
     public void DisablePhysics()
     {
+        storedVelocity = rigidBody.linearVelocity;
+        rigidBody.linearVelocity = Vector2.zero;
         rigidBody.bodyType = RigidbodyType2D.Kinematic;
         animalCollider.enabled = false;
+        rigidBody.freezeRotation = true;
     }
 
     public void MoveTo(Vector3 newPosition)
@@ -50,16 +62,20 @@ public class Animal : MonoBehaviour
         transform.position = newPosition;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionStay2D(Collision2D collision)
     {
         hasCollided = true;
+        
+        if(!canBeMerged)
+            return;
 
         if (collision.collider.TryGetComponent(out Animal otherFruit))
-        {
-            if (otherFruit.GetAnimalType() != type)
-                return;
-            onCollisionWithAnimal?.Invoke(this, otherFruit);
-        }
+            {
+                if (otherFruit.GetAnimalType() != type || !otherFruit.CanMerge())
+                    return;
+
+                onCollisionWithAnimal?.Invoke(this, otherFruit);
+            }
     }
 
     public AnimalType GetAnimalType()
@@ -78,5 +94,10 @@ public class Animal : MonoBehaviour
     public bool HasCollided()
     {
         return hasCollided;
+    }
+
+    public bool CanMerge()
+    {
+        return canBeMerged;
     }
 }

@@ -224,6 +224,11 @@ public class AnimalManager : MonoBehaviour
         isFreeze = false;
     }
 
+    void OnDestroy()
+    {
+        MergeManager.onMergeAnimal -= MergeAnimals;
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

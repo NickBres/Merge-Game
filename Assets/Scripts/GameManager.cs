@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     private GameState gameState;
 
     [Header(" Actions ")]
-    public static Action <GameState> onGameStateChanged;
+    public static Action<GameState> onGameStateChanged;
 
     void Awake()
     {
@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour
     {
         return gameState == GameState.Game;
     }
+    
+    
 
     
   
