@@ -6,15 +6,15 @@ using UnityEngine;
 public class MergeManager : MonoBehaviour
 {
 
-    Fruit lastSender;
+    Animal lastSender;
 
     [Header(" Actions ")]
-    public static Action<FruitType, Vector2> onMergeFruit;
+    public static Action<AnimalType, Vector2> onMergeAnimal;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Fruit.onCollisionWithFruit += CollisionBetweenFruitsCallback;
+        Animal.onCollisionWithAnimal += CollisionBetweenFruitsCallback;
     }
 
     // Update is called once per frame
@@ -23,7 +23,7 @@ public class MergeManager : MonoBehaviour
 
     }
 
-    private void CollisionBetweenFruitsCallback(Fruit sender, Fruit otherFruit)
+    private void CollisionBetweenFruitsCallback(Animal sender, Animal otherFruit)
     {
         if (lastSender != null)
             return;
@@ -34,16 +34,16 @@ public class MergeManager : MonoBehaviour
 
     }
 
-    private void ProcessMerge(Fruit sender, Fruit otherFruit)
+    private void ProcessMerge(Animal sender, Animal otherAnimal)
     {
-        FruitType mergeFruitType = (FruitType)((int)sender.GetFruitType() + (int)otherFruit.GetFruitType());
+        AnimalType mergeAnimalType = (AnimalType)((int)sender.GetAnimalType() + (int)otherAnimal.GetAnimalType());
 
-        Vector2 fruiSpawnPosition = (sender.transform.position + otherFruit.transform.position) / 2;
+        Vector2 animalSpawnPosition = (sender.transform.position + otherAnimal.transform.position) / 2;
 
         Destroy(sender.gameObject);
-        Destroy(otherFruit.gameObject);
+        Destroy(otherAnimal.gameObject);
 
-        onMergeFruit?.Invoke(mergeFruitType, fruiSpawnPosition);
+        onMergeAnimal?.Invoke(mergeAnimalType, animalSpawnPosition);
 
         StartCoroutine(ResetLastSender());
     }

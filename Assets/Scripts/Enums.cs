@@ -1,16 +1,23 @@
 using UnityEngine;
 
-public enum FruitType
+public enum AnimalType
 {
-    Currant = 2,
-    Blueberry = 4,
-    Cherry = 8,
-    Longan = 16,
-    Lychee = 32,
-    Plum = 64,
-    Apple = 128,
-    Orange = 256,
-    Pomegranate = 512,
-    Melon = 1024,
-    Watermelon = 2048
+    Snake = 2,
+    Parrot = 4,
+    Rabbit = 8,
+    Penguin = 16,
+    Monkey = 32,
+    Pig = 64,
+    Panda = 128,
+    Giraffe = 256,
+    Hippo = 512,
+    Elephant = 1024,
+    WON = 2048
+}
+
+public enum GameState
+{
+    Menu,
+    Game,
+    GameOver
 }
