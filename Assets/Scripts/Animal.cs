@@ -16,12 +16,16 @@ public class Animal : MonoBehaviour
     private Collider2D animalCollider;
     private SpriteRenderer spriteRenderer;
 
+    [Header(" Effects ")]
+    [SerializeField] private ParticleSystem mergeEffect;
+
     private bool hasCollided = false;
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         animalCollider = GetComponent<Collider2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        mergeEffect = GetComponentInChildren<ParticleSystem>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -76,6 +80,17 @@ public class Animal : MonoBehaviour
 
                 onCollisionWithAnimal?.Invoke(this, otherFruit);
             }
+    }
+
+    public void Merge()
+    {
+        if (mergeEffect != null)
+        {
+            mergeEffect.transform.SetParent(null);
+            mergeEffect.Play();
+        }
+
+        Destroy(gameObject);
     }
 
     public AnimalType GetAnimalType()

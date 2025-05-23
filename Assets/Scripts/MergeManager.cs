@@ -40,8 +40,8 @@ public class MergeManager : MonoBehaviour
 
         Vector2 animalSpawnPosition = (sender.transform.position + otherAnimal.transform.position) / 2;
 
-        Destroy(sender.gameObject);
-        Destroy(otherAnimal.gameObject);
+        sender.Merge();
+        otherAnimal.Merge();
 
         onMergeAnimal?.Invoke(mergeAnimalType, animalSpawnPosition);
 
