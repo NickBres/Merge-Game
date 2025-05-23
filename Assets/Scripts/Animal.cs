@@ -115,4 +115,9 @@ public class Animal : MonoBehaviour
     {
         return canBeMerged;
     }
+
+    public void Push(Vector2 force)
+    {
+        rigidBody.AddForce(force, ForceMode2D.Impulse);
+    }
 }
