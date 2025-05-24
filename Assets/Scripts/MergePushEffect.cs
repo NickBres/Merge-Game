@@ -30,6 +30,9 @@ public class MergePushEffect : MonoBehaviour
         {
             if (collider.TryGetComponent<Animal>(out Animal animal))
             {
+                if (animal == AnimalManager.instance.GetCurrentAnimal())
+                    continue;
+
                 Vector2 force = ((Vector2)collider.transform.position - pushPosition).normalized;
                 force *= pushMagnitude;
                 animal.Push(force);

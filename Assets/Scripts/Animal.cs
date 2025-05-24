@@ -1,9 +1,12 @@
 using UnityEngine;
 using System;
 using System.Security.Cryptography.X509Certificates;
+using UnityEngine.UI;
 
 public class Animal : MonoBehaviour
 {
+
+
     [Header(" Data ")]
     [SerializeField] private AnimalType type;
     private bool canBeMerged = false;
@@ -11,6 +14,7 @@ public class Animal : MonoBehaviour
 
     [Header(" Actions ")]
     public static Action<Animal, Animal> onCollisionWithAnimal;
+    public event Action onCollision;
 
     private Rigidbody2D rigidBody;
     private Collider2D animalCollider;
@@ -47,8 +51,8 @@ public class Animal : MonoBehaviour
     public void EnablePhysics()
     {
         rigidBody.linearVelocity = storedVelocity;
-        rigidBody.bodyType = RigidbodyType2D.Dynamic;
-        animalCollider.enabled = true;
+        rigidBody.gravityScale = 1f;
+        //animalCollider.enabled = true;
         rigidBody.freezeRotation = false;
     }
 
@@ -56,8 +60,8 @@ public class Animal : MonoBehaviour
     {
         storedVelocity = rigidBody.linearVelocity;
         rigidBody.linearVelocity = Vector2.zero;
-        rigidBody.bodyType = RigidbodyType2D.Kinematic;
-        animalCollider.enabled = false;
+        rigidBody.gravityScale = 0f;
+        //animalCollider.enabled = false;
         rigidBody.freezeRotation = true;
     }
 
@@ -66,20 +70,25 @@ public class Animal : MonoBehaviour
         transform.position = newPosition;
     }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        onCollision?.Invoke();
+    }
+
     void OnCollisionStay2D(Collision2D collision)
     {
         hasCollided = true;
-        
-        if(!canBeMerged)
+
+        if (!canBeMerged)
             return;
 
         if (collision.collider.TryGetComponent(out Animal otherFruit))
-            {
-                if (otherFruit.GetAnimalType() != type || !otherFruit.CanMerge())
-                    return;
+        {
+            if (otherFruit.GetAnimalType() != type || !otherFruit.CanMerge())
+                return;
 
-                onCollisionWithAnimal?.Invoke(this, otherFruit);
-            }
+            onCollisionWithAnimal?.Invoke(this, otherFruit);
+        }
     }
 
     public void Merge()
@@ -119,5 +128,15 @@ public class Animal : MonoBehaviour
     public void Push(Vector2 force)
     {
         rigidBody.AddForce(force, ForceMode2D.Impulse);
+    }
+
+    public void MoveHorizontally(float horizontalInput)
+    {
+        this.transform.position += new Vector3(horizontalInput, 0f, 0f);
+    }
+    
+    public void MoveVertically(float verticalInput)
+    {
+        this.transform.position += new Vector3(0f, verticalInput, 0f);
     }
 }

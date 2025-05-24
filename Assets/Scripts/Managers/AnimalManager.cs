@@ -4,17 +4,18 @@ using System.Linq;
 using NUnit.Framework;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 using Random = UnityEngine.Random;
 
 public class AnimalManager : MonoBehaviour
 {
+    public static AnimalManager instance;
     [Header(" Elements ")]
     [SerializeField] private Transform animalsParent;
     [SerializeField] private Animal[] animalPrefabsRound;
     [SerializeField] private Animal[] animalPrefabsSquare;
     private HashSet<AnimalType> spawnableAnimals;
-    [SerializeField] private LineRenderer animalSpawnLine;
 
 
     private Animal currentAnimal;
@@ -25,10 +26,14 @@ public class AnimalManager : MonoBehaviour
 
 
     [Header(" Settings ")]
-    [SerializeField] private Transform animalYSpawnPoint;
+    [SerializeField] private float fallingSpeed = 5f;
+    [SerializeField] private float maxFallingSpeed = 10f;
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private Transform animalSpawnPoint;
     [SerializeField] private float spawnDelay = 0.5f;
-    private bool canControl = false;
-    private bool isControlling = false;
+    private bool canSpawn = true;
+    private Vector2 touchStartPos;
+    [SerializeField] private float swipeThreshold = 50f; // in pixels
 
     [Header(" Debug ")]
     [SerializeField] private bool enableGizmos;
@@ -38,17 +43,29 @@ public class AnimalManager : MonoBehaviour
 
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         MergeManager.onMergeAnimal += MergeAnimals;
         spawnableAnimals = new HashSet<AnimalType>();
         spawnableAnimals.Add(AnimalType.Snake);
         spawnableAnimals.Add(AnimalType.Parrot);
         spawnableAnimals.Add(AnimalType.Rabbit);
+
+        InputManager.instance.OnTouchStart += HandleTouchStart;
+        InputManager.instance.OnTouchEnd += HandleTouchEnd;
+        InputManager.instance.OnTouchHold += HandleTouchHold;
     }
 
     void Start()
     {
-        canControl = true;
-        HideLine();
         ResetNextAnimal();
     }
 
@@ -63,10 +80,16 @@ public class AnimalManager : MonoBehaviour
         {
             UnfreezeAnimals();
         }
-            
 
-        if (canControl)
+        if (currentAnimal != null)
+        {
+            currentAnimal.MoveVertically(-fallingSpeed * Time.deltaTime);
             ManagePlayerInput();
+        }
+        else if (canSpawn)
+        {
+            RespawnAnimal();
+        }
     }
 
     private void ResetNextAnimal()
@@ -78,29 +101,89 @@ public class AnimalManager : MonoBehaviour
 
     private void ManagePlayerInput()
     {
-
-        if (Input.GetMouseButtonDown(0))
+        // Horizontal Movement
+        float inputX = InputManager.instance.HorizontalInput;
+        if (inputX != 0)
         {
-            MouseDownCallback();
+            currentAnimal?.MoveHorizontally(inputX * moveSpeed * Time.deltaTime);
         }
-        else if (Input.GetMouseButton(0))
+        // drop
+        if (InputManager.instance.InputActions.Gameplay.FastDrop.WasPressedThisFrame())
         {
-            if (isControlling)
-                MouseDragCallback();
-            else
-                MouseDownCallback();
-        }
-        else if (Input.GetMouseButtonUp(0) && isControlling)
-        {
-            MouseUpCallback();
+            ReleaseAnimal();
         }
     }
 
-    private void MouseDownCallback()
+    private void HandleTouchStart(Vector2 screenPos)
     {
-        currentAnimal = SpawnAnimal(nextAnimal, GetSpawnPosition());
+        if (EventSystem.current.IsPointerOverGameObject()) // Check if the touch is over a UI element
+            return;
+        
+        touchStartPos = screenPos;
+    }
+
+    private void HandleTouchEnd(Vector2 screenPos)
+    {
+        if (currentAnimal == null) return;
+
+        Vector2 delta = screenPos - touchStartPos;
+
+        // Swipe down
+        if (delta.y < -swipeThreshold)
+        {
+            ReleaseAnimal();
+            return;
+        }
+
+        // Tap left/right
+        if (screenPos.x < Screen.width / 2)
+        {
+            currentAnimal.MoveHorizontally(-1 * moveSpeed * Time.deltaTime); // left
+        }
+        else
+        {
+            currentAnimal.MoveHorizontally(moveSpeed * Time.deltaTime); // right
+        }
+    }
+
+    private void HandleTouchHold(Vector2 screenPos)
+    {
+        if (EventSystem.current.IsPointerOverGameObject()) // Check if the touch is over a UI element
+            return;
+        
+        if (currentAnimal == null) return;
+
+        // Move left or right based on touch position
+        if (screenPos.x < Screen.width / 2)
+        {
+            currentAnimal.MoveHorizontally(-1 * moveSpeed * Time.deltaTime); // left
+        }
+        else
+        {
+            currentAnimal.MoveHorizontally(moveSpeed * Time.deltaTime); // right
+        }
+    }
+
+    private void RespawnAnimal()
+    {
+        currentAnimal = SpawnAnimal(nextAnimal, animalSpawnPoint.position);
+        currentAnimal.DisablePhysics();
+        currentAnimal.onCollision += ReleaseAnimal;
         ResetNextAnimal();
-        isControlling = true;
+        canSpawn = false;
+        DelaySpawn();
+    }
+
+
+
+    private void ReleaseAnimal()
+    {
+        if (currentAnimal == null)
+            return;
+
+        currentAnimal.EnablePhysics();
+        currentAnimal.onCollision -= ReleaseAnimal;
+        currentAnimal = null;
     }
 
     public Animal GetAnimalFromType(AnimalType animalType)
@@ -128,34 +211,11 @@ public class AnimalManager : MonoBehaviour
         }
         return null;
     }
-    private void MouseDragCallback()
-    {
-        if (currentAnimal == null)
-            return;
 
-
-        DisplayLine();
-        currentAnimal.MoveTo(GetSpawnPosition());
-    }
-    private void MouseUpCallback()
-    {
-        HideLine();
-        currentAnimal.EnablePhysics();
-        currentAnimal = null;
-
-        canControl = false;
-        StartControlTimer();
-        isControlling = false;
-    }
-
-    private void StartControlTimer()
-    {
-        Invoke("StopControlTimer", spawnDelay);
-    }
 
     private void StopControlTimer()
     {
-        canControl = true;
+        canSpawn = true;
     }
 
     private Animal SpawnAnimal(Animal animal, Vector2 position)
@@ -167,37 +227,25 @@ public class AnimalManager : MonoBehaviour
         return newAnimal;
     }
 
-    private Vector2 GetClickedWorldPosition()
-    {
-        Vector2 screenPosition = Input.mousePosition;
-        return Camera.main.ScreenToWorldPoint(screenPosition);
-    }
-
-    private Vector2 GetSpawnPosition()
-    {
-        Vector2 spawnPosition = GetClickedWorldPosition();
-        spawnPosition.y = animalYSpawnPoint.position.y;
-        return spawnPosition;
-    }
-
-    private void HideLine()
-    {
-        animalSpawnLine.enabled = false;
-    }
-    private void DisplayLine()
-    {
-        animalSpawnLine.enabled = true;
-        animalSpawnLine.SetPosition(0, GetSpawnPosition());
-        animalSpawnLine.SetPosition(1, GetSpawnPosition() + Vector2.down * 15);
-    }
-
     private void MergeAnimals(AnimalType type, Vector2 spawnPosition)
     {
         Animal newAnimal = GetAnimalFromType(type);
-        canControl = false;
-        StartControlTimer();
         newAnimal = SpawnAnimal(newAnimal, spawnPosition);
         newAnimal.EnablePhysics();
+        IncreaseFallingSpeed((int)type);
+    }
+
+    private void DelaySpawn()
+    {
+        Invoke("StopControlTimer", spawnDelay);
+    }
+
+    private void IncreaseFallingSpeed(int amount)
+    {
+        // Normalize amount from 2–1024 to a 0–1 range using log scale
+        float normalized = Mathf.InverseLerp(2f, 1024f, amount);
+        float speedBoost = Mathf.Lerp(0.05f, 0.3f, normalized); // low type = small boost, high type = bigger
+        fallingSpeed = Mathf.Min(fallingSpeed + speedBoost, maxFallingSpeed);
     }
 
     private void FreezeAnimals()
@@ -227,6 +275,9 @@ public class AnimalManager : MonoBehaviour
     void OnDestroy()
     {
         MergeManager.onMergeAnimal -= MergeAnimals;
+        InputManager.instance.OnTouchStart -= HandleTouchStart;
+        InputManager.instance.OnTouchEnd -= HandleTouchEnd;
+        InputManager.instance.OnTouchHold -= HandleTouchHold;
     }
 
 #if UNITY_EDITOR
@@ -234,7 +285,12 @@ public class AnimalManager : MonoBehaviour
     {
         if (!enableGizmos) return;
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(new Vector3(-50, animalYSpawnPoint.position.y, 0), new Vector3(50, animalYSpawnPoint.position.y, 0));
+        Gizmos.DrawLine(new Vector3(-50, animalSpawnPoint.position.y, 0), new Vector3(50, animalSpawnPoint.position.y, 0));
+    }
+
+    public Animal GetCurrentAnimal()
+    {
+        return currentAnimal;
     }
 
 #endif
