@@ -8,22 +8,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject gamePanel;
+    [SerializeField] private GameObject pausePanel;
 
     void Awake()
     {
         GameManager.onGameStateChanged += OnGameStateChangedCallback;
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     private void OnGameStateChangedCallback(GameState gameState)
@@ -39,6 +28,9 @@ public class UIManager : MonoBehaviour
             case GameState.GameOver:
                 SetGameOver();
                 break;
+            case GameState.Pause:
+                SetPause();
+                break;
         }
     }
 
@@ -47,6 +39,7 @@ public class UIManager : MonoBehaviour
         gameOverPanel.SetActive(false);
         menuPanel.SetActive(true);
         gamePanel.SetActive(false);
+        pausePanel.SetActive(false);
     }
 
     private void SetGame()
@@ -54,6 +47,7 @@ public class UIManager : MonoBehaviour
         gameOverPanel.SetActive(false);
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
+        pausePanel.SetActive(false);
     }
 
     private void SetGameOver()
@@ -61,6 +55,15 @@ public class UIManager : MonoBehaviour
         gameOverPanel.SetActive(true);
         menuPanel.SetActive(false);
         gamePanel.SetActive(false);
+        pausePanel.SetActive(false);
+    }
+
+    private void SetPause()
+    {
+        gameOverPanel.SetActive(false);
+        menuPanel.SetActive(false);
+        gamePanel.SetActive(false);
+        pausePanel.SetActive(true);
     }
 
     public void PlayButtonCallback()
@@ -72,6 +75,18 @@ public class UIManager : MonoBehaviour
     public void RestartButtonCallback()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void PauseButtonCallback()
+    {
+        SetPause();
+        GameManager.instance.SetGameState(GameState.Pause);
+    }
+
+    public void ResumeButtonCallback()
+    {
+        SetGame();
+        GameManager.instance.SetGameState(GameState.Game);
     }
     
     void OnDestroy()

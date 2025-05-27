@@ -267,6 +267,8 @@ public class AnimalManager : MonoBehaviour
         foreach (Transform child in animalsParent)
         {
             Animal animal = child.GetComponent<Animal>();
+            if (animal == currentAnimal)
+                continue;
             animal.EnablePhysics();
         }
         isFreeze = false;
