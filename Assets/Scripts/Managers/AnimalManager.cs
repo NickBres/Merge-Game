@@ -116,7 +116,7 @@ public class AnimalManager : MonoBehaviour
 
     private void HandleTouchStart(Vector2 screenPos)
     {
-        if (EventSystem.current.IsPointerOverGameObject()) // Check if the touch is over a UI element
+        if (!GameManager.instance.IsGameState() || EventSystem.current.IsPointerOverGameObject()) // Check if the touch is over a UI element
             return;
         
         touchStartPos = screenPos;
@@ -124,6 +124,9 @@ public class AnimalManager : MonoBehaviour
 
     private void HandleTouchEnd(Vector2 screenPos)
     {
+        if (!GameManager.instance.IsGameState() || EventSystem.current.IsPointerOverGameObject()) // Check if the touch is over a UI element
+            return;
+        
         if (currentAnimal == null) return;
 
         Vector2 delta = screenPos - touchStartPos;
@@ -148,7 +151,7 @@ public class AnimalManager : MonoBehaviour
 
     private void HandleTouchHold(Vector2 screenPos)
     {
-        if (EventSystem.current.IsPointerOverGameObject()) // Check if the touch is over a UI element
+        if (!GameManager.instance.IsGameState() || EventSystem.current.IsPointerOverGameObject())
             return;
         
         if (currentAnimal == null) return;
