@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject gamePanel;
     [SerializeField] private GameObject pausePanel;
+
 
     void Awake()
     {
@@ -88,6 +90,7 @@ public class UIManager : MonoBehaviour
         SetGame();
         GameManager.instance.SetGameState(GameState.Game);
     }
+
     
     void OnDestroy()
     {
