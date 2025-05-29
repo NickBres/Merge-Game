@@ -19,6 +19,7 @@ public class Animal : MonoBehaviour
     private Rigidbody2D rigidBody;
     private Collider2D animalCollider;
     private SpriteRenderer spriteRenderer;
+    private SpriteRenderer skinRenderer;
 
     [Header(" Effects ")]
     [SerializeField] private ParticleSystem mergeEffect;
@@ -30,6 +31,7 @@ public class Animal : MonoBehaviour
         animalCollider = GetComponent<Collider2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         mergeEffect = GetComponentInChildren<ParticleSystem>();
+        skinRenderer = transform.Find("Skin/SkinRenderer")?.GetComponent<SpriteRenderer>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -110,9 +112,20 @@ public class Animal : MonoBehaviour
     public Sprite GetSprite()
     {
         if (spriteRenderer == null)
-            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>(); 
 
         return spriteRenderer?.sprite;
+    }
+
+    public Sprite GetSkinSprite()
+    {
+        if (skinRenderer == null)
+        {
+            var skinTransform = transform.Find("Skin/Skin Renderer");
+            skinRenderer = skinTransform?.GetComponent<SpriteRenderer>();
+        }
+
+        return skinRenderer?.sprite;
     }
 
     public bool HasCollided()
@@ -134,7 +147,7 @@ public class Animal : MonoBehaviour
     {
         this.transform.position += new Vector3(horizontalInput, 0f, 0f);
     }
-    
+
     public void MoveVertically(float verticalInput)
     {
         this.transform.position += new Vector3(0f, verticalInput, 0f);

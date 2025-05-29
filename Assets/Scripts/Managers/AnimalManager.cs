@@ -1,3 +1,5 @@
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -118,7 +120,7 @@ public class AnimalManager : MonoBehaviour
     {
         if (!GameManager.instance.IsGameState() || EventSystem.current.IsPointerOverGameObject()) // Check if the touch is over a UI element
             return;
-        
+
         touchStartPos = screenPos;
     }
 
@@ -126,7 +128,7 @@ public class AnimalManager : MonoBehaviour
     {
         if (!GameManager.instance.IsGameState() || EventSystem.current.IsPointerOverGameObject()) // Check if the touch is over a UI element
             return;
-        
+
         if (currentAnimal == null) return;
 
         Vector2 delta = screenPos - touchStartPos;
@@ -153,7 +155,7 @@ public class AnimalManager : MonoBehaviour
     {
         if (!GameManager.instance.IsGameState() || EventSystem.current.IsPointerOverGameObject())
             return;
-        
+
         if (currentAnimal == null) return;
 
         // Move left or right based on touch position
@@ -227,6 +229,7 @@ public class AnimalManager : MonoBehaviour
             position,
             Quaternion.identity,
             animalsParent);
+        ApplySkinToAnimal(newAnimal);
         return newAnimal;
     }
 
@@ -275,6 +278,20 @@ public class AnimalManager : MonoBehaviour
             animal.EnablePhysics();
         }
         isFreeze = false;
+    }
+
+    public void ApplySkinToAnimal(Animal animal)
+    {
+        var skin = SkinManager.instance.GetSkinForAnimal(animal.GetAnimalType());
+        if (skin != null && skin.sprite != null)
+        {
+            var skinRenderer = animal.transform.Find("Skin/Skin Renderer")?.GetComponent<SpriteRenderer>();
+            if (skinRenderer != null)
+            {
+                skinRenderer.sprite = skin.sprite;
+                skinRenderer.enabled = true;
+            }
+        }
     }
 
     void OnDestroy()

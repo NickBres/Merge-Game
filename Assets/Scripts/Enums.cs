@@ -11,8 +11,7 @@ public enum AnimalType
     Panda = 128,
     Giraffe = 256,
     Hippo = 512,
-    Elephant = 1024,
-    WON = 2048
+    Elephant = 1024
 }
 
 public enum GameState
