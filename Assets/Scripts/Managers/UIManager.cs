@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject gamePanel;
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject skinsPanel;
+    [SerializeField] private GameObject animalSelectorPanel;
 
 
     void Awake()
@@ -42,6 +44,8 @@ public class UIManager : MonoBehaviour
         menuPanel.SetActive(true);
         gamePanel.SetActive(false);
         pausePanel.SetActive(false);
+        skinsPanel.SetActive(false);
+        animalSelectorPanel.SetActive(false);
     }
 
     private void SetGame()
@@ -50,6 +54,7 @@ public class UIManager : MonoBehaviour
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
         pausePanel.SetActive(false);
+        skinsPanel.SetActive(false);
     }
 
     private void SetGameOver()
@@ -58,6 +63,7 @@ public class UIManager : MonoBehaviour
         menuPanel.SetActive(false);
         gamePanel.SetActive(false);
         pausePanel.SetActive(false);
+        skinsPanel.SetActive(false);
     }
 
     private void SetPause()
@@ -66,6 +72,17 @@ public class UIManager : MonoBehaviour
         menuPanel.SetActive(false);
         gamePanel.SetActive(false);
         pausePanel.SetActive(true);
+        skinsPanel.SetActive(false);
+    }
+
+    private void SetSkins()
+    {
+        gameOverPanel.SetActive(false);
+        menuPanel.SetActive(false);
+        gamePanel.SetActive(false);
+        pausePanel.SetActive(false);
+        skinsPanel.SetActive(true);
+        animalSelectorPanel.SetActive(true);
     }
 
     public void PlayButtonCallback()
@@ -89,6 +106,11 @@ public class UIManager : MonoBehaviour
     {
         SetGame();
         GameManager.instance.SetGameState(GameState.Game);
+    }
+
+    public void SkinsButtonCallback()
+    {
+        SetSkins();
     }
 
     

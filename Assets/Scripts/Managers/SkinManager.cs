@@ -27,8 +27,6 @@ public class SkinManager : MonoBehaviour
 
     void Start()
     {
-        ChangeSkin(AnimalType.Snake, "Crown");
-        ChangeSkin(AnimalType.Parrot, "Glasses");
     }
 
     public void SaveSkinData()
@@ -49,6 +47,7 @@ public class SkinManager : MonoBehaviour
         {
             AssignDefaultSkins();
         }
+        
     }
 
     private void AssignDefaultSkins()
@@ -77,6 +76,15 @@ public class SkinManager : MonoBehaviour
             animalToSkinMap[type] = skinID;
             SaveSkinData();
         }
+    }
+
+    public List<SkinDataSO> GetAllSkins()
+    {
+        return allSkins
+            .OrderBy(skin => skin.skinID != "None" ? 1 : 0) // "None" skin first
+            .ThenBy(skin => PlayerDataManager.instance.HasSkin(skin.skinID) ? 0 : 1) // owned before unowned
+            .ThenByDescending(skin => skin.rarity) // sort owned by rarity (Legendary to Common)
+            .ToList();
     }
 }
 

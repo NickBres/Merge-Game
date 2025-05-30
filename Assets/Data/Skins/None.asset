@@ -15,4 +15,4 @@ MonoBehaviour:
   skinID: None
   sprite: {fileID: 21300000, guid: df15eb591f12347b799da4d362d98c6f, type: 3}
   displayName: No skin
-  price: 0
+  rarity: 2

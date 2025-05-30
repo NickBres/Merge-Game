@@ -6,5 +6,5 @@ public class SkinDataSO : ScriptableObject
     public string skinID;
     public Sprite sprite;
     public string displayName;
-    public int price;
+    public Rarity rarity;
 }

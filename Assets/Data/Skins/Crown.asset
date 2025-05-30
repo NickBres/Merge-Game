@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Crown
   m_EditorClassIdentifier: 
   skinID: Crown
-  sprite: {fileID: -8222406987496834216, guid: 40671bec1109f43a49fbe362fc3cc8e5, type: 3}
+  sprite: {fileID: 21300000, guid: 40671bec1109f43a49fbe362fc3cc8e5, type: 3}
   displayName: Crown
-  price: 500
+  rarity: 5

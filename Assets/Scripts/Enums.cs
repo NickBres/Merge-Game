@@ -14,6 +14,15 @@ public enum AnimalType
     Elephant = 1024
 }
 
+public enum Rarity
+{
+    None = 0,      // 1 / 0 = 100% (not applicable)
+    Common = 2,     // 1 / 2 = 50%
+    Rare = 5,       // 1 / 5 = 20%
+    Epic = 10,      // 1 / 10 = 10%
+    Legendary = 20  // 1 / 20 = 5%
+}
+
 public enum GameState
 {
     Menu,

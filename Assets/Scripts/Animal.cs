@@ -108,11 +108,16 @@ public class Animal : MonoBehaviour
     {
         return type;
     }
+    
+    public void SetAnimalType(AnimalType newType)
+    {
+        type = newType;
+    }
 
     public Sprite GetSprite()
     {
         if (spriteRenderer == null)
-            spriteRenderer = GetComponentInChildren<SpriteRenderer>(); 
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         return spriteRenderer?.sprite;
     }
