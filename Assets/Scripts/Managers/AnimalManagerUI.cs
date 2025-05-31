@@ -21,7 +21,6 @@ public class AnimalManagerUI : MonoBehaviour
 
 
         nextAnimalImage.sprite = animalManager.nextAnimal.GetSprite();
-        nextAnimalImage.SetNativeSize();
     }
     
     void OnDestroy()

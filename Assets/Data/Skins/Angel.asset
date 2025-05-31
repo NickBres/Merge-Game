@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a323fd6ac7706491c83803c4e3c1280a, type: 3}
   m_Name: Angel
   m_EditorClassIdentifier: 
-  skinID: 
-  sprite: {fileID: 0}
-  displayName: 
-  rarity: 0
+  skinID: Angel
+  sprite: {fileID: -2634717454364015032, guid: 985110732f429457fb8d95ce2fc7373e, type: 3}
+  displayName: Angel
+  rarity: 10

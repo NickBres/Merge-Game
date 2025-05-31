@@ -29,9 +29,9 @@ public class Animal : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody2D>();
         animalCollider = GetComponent<Collider2D>();
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        spriteRenderer = transform.Find("Animal Renderer")?.GetComponent<SpriteRenderer>();
         mergeEffect = GetComponentInChildren<ParticleSystem>();
-        skinRenderer = transform.Find("Skin/SkinRenderer")?.GetComponent<SpriteRenderer>();
+        skinRenderer = transform.Find("Skin/Skin Renderer")?.GetComponent<SpriteRenderer>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -117,7 +117,10 @@ public class Animal : MonoBehaviour
     public Sprite GetSprite()
     {
         if (spriteRenderer == null)
-            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        {
+            var spriteTransform = transform.Find("Animal Renderer");
+            spriteRenderer = spriteTransform?.GetComponent<SpriteRenderer>();
+        }
 
         return spriteRenderer?.sprite;
     }

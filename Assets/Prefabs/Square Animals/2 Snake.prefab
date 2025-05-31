@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 8086900831918196500}
   - component: {fileID: 976172207886792989}
   m_Layer: 0
-  m_Name: Fruit Renderer
+  m_Name: Animal Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5130,9 +5130,9 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 1296802509105133781}
-  - {fileID: 6584209742592203597}
   - {fileID: 8086900831918196500}
+  - {fileID: 6584209742592203597}
+  - {fileID: 1296802509105133781}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &140733741888908755

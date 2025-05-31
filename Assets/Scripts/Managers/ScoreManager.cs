@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
+    public static ScoreManager instance;
     [Header(" Elements ")]
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI bestScoreText;
@@ -17,6 +18,15 @@ public class ScoreManager : MonoBehaviour
 
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
         MergeManager.onMergeAnimal += UpdateScore;
         GameManager.onGameStateChanged += GameStateChanged;
     }
@@ -61,12 +71,18 @@ public class ScoreManager : MonoBehaviour
         if (gameState == GameState.GameOver)
         {
             SetBestScore();
+            PlayerDataManager.instance.AddCoins(CalculateCoinsFromScore());
         }
         else if (gameState == GameState.Menu)
         {
             LoadData();
             UpdateBestScore();
         }
+    }
+
+    public int CalculateCoinsFromScore()
+    {
+        return (int)score / 100;
     }
 
     private void SetBestScore()
@@ -76,7 +92,12 @@ public class ScoreManager : MonoBehaviour
             bestScore = score;
             SaveData();
         }
-        score = 0;
+        //score = 0;
+    }
+
+    public int GetScore()
+    {
+        return score;
     }
 
     private void LoadData()

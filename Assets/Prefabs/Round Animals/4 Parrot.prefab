@@ -4989,7 +4989,7 @@ GameObject:
   - component: {fileID: 8086900831918196500}
   - component: {fileID: 976172207886792989}
   m_Layer: 0
-  m_Name: Fruit Renderer
+  m_Name: Animal Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -27,9 +27,9 @@ public class AudioManager : MonoBehaviour
         mergeSource.Play();
     }
 
-    private void ToggleSFX(bool isOff)
+    private void ToggleSFX(bool isOn)
     {
-        mergeSource.mute = isOff;
+        mergeSource.mute = !isOn;
     }
 
 }

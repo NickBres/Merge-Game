@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a323fd6ac7706491c83803c4e3c1280a, type: 3}
   m_Name: Chinese Mask
   m_EditorClassIdentifier: 
-  skinID: 
-  sprite: {fileID: 0}
-  displayName: 
-  rarity: 0
+  skinID: Chinese Mask
+  sprite: {fileID: 723153424554195183, guid: 1f1f19fe243034928ac817664f1c799e, type: 3}
+  displayName: Chinese Mask
+  rarity: 10

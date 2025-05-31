@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a323fd6ac7706491c83803c4e3c1280a, type: 3}
   m_Name: Neon Glasses
   m_EditorClassIdentifier: 
-  skinID: 
-  sprite: {fileID: 0}
-  displayName: 
-  rarity: 0
+  skinID: Neon Glasses
+  sprite: {fileID: -2435449359390906285, guid: 5d41e80e9b8fa4265a2a5fbc3a5a316f, type: 3}
+  displayName: Neon Glasses
+  rarity: 5

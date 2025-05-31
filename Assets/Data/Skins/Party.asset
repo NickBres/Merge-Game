@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a323fd6ac7706491c83803c4e3c1280a, type: 3}
   m_Name: Party
   m_EditorClassIdentifier: 
-  skinID: 
-  sprite: {fileID: 0}
-  displayName: 
-  rarity: 0
+  skinID: Party
+  sprite: {fileID: -959670263140898326, guid: eb2512cd144db4112bc3568407fd84f6, type: 3}
+  displayName: Party
+  rarity: 2

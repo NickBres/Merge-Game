@@ -1,6 +1,8 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject skinsPanel;
     [SerializeField] private GameObject animalSelectorPanel;
+    [SerializeField] private TextMeshProUGUI coinAmount;
 
 
     void Awake()
@@ -46,6 +49,8 @@ public class UIManager : MonoBehaviour
         pausePanel.SetActive(false);
         skinsPanel.SetActive(false);
         animalSelectorPanel.SetActive(false);
+
+        SetCoinAmount();
     }
 
     private void SetGame()
@@ -83,6 +88,12 @@ public class UIManager : MonoBehaviour
         pausePanel.SetActive(false);
         skinsPanel.SetActive(true);
         animalSelectorPanel.SetActive(true);
+    }
+
+    private void SetCoinAmount()
+    {
+        int amount = PlayerDataManager.instance.GetBalance();
+        coinAmount.text = amount.ToString();
     }
 
     public void PlayButtonCallback()

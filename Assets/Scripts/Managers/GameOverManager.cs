@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class GameOverManager : MonoBehaviour
@@ -6,6 +7,8 @@ public class GameOverManager : MonoBehaviour
     [SerializeField] private GameObject deadLine;
     [SerializeField] private Transform animalsParent;
     [SerializeField] private int deadLineActivateDistance = 5;
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI coinsText;
 
     [Header(" Timer ")]
     [SerializeField] private float durationThreshold = 3;
@@ -44,6 +47,7 @@ public class GameOverManager : MonoBehaviour
     {
         GameManager.instance.SetGameState(GameState.GameOver);
         isGameOver = true;
+        ResetTexts();
     }
 
     private void CheckAnimals()
@@ -71,14 +75,14 @@ public class GameOverManager : MonoBehaviour
 
     private void CheckCloseToDeadLine(Transform animal)
     {
-            if (animal.position.y + deadLineActivateDistance >= deadLine.transform.position.y)
-            {
-                deadLine.SetActive(true);
-            }
-            else
-            {
-                deadLine.SetActive(false);
-            }
+        if (animal.position.y + deadLineActivateDistance >= deadLine.transform.position.y)
+        {
+            deadLine.SetActive(true);
+        }
+        else
+        {
+            deadLine.SetActive(false);
+        }
     }
 
     private void StartTimer()
@@ -89,5 +93,14 @@ public class GameOverManager : MonoBehaviour
     {
         timerActive = false;
         timer = 0;
+    }
+
+    public void ResetTexts()
+    {
+        int score = ScoreManager.instance.GetScore();
+        int coins = ScoreManager.instance.CalculateCoinsFromScore();
+
+        scoreText.text = "Score: " + score.ToString();
+        coinsText.text = "+" + coins.ToString();
     }
 }

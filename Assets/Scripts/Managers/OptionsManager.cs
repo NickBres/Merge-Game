@@ -6,7 +6,7 @@ public class OptionsManager : MonoBehaviour
     public static OptionsManager instance;
 
     [Header(" Elements ")]
-    [SerializeField] private Toggle muteToggle;
+    [SerializeField] private Toggle soundToggle;
 
     public static System.Action<bool> onSFXToggle;
     private const string sfxKey = "sfxMuted";
@@ -27,11 +27,11 @@ public class OptionsManager : MonoBehaviour
 
     private void Start()
     {
-        muteToggle.onValueChanged.AddListener(OnMuteToggleChanged);
+        soundToggle.onValueChanged.AddListener(OnSoundToggleChanged);
         LoadData();
     }
 
-    private void OnMuteToggleChanged(bool isOn)
+    private void OnSoundToggleChanged(bool isOn)
     {
         onSFXToggle?.Invoke(isOn);
     }
@@ -47,22 +47,22 @@ public class OptionsManager : MonoBehaviour
 
     private void SaveData()
     {
-        PlayerPrefs.SetInt(sfxKey, muteToggle.isOn ? 1 : 0);
+        PlayerPrefs.SetInt(sfxKey, soundToggle.isOn ? 1 : 0);
         PlayerPrefs.Save();
     }
 
     void OnDestroy()
     {
-        muteToggle.onValueChanged.RemoveListener(OnMuteToggleChanged);
+        soundToggle.onValueChanged.RemoveListener(OnSoundToggleChanged);
         SaveData();
     }
 
-    private void SetSfxToggle(bool isMuted)
+    private void SetSfxToggle(bool isSoundOn)
     {
-        muteToggle.onValueChanged.RemoveListener(OnMuteToggleChanged); // Temporarily detach
-        muteToggle.isOn = isMuted;
-        muteToggle.onValueChanged.AddListener(OnMuteToggleChanged); // Reattach
-        onSFXToggle?.Invoke(isMuted); // Ensure audio state is updated on load
+        soundToggle.onValueChanged.RemoveListener(OnSoundToggleChanged); // Temporarily detach
+        soundToggle.isOn = isSoundOn;
+        soundToggle.onValueChanged.AddListener(OnSoundToggleChanged); // Reattach
+        onSFXToggle?.Invoke(isSoundOn); // Ensure audio state is updated on load
     }
 
 }

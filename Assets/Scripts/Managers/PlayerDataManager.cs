@@ -11,6 +11,7 @@ public class PlayerDataManager : MonoBehaviour
 
     private void Awake()
     {
+        OwnSkin("None"); // Ensure default skin is owned
         if (instance == null)
         {
             instance = this;
@@ -25,20 +26,20 @@ public class PlayerDataManager : MonoBehaviour
 
     private void Start()
     {
-        OwnSkin("None"); // Ensure default skin is owned
-        OwnSkin("Glasses"); // Example of owning a default skin
-        OwnSkin("Crown"); // Example of owning another default skin
+        
     }
 
     // Money Management
     public void AddCoins(int amount)
     {
+        LoadData();
         coins += amount;
         SaveData();
     }
 
     public bool SpendCoins(int amount)
     {
+        LoadData();
         if (coins >= amount)
         {
             coins -= amount;
@@ -50,18 +51,21 @@ public class PlayerDataManager : MonoBehaviour
 
     public int GetBalance()
     {
+        LoadData();
         return coins;
     }
 
     // Skin Ownership
     public void OwnSkin(string skinID)
     {
+        LoadData();
         ownedSkins.Add(skinID);
         SaveData();
     }
 
     public bool HasSkin(string skinID)
     {
+        LoadData();
         return ownedSkins.Contains(skinID);
     }
 
@@ -74,7 +78,7 @@ public class PlayerDataManager : MonoBehaviour
     }
 
     // Save and Load
-    public void SaveData()
+    private void SaveData()
     {
         var data = new PlayerData
         {
@@ -86,7 +90,7 @@ public class PlayerDataManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void LoadData()
+    private void LoadData()
     {
         if (PlayerPrefs.HasKey("PlayerData"))
         {
