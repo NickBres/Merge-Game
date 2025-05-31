@@ -78,6 +78,7 @@ public class UIManager : MonoBehaviour
     {
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
+        pausePanel.SetActive(false);
     }
 
     private void SetGameOver()

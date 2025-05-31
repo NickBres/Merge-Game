@@ -9,9 +9,9 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI bestScoreText;
 
     [Header(" Settings ")]
-    [SerializeField] private float scoreMultiplier = 1;
     private int score = 0;
     private int bestScore = 0;
+    private int comboCount = 1;
 
     [Header(" Data ")]
     private const string bestScoreKey = "BestScore";
@@ -52,7 +52,7 @@ public class ScoreManager : MonoBehaviour
 
     private void UpdateScore(AnimalType animalType, Vector2 unused)
     {
-        score += (int)((int)animalType * scoreMultiplier);
+        score += (int)((int)animalType * comboCount);
         UpdateScore();
     }
 
@@ -82,7 +82,7 @@ public class ScoreManager : MonoBehaviour
 
     public int CalculateCoinsFromScore()
     {
-        return (int)score / 100;
+        return (int)score / 10;
     }
 
     private void SetBestScore()
@@ -104,10 +104,25 @@ public class ScoreManager : MonoBehaviour
     {
         bestScore = PlayerPrefs.GetInt(bestScoreKey, 0);
     }
-    
+
     private void SaveData()
     {
         PlayerPrefs.SetInt(bestScoreKey, bestScore);
         PlayerPrefs.Save();
+    }
+
+    public void ResetCombo()
+    {
+        comboCount = 1;
+    }
+
+    public void IncrementCombo()
+    {
+        comboCount *= 2;
+    }
+
+    public int GetComboCount()
+    {
+        return comboCount;
     }
 }

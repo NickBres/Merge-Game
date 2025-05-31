@@ -7,7 +7,7 @@ using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
+using UnityEngine.SocialPlatforms.Impl;
 using Random = UnityEngine.Random;
 
 public class AnimalManager : MonoBehaviour
@@ -171,6 +171,7 @@ public class AnimalManager : MonoBehaviour
 
     private void RespawnAnimal()
     {
+        ScoreManager.instance.ResetCombo();
         currentAnimal = SpawnAnimal(nextAnimal, animalSpawnPoint.position);
         currentAnimal.DisablePhysics();
         currentAnimal.onCollision += ReleaseAnimal;
@@ -239,6 +240,8 @@ public class AnimalManager : MonoBehaviour
         newAnimal = SpawnAnimal(newAnimal, spawnPosition);
         newAnimal.EnablePhysics();
         IncreaseFallingSpeed((int)type);
+        ComboPopUp.instance.ShowCombo(spawnPosition, ScoreManager.instance.GetComboCount());
+        ScoreManager.instance.IncrementCombo();
     }
 
     private void DelaySpawn()
