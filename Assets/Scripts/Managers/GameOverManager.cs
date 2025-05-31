@@ -100,7 +100,7 @@ public class GameOverManager : MonoBehaviour
         int score = ScoreManager.instance.GetScore();
         int coins = ScoreManager.instance.CalculateCoinsFromScore();
 
-        scoreText.text = "Score: " + score.ToString();
+        scoreText.text = score.ToString();
         coinsText.text = "+" + coins.ToString();
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager instance;
 
     [Header(" Elements ")]
     [SerializeField] private GameObject gameOverPanel;
@@ -14,11 +15,21 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject skinsPanel;
     [SerializeField] private GameObject animalSelectorPanel;
-    [SerializeField] private TextMeshProUGUI coinAmount;
+    [SerializeField] private GameObject shopPanel;
+    [SerializeField] private GameObject rewardPanel;
 
 
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
         GameManager.onGameStateChanged += OnGameStateChangedCallback;
     }
 
@@ -49,51 +60,42 @@ public class UIManager : MonoBehaviour
         pausePanel.SetActive(false);
         skinsPanel.SetActive(false);
         animalSelectorPanel.SetActive(false);
+    }
 
-        SetCoinAmount();
+    private void SetShop()
+    {
+        menuPanel.SetActive(false);
+        shopPanel.SetActive(true);
+    }
+
+    public void SetReward()
+    {
+        rewardPanel.SetActive(true);
+        shopPanel.SetActive(false);
     }
 
     private void SetGame()
     {
-        gameOverPanel.SetActive(false);
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
-        pausePanel.SetActive(false);
-        skinsPanel.SetActive(false);
     }
 
     private void SetGameOver()
     {
         gameOverPanel.SetActive(true);
-        menuPanel.SetActive(false);
         gamePanel.SetActive(false);
-        pausePanel.SetActive(false);
-        skinsPanel.SetActive(false);
     }
 
     private void SetPause()
     {
-        gameOverPanel.SetActive(false);
-        menuPanel.SetActive(false);
-        gamePanel.SetActive(false);
         pausePanel.SetActive(true);
-        skinsPanel.SetActive(false);
     }
 
     private void SetSkins()
     {
-        gameOverPanel.SetActive(false);
         menuPanel.SetActive(false);
-        gamePanel.SetActive(false);
-        pausePanel.SetActive(false);
         skinsPanel.SetActive(true);
         animalSelectorPanel.SetActive(true);
-    }
-
-    private void SetCoinAmount()
-    {
-        int amount = PlayerDataManager.instance.GetBalance();
-        coinAmount.text = amount.ToString();
     }
 
     public void PlayButtonCallback()
@@ -122,6 +124,11 @@ public class UIManager : MonoBehaviour
     public void SkinsButtonCallback()
     {
         SetSkins();
+    }
+
+    public void ShopButtonCallback()
+    {
+        SetShop();
     }
 
     

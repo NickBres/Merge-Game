@@ -61,7 +61,7 @@ public class SkinCell : MonoBehaviour
         background.sprite = isSelected ? selectedBackground : defaultBackground;
     }
     
-    private Color GetColorByRarity(Rarity rarity)
+    public static Color GetColorByRarity(Rarity rarity)
     {
         return rarity switch
         {

@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using NUnit.Framework;
 
 public class PlayerDataManager : MonoBehaviour
 {
@@ -9,8 +11,11 @@ public class PlayerDataManager : MonoBehaviour
     private int coins = 0;
     private HashSet<string> ownedSkins = new();
 
+    public static Action OnCoinsChanged;
+
     private void Awake()
     {
+        //PlayerPrefs.DeleteAll(); // For testing, clear PlayerPrefs
         OwnSkin("None"); // Ensure default skin is owned
         if (instance == null)
         {
@@ -22,6 +27,7 @@ public class PlayerDataManager : MonoBehaviour
             Destroy(gameObject);
         }
         LoadData();
+       //AddCoins(10000); // For testing, give initial coins
     }
 
     private void Start()
@@ -35,6 +41,7 @@ public class PlayerDataManager : MonoBehaviour
         LoadData();
         coins += amount;
         SaveData();
+        OnCoinsChanged?.Invoke();
     }
 
     public bool SpendCoins(int amount)
@@ -44,6 +51,7 @@ public class PlayerDataManager : MonoBehaviour
         {
             coins -= amount;
             SaveData();
+            OnCoinsChanged?.Invoke();
             return true;
         }
         return false;
@@ -58,6 +66,9 @@ public class PlayerDataManager : MonoBehaviour
     // Skin Ownership
     public void OwnSkin(string skinID)
     {
+        if(HasSkin(skinID))
+            return;
+        
         LoadData();
         ownedSkins.Add(skinID);
         SaveData();
