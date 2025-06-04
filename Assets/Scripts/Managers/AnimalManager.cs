@@ -93,6 +93,13 @@ public class AnimalManager : MonoBehaviour
         onNextAnimalSet?.Invoke();
     }
 
+    public void SetNextAnimal(AnimalType animalType)
+    {
+        nextAnimalType = animalType;
+        nextAnimal = GetAnimalFromType(animalType);
+        onNextAnimalSet?.Invoke();
+    }
+
     private void ManagePlayerInput()
     {
         // Horizontal Movement
@@ -239,7 +246,7 @@ private System.Collections.IEnumerator RemoveAllSmallAnimalsCoroutine(AnimalType
                 if (addToScore)
                     ScoreManager.instance.UpdateScore(animal.GetAnimalType(), Vector2.zero);
 
-                animal.Merge();
+                animal.Disappear();
                 yield return new WaitForSeconds(0.2f);
                 found = true;
                 break;

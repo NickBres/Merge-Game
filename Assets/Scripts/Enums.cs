@@ -11,7 +11,8 @@ public enum AnimalType
     Panda = 128,
     Giraffe = 256,
     Hippo = 512,
-    Elephant = 1024
+    Elephant = 1024,
+    Bomb = 2048
 }
 
 public enum Rarity

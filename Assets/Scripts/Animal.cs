@@ -24,7 +24,7 @@ public class Animal : MonoBehaviour
     [Header(" Effects ")]
     [SerializeField] private ParticleSystem mergeEffect;
 
-    private bool hasCollided = false;
+    protected bool hasCollided = false;
     private bool isFrozen = false;
     private void Awake()
     {
@@ -84,7 +84,7 @@ public class Animal : MonoBehaviour
         onCollision?.Invoke();
     }
 
-    void OnCollisionStay2D(Collision2D collision)
+    protected virtual void OnCollisionStay2D(Collision2D collision)
     {
         hasCollided = true;
 
@@ -100,7 +100,7 @@ public class Animal : MonoBehaviour
         }
     }
 
-    public void Merge()
+    public void Disappear()
     {
         if (mergeEffect != null)
         {
@@ -148,7 +148,7 @@ public class Animal : MonoBehaviour
         return hasCollided;
     }
 
-    public bool CanMerge()
+    public virtual bool CanMerge()
     {
         return canBeMerged;
     }

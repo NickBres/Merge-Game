@@ -44,4 +44,9 @@ public class Skills : MonoBehaviour
         onProgress?.Invoke(1f); // Ensure 100% at the end
         AnimalManager.instance.RestoreSpawnableAnimals();
     }
+
+    public void BombSkill()
+    {
+        AnimalManager.instance.SetNextAnimal(AnimalType.Bomb);
+    }
 }
