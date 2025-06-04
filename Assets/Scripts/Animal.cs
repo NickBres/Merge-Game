@@ -25,6 +25,7 @@ public class Animal : MonoBehaviour
     [SerializeField] private ParticleSystem mergeEffect;
 
     private bool hasCollided = false;
+    private bool isFrozen = false;
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -49,6 +50,10 @@ public class Animal : MonoBehaviour
     {
         canBeMerged = true;
     }
+    public void Unfreeze()
+    {
+        isFrozen = false;
+    }
 
     public void EnablePhysics()
     {
@@ -56,15 +61,17 @@ public class Animal : MonoBehaviour
         rigidBody.gravityScale = 1f;
         //animalCollider.enabled = true;
         rigidBody.freezeRotation = false;
+        isFrozen = false;
     }
 
-    public void DisablePhysics()
+    public void DisablePhysics(bool disableMovement)
     {
         storedVelocity = rigidBody.linearVelocity;
         rigidBody.linearVelocity = Vector2.zero;
         rigidBody.gravityScale = 0f;
         //animalCollider.enabled = false;
         rigidBody.freezeRotation = true;
+        isFrozen = disableMovement;
     }
 
     public void MoveTo(Vector3 newPosition)
@@ -81,7 +88,7 @@ public class Animal : MonoBehaviour
     {
         hasCollided = true;
 
-        if (!canBeMerged)
+        if (!canBeMerged || isFrozen)
             return;
 
         if (collision.collider.TryGetComponent(out Animal otherFruit))
@@ -108,7 +115,7 @@ public class Animal : MonoBehaviour
     {
         return type;
     }
-    
+
     public void SetAnimalType(AnimalType newType)
     {
         type = newType;
@@ -148,16 +155,23 @@ public class Animal : MonoBehaviour
 
     public void Push(Vector2 force)
     {
+        if (isFrozen)
+            return;
         rigidBody.AddForce(force, ForceMode2D.Impulse);
     }
 
     public void MoveHorizontally(float horizontalInput)
     {
+        if (isFrozen)
+            return;
         this.transform.position += new Vector3(horizontalInput, 0f, 0f);
     }
 
     public void MoveVertically(float verticalInput)
     {
+        if (isFrozen)
+            return;
         this.transform.position += new Vector3(0f, verticalInput, 0f);
     }
+    
 }

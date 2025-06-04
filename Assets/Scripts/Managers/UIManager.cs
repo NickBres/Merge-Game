@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        GameManager.onGameStateChanged += OnGameStateChangedCallback;
+        GameManager.OnGameStateChanged += OnGameStateChangedCallback;
     }
 
     private void OnGameStateChangedCallback(GameState gameState)
@@ -135,6 +135,6 @@ public class UIManager : MonoBehaviour
     
     void OnDestroy()
     {
-        GameManager.onGameStateChanged -= OnGameStateChangedCallback;
+        GameManager.OnGameStateChanged -= OnGameStateChangedCallback;
     }
 }

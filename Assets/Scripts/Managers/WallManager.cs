@@ -11,6 +11,10 @@ public class WallManager : MonoBehaviour
     [Header("Wall Thickness")]
     [SerializeField] private float wallThickness = 1f;
 
+    [Header("Visual Offsets")]
+    [SerializeField] private float wallVisibleOffset = -0.5f;
+    [SerializeField] private float floorRaiseOffset = 1.5f;
+
     void Start()
     {
         Camera cam = Camera.main;
@@ -23,13 +27,13 @@ public class WallManager : MonoBehaviour
         float screenHeight = topRight.y - bottomLeft.y;
 
         if (leftWall != null)
-            leftWall.position = new Vector3(bottomLeft.x - wallThickness / 2f, 0, z);
+            leftWall.position = new Vector3(bottomLeft.x - wallThickness * wallVisibleOffset, 0, z);
 
         if (rightWall != null)
-            rightWall.position = new Vector3(topRight.x + wallThickness / 2f, 0, z);
+            rightWall.position = new Vector3(topRight.x + wallThickness * wallVisibleOffset, 0, z);
 
         if (floor != null)
-            floor.position = new Vector3(0, bottomLeft.y - wallThickness / 2f, z);
+            floor.position = new Vector3(0, bottomLeft.y + wallThickness * floorRaiseOffset, z);
 
         if (ceiling != null)
             ceiling.position = new Vector3(0, topRight.y + wallThickness / 2f, z);

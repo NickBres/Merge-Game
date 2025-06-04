@@ -20,7 +20,7 @@ public class AnimalManagerUI : MonoBehaviour
             return;
 
 
-        nextAnimalImage.sprite = animalManager.nextAnimal.GetSprite();
+        nextAnimalImage.sprite = animalManager.GetNextAnimal().GetSprite();
     }
     
     void OnDestroy()

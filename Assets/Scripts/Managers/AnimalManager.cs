@@ -17,13 +17,14 @@ public class AnimalManager : MonoBehaviour
     [SerializeField] private Transform animalsParent;
     [SerializeField] private Animal[] animalPrefabsRound;
     [SerializeField] private Animal[] animalPrefabsSquare;
-    private HashSet<AnimalType> spawnableAnimals;
+    [SerializeField] private List<AnimalType> defaultSpawnableAnimals;
+    private HashSet<AnimalType> currentSpawnableAnimals;
 
 
     private Animal currentAnimal;
-    public Animal nextAnimal;
-    public AnimalType nextAnimalType;
-    private bool isFreeze = false;
+    private Animal nextAnimal;
+    private AnimalType nextAnimalType;
+    private bool isFrozen = false;
 
 
 
@@ -56,39 +57,30 @@ public class AnimalManager : MonoBehaviour
         }
 
         MergeManager.onMergeAnimal += MergeAnimals;
-        spawnableAnimals = new HashSet<AnimalType>();
-        spawnableAnimals.Add(AnimalType.Snake);
-        spawnableAnimals.Add(AnimalType.Parrot);
-        spawnableAnimals.Add(AnimalType.Rabbit);
 
         InputManager.instance.OnTouchStart += HandleTouchStart;
         InputManager.instance.OnTouchEnd += HandleTouchEnd;
         InputManager.instance.OnTouchHold += HandleTouchHold;
+
+        GameManager.OnGameStateChanged += CheckState;
     }
 
     void Start()
     {
+        currentSpawnableAnimals = new HashSet<AnimalType>();
+        RestoreSpawnableAnimals();
         ResetNextAnimal();
     }
 
     private void Update()
     {
-        if (!GameManager.instance.IsGameState())
-        {
-            FreezeAnimals();
-            return;
-        }
-        else
-        {
-            UnfreezeAnimals();
-        }
 
-        if (currentAnimal != null)
+        if (currentAnimal != null && !isFrozen)
         {
             currentAnimal.MoveVertically(-fallingSpeed * Time.deltaTime);
             ManagePlayerInput();
         }
-        else if (canSpawn)
+        else if (canSpawn && !isFrozen)
         {
             RespawnAnimal();
         }
@@ -96,7 +88,7 @@ public class AnimalManager : MonoBehaviour
 
     private void ResetNextAnimal()
     {
-        nextAnimalType = spawnableAnimals.ElementAt(Random.Range(0, spawnableAnimals.Count));
+        nextAnimalType = currentSpawnableAnimals.ElementAt(Random.Range(0, currentSpawnableAnimals.Count));
         nextAnimal = GetAnimalFromType(nextAnimalType);
         onNextAnimalSet?.Invoke();
     }
@@ -116,6 +108,26 @@ public class AnimalManager : MonoBehaviour
         }
     }
 
+    public void SwapSpawnableAnimals(List<AnimalType> toSwap)
+    {
+        currentSpawnableAnimals.Clear();
+        foreach (var animalType in toSwap)
+        {
+            currentSpawnableAnimals.Add(animalType);
+        }
+        ResetNextAnimal();
+    }
+
+    public void RestoreSpawnableAnimals()
+    {
+        currentSpawnableAnimals.Clear();
+        foreach (var animalType in defaultSpawnableAnimals)
+        {
+            currentSpawnableAnimals.Add(animalType);
+        }
+        ResetNextAnimal();
+    }
+
     private void HandleTouchStart(Vector2 screenPos)
     {
         if (!GameManager.instance.IsGameState() || EventSystem.current.IsPointerOverGameObject()) // Check if the touch is over a UI element
@@ -124,6 +136,21 @@ public class AnimalManager : MonoBehaviour
         touchStartPos = screenPos;
     }
 
+
+    private void CheckState(GameState state)
+    {
+        if (animalsParent == null)
+            return;
+
+        if (state == GameState.Game)
+        {
+            UnfreezeAnimals();
+        }
+        else
+        {
+            FreezeAnimals();
+        }
+    }
     private void HandleTouchEnd(Vector2 screenPos)
     {
         if (!GameManager.instance.IsGameState() || EventSystem.current.IsPointerOverGameObject()) // Check if the touch is over a UI element
@@ -173,7 +200,7 @@ public class AnimalManager : MonoBehaviour
     {
         ScoreManager.instance.ResetCombo();
         currentAnimal = SpawnAnimal(nextAnimal, animalSpawnPoint.position);
-        currentAnimal.DisablePhysics();
+        currentAnimal.DisablePhysics(false);
         currentAnimal.onCollision += ReleaseAnimal;
         ResetNextAnimal();
         canSpawn = false;
@@ -191,6 +218,39 @@ public class AnimalManager : MonoBehaviour
         currentAnimal.onCollision -= ReleaseAnimal;
         currentAnimal = null;
     }
+
+public void RemoveAnimalsUpTo(AnimalType upTo, bool addToScore)
+{
+    StartCoroutine(RemoveAllSmallAnimalsCoroutine(upTo, addToScore));
+}
+
+private System.Collections.IEnumerator RemoveAllSmallAnimalsCoroutine(AnimalType upTo, bool addToScore)
+{
+    FreezeAnimals();
+
+    while (true)
+    {
+        bool found = false;
+        foreach (Transform child in animalsParent)
+        {
+            Animal animal = child.GetComponent<Animal>();
+            if (animal != null && animal != currentAnimal && animal.GetAnimalType() < upTo)
+            {
+                if (addToScore)
+                    ScoreManager.instance.UpdateScore(animal.GetAnimalType(), Vector2.zero);
+
+                animal.Merge();
+                yield return new WaitForSeconds(0.2f);
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            break;
+    }
+
+    UnfreezeAnimals();
+}
 
     public Animal GetAnimalFromType(AnimalType animalType)
     {
@@ -259,28 +319,29 @@ public class AnimalManager : MonoBehaviour
 
     private void FreezeAnimals()
     {
-        if (isFreeze)
+        if (isFrozen)
             return;
         foreach (Transform child in animalsParent)
         {
             Animal animal = child.GetComponent<Animal>();
-            animal.DisablePhysics();
+            animal.DisablePhysics(true);
         }
-        isFreeze = true;
+        isFrozen = true;
     }
 
     private void UnfreezeAnimals()
     {
-        if (!isFreeze)
+        if (!isFrozen)
             return;
         foreach (Transform child in animalsParent)
         {
             Animal animal = child.GetComponent<Animal>();
             if (animal == currentAnimal)
-                continue;
-            animal.EnablePhysics();
+                animal.Unfreeze();
+            else
+                animal.EnablePhysics();
         }
-        isFreeze = false;
+        isFrozen = false;
     }
 
     public void ApplySkinToAnimal(Animal animal)
@@ -303,6 +364,11 @@ public class AnimalManager : MonoBehaviour
         InputManager.instance.OnTouchStart -= HandleTouchStart;
         InputManager.instance.OnTouchEnd -= HandleTouchEnd;
         InputManager.instance.OnTouchHold -= HandleTouchHold;
+    }
+
+    public Animal GetNextAnimal()
+    {
+        return nextAnimal;
     }
 
 #if UNITY_EDITOR

@@ -20,14 +20,13 @@ public class PlayerDataManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
         LoadData();
-       //AddCoins(10000); // For testing, give initial coins
+       AddCoins(10000); // For testing, give initial coins
     }
 
     private void Start()

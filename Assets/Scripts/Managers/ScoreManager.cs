@@ -28,7 +28,7 @@ public class ScoreManager : MonoBehaviour
             return;
         }
         MergeManager.onMergeAnimal += UpdateScore;
-        GameManager.onGameStateChanged += GameStateChanged;
+        GameManager.OnGameStateChanged += GameStateChanged;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -47,10 +47,10 @@ public class ScoreManager : MonoBehaviour
     void OnDestroy()
     {
         MergeManager.onMergeAnimal -= UpdateScore;
-        GameManager.onGameStateChanged -= GameStateChanged;
+        GameManager.OnGameStateChanged -= GameStateChanged;
     }
 
-    private void UpdateScore(AnimalType animalType, Vector2 unused)
+    public void UpdateScore(AnimalType animalType, Vector2 unused)
     {
         score += (int)((int)animalType * comboCount);
         UpdateScore();
