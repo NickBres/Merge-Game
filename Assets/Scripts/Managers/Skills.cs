@@ -4,27 +4,32 @@ using UnityEngine;
 public class Skills : MonoBehaviour
 {
     [SerializeField] private UpgradeProgressUI progressUI;
+    [SerializeField] private UpgradeProgressUI magicSweepCooldownUI;
+    [SerializeField] private UpgradeProgressUI upgradeAnimalsCooldownUI;
+    [SerializeField] private UpgradeProgressUI bombCooldownUI;
 
     [Header(" Settings ")]
     [SerializeField] private AnimalType magicSweepUpTo;
     [SerializeField] private float animalsUpgradeDuration;
     [SerializeField] private List<AnimalType> animalsToSpawn;
 
-    
-
+    [SerializeField] private float cooldownDuration = 5f;
+    private bool isOnCooldown = false;
 
     public void MagicSweepSkill()
     {
-        if (!PlayerDataManager.instance.UseMagicSweep())
+        if (isOnCooldown || !PlayerDataManager.instance.UseMagicSweep())
             return;
         AnimalManager.instance.RemoveAnimalsUpTo(magicSweepUpTo, true);
+        StartCoroutine(CooldownCoroutine());
     }
 
     public void UpgradeAnimalsSkill()
     {
-        if (!PlayerDataManager.instance.UseUpgrade())
+        if (isOnCooldown || !PlayerDataManager.instance.UseUpgrade())
             return;
         progressUI.Show(true);
+        StartCoroutine(CooldownCoroutine());
         UpgradeAnimalsSkill(progress =>
         {
             progressUI.SetProgress(progress);
@@ -55,8 +60,38 @@ public class Skills : MonoBehaviour
 
     public void BombSkill()
     {
-        if (!PlayerDataManager.instance.UseBomb())
+        if (isOnCooldown || !PlayerDataManager.instance.UseBomb())
             return;
         AnimalManager.instance.SetNextAnimal(AnimalType.Bomb);
+        StartCoroutine(CooldownCoroutine());
+    }
+
+    private System.Collections.IEnumerator CooldownCoroutine()
+    {
+        isOnCooldown = true;
+        magicSweepCooldownUI.Show(true);
+        upgradeAnimalsCooldownUI.Show(true);
+        bombCooldownUI.Show(true);
+
+        float elapsed = cooldownDuration;
+        while (elapsed > 0)
+        {
+            elapsed -= Time.deltaTime;
+            float progress = elapsed / cooldownDuration;
+            magicSweepCooldownUI.SetProgress(progress);
+            upgradeAnimalsCooldownUI.SetProgress(progress);
+            bombCooldownUI.SetProgress(progress);
+            yield return null;
+        }
+
+        magicSweepCooldownUI.SetProgress(0f);
+        upgradeAnimalsCooldownUI.SetProgress(0f);
+        bombCooldownUI.SetProgress(0f);
+
+        magicSweepCooldownUI.Show(false);
+        upgradeAnimalsCooldownUI.Show(false);
+        bombCooldownUI.Show(false);
+
+        isOnCooldown = false;
     }
 }
