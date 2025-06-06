@@ -9,13 +9,21 @@ public class Skills : MonoBehaviour
     [SerializeField] private AnimalType magicSweepUpTo;
     [SerializeField] private float animalsUpgradeDuration;
     [SerializeField] private List<AnimalType> animalsToSpawn;
+
+    
+
+
     public void MagicSweepSkill()
     {
+        if (!PlayerDataManager.instance.UseMagicSweep())
+            return;
         AnimalManager.instance.RemoveAnimalsUpTo(magicSweepUpTo, true);
     }
 
     public void UpgradeAnimalsSkill()
     {
+        if (!PlayerDataManager.instance.UseUpgrade())
+            return;
         progressUI.Show(true);
         UpgradeAnimalsSkill(progress =>
         {
@@ -47,6 +55,8 @@ public class Skills : MonoBehaviour
 
     public void BombSkill()
     {
+        if (!PlayerDataManager.instance.UseBomb())
+            return;
         AnimalManager.instance.SetNextAnimal(AnimalType.Bomb);
     }
 }

@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject gamePanel;
+    [SerializeField] private GameObject wallsPanel;
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject skinsPanel;
     [SerializeField] private GameObject animalSelectorPanel;
@@ -60,18 +61,23 @@ public class UIManager : MonoBehaviour
         pausePanel.SetActive(false);
         skinsPanel.SetActive(false);
         animalSelectorPanel.SetActive(false);
+        wallsPanel.SetActive(false);
     }
 
     private void SetShop()
     {
         menuPanel.SetActive(false);
         shopPanel.SetActive(true);
+
+        wallsPanel.SetActive(false);
     }
 
     public void SetReward()
     {
         rewardPanel.SetActive(true);
         shopPanel.SetActive(false);
+
+        wallsPanel.SetActive(false);
     }
 
     private void SetGame()
@@ -79,17 +85,21 @@ public class UIManager : MonoBehaviour
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
         pausePanel.SetActive(false);
+        wallsPanel.SetActive(true);
     }
 
     private void SetGameOver()
     {
         gameOverPanel.SetActive(true);
         gamePanel.SetActive(false);
+
+        wallsPanel.SetActive(false);
     }
 
     private void SetPause()
     {
         pausePanel.SetActive(true);
+
     }
 
     private void SetSkins()
@@ -97,6 +107,8 @@ public class UIManager : MonoBehaviour
         menuPanel.SetActive(false);
         skinsPanel.SetActive(true);
         animalSelectorPanel.SetActive(true);
+
+        wallsPanel.SetActive(false);
     }
 
     public void PlayButtonCallback()

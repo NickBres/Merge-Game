@@ -10,8 +10,14 @@ public class PlayerDataManager : MonoBehaviour
 
     private int coins = 0;
     private HashSet<string> ownedSkins = new();
+    private int magicSweepCount = 0;
+    private int upgrdesCount = 0;
+    private int bombsCount = 0;
 
     public static Action OnCoinsChanged;
+    public static Action OnAbilitiesChanged;
+
+
 
     private void Awake()
     {
@@ -40,6 +46,95 @@ public class PlayerDataManager : MonoBehaviour
         coins += amount;
         SaveData();
         OnCoinsChanged?.Invoke();
+    }
+
+    public bool BuyMagicSweep(int price)
+    {
+        LoadData();
+        if (!SpendCoins(price))
+            return false;
+        magicSweepCount++;
+        SaveData();
+        OnAbilitiesChanged?.Invoke();
+        return true;
+    }
+
+    public bool UseMagicSweep()
+    {
+        LoadData();
+        if (magicSweepCount > 0)
+        {
+            magicSweepCount--;
+            SaveData();
+            OnAbilitiesChanged?.Invoke();
+            return true;
+        }
+        return false;
+    }
+
+    public int GetMagicSweepCount()
+    {
+        LoadData();
+        return magicSweepCount;
+    }
+
+    public bool BuyUpgrade(int price)
+    {
+        LoadData();
+        if (!SpendCoins(price))
+            return false;
+        upgrdesCount++;
+        SaveData();
+        OnAbilitiesChanged?.Invoke();
+        return true;
+    }
+
+    public bool UseUpgrade()
+    {
+        LoadData();
+        if (upgrdesCount > 0)
+        {
+            upgrdesCount--;
+            SaveData();
+            OnAbilitiesChanged?.Invoke();
+            return true;
+        }
+        return false;
+    }
+
+    public int GetUpgradesCount()
+    {
+        LoadData();
+        return upgrdesCount;
+    }
+    public bool BuyBomb(int price)
+    {
+        LoadData();
+        if (!SpendCoins(price))
+            return false;
+        bombsCount++;
+        SaveData();
+        OnAbilitiesChanged?.Invoke();
+        return true;
+    }
+
+    public bool UseBomb()
+    {
+        LoadData();
+        if (bombsCount > 0)
+        {
+            bombsCount--;
+            SaveData();
+            OnAbilitiesChanged?.Invoke();
+            return true;
+        }
+        return false;
+    }
+
+    public int GetBombsCount()
+    {
+        LoadData();
+        return bombsCount;
     }
 
     public bool SpendCoins(int amount)
@@ -92,7 +187,10 @@ public class PlayerDataManager : MonoBehaviour
         var data = new PlayerData
         {
             coins = coins,
-            ownedSkins = ownedSkins.ToList()
+            ownedSkins = ownedSkins.ToList(),
+            magicSweepCount = magicSweepCount,
+            upgrdesCount = upgrdesCount,
+            bombsCount = bombsCount
         };
         string json = JsonUtility.ToJson(data);
         PlayerPrefs.SetString("PlayerData", json);
@@ -107,6 +205,9 @@ public class PlayerDataManager : MonoBehaviour
             var data = JsonUtility.FromJson<PlayerData>(json);
             coins = data.coins;
             ownedSkins = new HashSet<string>(data.ownedSkins);
+            magicSweepCount = data.magicSweepCount;
+            upgrdesCount = data.upgrdesCount;
+            bombsCount = data.bombsCount;
         }
     }
 
@@ -115,5 +216,8 @@ public class PlayerDataManager : MonoBehaviour
     {
         public int coins;
         public List<string> ownedSkins;
+        public int magicSweepCount;
+        public int upgrdesCount;
+        public int bombsCount;
     }
 }

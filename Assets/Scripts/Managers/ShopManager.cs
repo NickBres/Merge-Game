@@ -7,10 +7,16 @@ public class ShopManager : MonoBehaviour
 {
     [Header(" Elements ")]
     [SerializeField] private Button buyChestButton;
+    [SerializeField] private Button buyMagicSweepButton;
+    [SerializeField] private Button buyUpgradeAnimalsButton;
+    [SerializeField] private Button buyBombButton;
 
     [Header(" Positions ")]
     [SerializeField] private int chestPrice = 1000;
     [SerializeField] private List<SkinDataSO> skinsInChest;
+    [SerializeField] private int magicSweepPrice;
+    [SerializeField] private int upgradeAnimalsPrice;
+    [SerializeField] private int bombPrice;
 
 
     void Awake()
@@ -24,6 +30,33 @@ public class ShopManager : MonoBehaviour
         {
             buyChestButton.GetComponentInChildren<TextMeshProUGUI>().text = chestPrice.ToString();
         }
+        if (buyMagicSweepButton != null)
+        {
+            buyMagicSweepButton.GetComponentInChildren<TextMeshProUGUI>().text = magicSweepPrice.ToString();
+        }
+        if (buyUpgradeAnimalsButton != null)
+        {
+            buyUpgradeAnimalsButton.GetComponentInChildren<TextMeshProUGUI>().text = upgradeAnimalsPrice.ToString();
+        }
+        if (buyBombButton != null)
+        {
+            buyBombButton.GetComponentInChildren<TextMeshProUGUI>().text = bombPrice.ToString();
+        }
+    }
+
+    public void BuyMagicSweep()
+    {
+        PlayerDataManager.instance.BuyMagicSweep(magicSweepPrice);
+    }
+
+    public void BuyUpgradeAnimals()
+    {
+        PlayerDataManager.instance.BuyUpgrade(upgradeAnimalsPrice);
+    }
+
+    public void BuyBomb()
+    {
+        PlayerDataManager.instance.BuyBomb(bombPrice);
     }
 
     public void BuyChest()
