@@ -26,7 +26,6 @@ public class PlayerDataManager : MonoBehaviour
             Destroy(gameObject);
         }
         LoadData();
-       AddCoins(10000); // For testing, give initial coins
     }
 
     private void Start()

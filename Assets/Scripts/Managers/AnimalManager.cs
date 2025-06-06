@@ -21,7 +21,7 @@ public class AnimalManager : MonoBehaviour
     private HashSet<AnimalType> currentSpawnableAnimals;
 
 
-    private Animal currentAnimal;
+    public Animal currentAnimal;
     private Animal nextAnimal;
     private AnimalType nextAnimalType;
     private bool isFrozen = false;

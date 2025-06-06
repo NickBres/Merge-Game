@@ -20,7 +20,7 @@ public class Skills : MonoBehaviour
         UpgradeAnimalsSkill(progress =>
         {
             progressUI.SetProgress(progress);
-            if (progress >= 1f)
+            if (progress <= 0)
                 progressUI.Show(false);
         });
     }
@@ -33,15 +33,15 @@ public class Skills : MonoBehaviour
 
     private System.Collections.IEnumerator RestoreAnimalsCoroutine(System.Action<float> onProgress)
     {
-        float elapsed = 0f;
-        while (elapsed < animalsUpgradeDuration)
+        float elapsed = animalsUpgradeDuration;
+        while (elapsed > 0)
         {
-            elapsed += Time.deltaTime;
+            elapsed -= Time.deltaTime;
             onProgress?.Invoke(elapsed / animalsUpgradeDuration);
             yield return null;
         }
 
-        onProgress?.Invoke(1f); // Ensure 100% at the end
+        onProgress?.Invoke(0f); // Ensure 0% at the end
         AnimalManager.instance.RestoreSpawnableAnimals();
     }
 
