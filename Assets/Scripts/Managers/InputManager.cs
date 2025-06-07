@@ -33,16 +33,16 @@ public class InputManager : MonoBehaviour
     {
         inputActions.Enable();
 
-        inputActions.Gameplay.TouchPress.started += ctx => OnTouchStart?.Invoke(GetTouchPosition());
-        inputActions.Gameplay.TouchPress.performed += ctx => OnTouchHold?.Invoke(GetTouchPosition());
-        inputActions.Gameplay.TouchPress.canceled += ctx => OnTouchEnd?.Invoke(GetTouchPosition());
+        inputActions.Gameplay.TouchPress.started += HandleTouchPressStarted;
+        inputActions.Gameplay.TouchPress.performed += HandleTouchPressPerformed;
+        inputActions.Gameplay.TouchPress.canceled += HandleTouchPressCanceled;
     }
 
     private void OnDisable()
     {
-        inputActions.Gameplay.TouchPress.started -= ctx => OnTouchStart?.Invoke(GetTouchPosition());
-        inputActions.Gameplay.TouchPress.performed -= ctx => OnTouchHold?.Invoke(GetTouchPosition());
-        inputActions.Gameplay.TouchPress.canceled -= ctx => OnTouchEnd?.Invoke(GetTouchPosition());
+        inputActions.Gameplay.TouchPress.started -= HandleTouchPressStarted;
+        inputActions.Gameplay.TouchPress.performed -= HandleTouchPressPerformed;
+        inputActions.Gameplay.TouchPress.canceled -= HandleTouchPressCanceled;
 
         inputActions.Disable();
     }
@@ -55,5 +55,20 @@ public class InputManager : MonoBehaviour
     private Vector2 GetTouchPosition()
     {
         return inputActions.Gameplay.TouchPosition.ReadValue<Vector2>();
+    }
+
+    private void HandleTouchPressStarted(InputAction.CallbackContext ctx)
+    {
+        OnTouchStart?.Invoke(GetTouchPosition());
+    }
+
+    private void HandleTouchPressPerformed(InputAction.CallbackContext ctx)
+    {
+        OnTouchHold?.Invoke(GetTouchPosition());
+    }
+
+    private void HandleTouchPressCanceled(InputAction.CallbackContext ctx)
+    {
+        OnTouchEnd?.Invoke(GetTouchPosition());
     }
 }
