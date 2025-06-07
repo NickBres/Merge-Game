@@ -89,10 +89,10 @@ public class ShopManager : MonoBehaviour
                     {
                         int coinsToAdd = skinData.rarity switch
                         {
-                            Rarity.Common => (int)(chestPrice / 2),
-                            Rarity.Rare => chestPrice,
-                            Rarity.Epic => (int)(chestPrice * 1.5f),
-                            Rarity.Legendary => chestPrice * 5,
+                            Rarity.Common => (int)(chestPrice / 3),
+                            Rarity.Rare => (int)(chestPrice / 2),
+                            Rarity.Epic => (int)(chestPrice),
+                            Rarity.Legendary => chestPrice * 2,
                             _ => 0
                         };
                         UIManager.instance.SetReward();

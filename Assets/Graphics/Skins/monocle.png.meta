@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1f1f19fe243034928ac817664f1c799e
+guid: a30893b724e0544cc93f1ce39ad8ab34
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 723153424554195183
-    second: chinese-mask_0
+      213: 4546468060787468801
+    second: monocle_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,9 +49,9 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 120
+  alignment: 9
+  spritePivot: {x: 0.015366419, y: 0.50644743}
+  spritePixelsToUnits: 170
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: chinese-mask_0
+      name: monocle_0
       rect:
         serializedVersion: 2
-        x: 109
-        y: 47
-        width: 804
-        height: 928
+        x: 163
+        y: 129
+        width: 686
+        height: 778
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fe8f8ac4538290a00800000000000000
-      internalID: 723153424554195183
+      spriteID: 10a65e1fc9c481f30800000000000000
+      internalID: 4546468060787468801
       vertices: []
       indices: 
       edges: []
@@ -139,7 +139,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      chinese-mask_0: 723153424554195183
+      monocle_0: 4546468060787468801
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

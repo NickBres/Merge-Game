@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1f1f19fe243034928ac817664f1c799e
+guid: 33c6c7d5f4e914add94a982dc1b1b9c9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 723153424554195183
-    second: chinese-mask_0
+      213: -3975188092277842153
+    second: french hat_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,9 +49,9 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 120
+  alignment: 9
+  spritePivot: {x: 0.4978525, y: -0.09651193}
+  spritePixelsToUnits: 160
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: chinese-mask_0
+      name: french hat_0
       rect:
         serializedVersion: 2
-        x: 109
-        y: 47
-        width: 804
-        height: 928
+        x: 64
+        y: 164
+        width: 894
+        height: 714
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fe8f8ac4538290a00800000000000000
-      internalID: 723153424554195183
+      spriteID: 71f9a64dd7b45d8c0800000000000000
+      internalID: -3975188092277842153
       vertices: []
       indices: 
       edges: []
@@ -139,7 +139,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      chinese-mask_0: 723153424554195183
+      french hat_0: -3975188092277842153
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
