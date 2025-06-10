@@ -6,7 +6,8 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager instance;
     [Header(" Elements ")]
     [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI bestScoreText;
+    [SerializeField] private TextMeshProUGUI bestScoreTextZen;
+    [SerializeField] private TextMeshProUGUI bestScoreTextRush;
 
     [Header(" Settings ")]
     private int score = 0;
@@ -14,7 +15,8 @@ public class ScoreManager : MonoBehaviour
     private int comboCount = 1;
 
     [Header(" Data ")]
-    private const string bestScoreKey = "BestScore";
+    private const string bestScoreZenKey = "BestScoreZen";
+    private const string bestScoreRushKey = "BestScoreRush";
 
     void Awake()
     {
@@ -63,7 +65,14 @@ public class ScoreManager : MonoBehaviour
 
     private void UpdateBestScore()
     {
-        bestScoreText.text = bestScore.ToString();
+        if (GameManager.instance.GetGameMode() == GameMode.Zen)
+        {
+            bestScoreTextZen.text = bestScore.ToString();
+        }
+        else if (GameManager.instance.GetGameMode() == GameMode.Rush)
+        {
+            bestScoreTextRush.text = bestScore.ToString();
+        }
     }
 
     private void GameStateChanged(GameState gameState)
@@ -102,12 +111,22 @@ public class ScoreManager : MonoBehaviour
 
     private void LoadData()
     {
-        bestScore = PlayerPrefs.GetInt(bestScoreKey, 0);
+        bestScore = PlayerPrefs.GetInt(bestScoreZenKey, 0);
+        bestScoreTextZen.text = bestScore.ToString();
+        bestScore = PlayerPrefs.GetInt(bestScoreRushKey, 0);
+        bestScoreTextRush.text = bestScore.ToString();
     }
 
     private void SaveData()
     {
-        PlayerPrefs.SetInt(bestScoreKey, bestScore);
+        if (GameManager.instance.GetGameMode() == GameMode.Zen)
+        {
+            PlayerPrefs.SetInt(bestScoreZenKey, bestScore);
+        }
+        else if (GameManager.instance.GetGameMode() == GameMode.Rush)
+        {
+            PlayerPrefs.SetInt(bestScoreRushKey, bestScore);
+        }
         PlayerPrefs.Save();
     }
 
@@ -118,7 +137,15 @@ public class ScoreManager : MonoBehaviour
 
     public void IncrementCombo()
     {
-        comboCount *= 2;
+        if (GameManager.instance.GetGameMode() == GameMode.Zen)
+        {
+            comboCount += 1;
+        }
+        else if (GameManager.instance.GetGameMode() == GameMode.Rush)
+        {
+            comboCount *= 2;
+        }
+        
     }
 
     public int GetComboCount()

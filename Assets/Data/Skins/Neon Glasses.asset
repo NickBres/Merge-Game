@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Neon Glasses
   m_EditorClassIdentifier: 
   skinID: Neon Glasses
-  sprite: {fileID: -2435449359390906285, guid: 5d41e80e9b8fa4265a2a5fbc3a5a316f, type: 3}
+  sprite: {fileID: 21300000, guid: 5d41e80e9b8fa4265a2a5fbc3a5a316f, type: 3}
   displayName: Neon Glasses
   rarity: 5

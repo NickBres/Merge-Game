@@ -7,9 +7,11 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     [Header(" Settings ")]
     private GameState gameState;
+    private GameMode gameMode;
 
     [Header(" Actions ")]
     public static Action<GameState> OnGameStateChanged;
+    public static Action<GameMode> OnGameModeChanged;
 
     void Awake()
     {
@@ -51,6 +53,17 @@ public class GameManager : MonoBehaviour
     public bool IsGameState()
     {
         return gameState == GameState.Game;
+    }
+
+    public void SetGameMode(GameMode newGameMode)
+    {
+        gameMode = newGameMode;
+        OnGameModeChanged?.Invoke(gameMode);
+    }
+
+    public GameMode GetGameMode()
+    {
+        return gameMode;
     }
     
     

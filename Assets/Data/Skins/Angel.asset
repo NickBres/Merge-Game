@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Angel
   m_EditorClassIdentifier: 
   skinID: Angel
-  sprite: {fileID: -2634717454364015032, guid: 985110732f429457fb8d95ce2fc7373e, type: 3}
+  sprite: {fileID: 21300000, guid: 985110732f429457fb8d95ce2fc7373e, type: 3}
   displayName: Angel
   rarity: 10

@@ -173,5 +173,12 @@ public class Animal : MonoBehaviour
             return;
         this.transform.position += new Vector3(0f, verticalInput, 0f);
     }
+
+    public void SetPosition(Vector3 newPosition)
+    {
+        if (isFrozen)
+            return;
+        this.transform.position = newPosition;
+    }
     
 }

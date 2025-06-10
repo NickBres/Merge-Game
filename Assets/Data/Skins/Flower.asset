@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Flower
   m_EditorClassIdentifier: 
   skinID: Flower
-  sprite: {fileID: 7366617892383084551, guid: 7984a32545ab143c0afff8482cfbdb5c, type: 3}
+  sprite: {fileID: 21300000, guid: 7984a32545ab143c0afff8482cfbdb5c, type: 3}
   displayName: Flower
   rarity: 2

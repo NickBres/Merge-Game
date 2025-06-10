@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a323fd6ac7706491c83803c4e3c1280a, type: 3}
   m_Name: Medicine Mask
   m_EditorClassIdentifier: 
-  skinID: 
-  sprite: {fileID: 0}
-  displayName: 
-  rarity: 0
+  skinID: Medicine Mask
+  sprite: {fileID: 21300000, guid: a27669777af524b2283d14c4b841a463, type: 3}
+  displayName: Medicine Mask
+  rarity: 2

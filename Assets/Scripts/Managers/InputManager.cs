@@ -8,9 +8,9 @@ public class InputManager : MonoBehaviour
 
     private InputSystem_Actions inputActions;
 
-    public event Action<Vector2> OnTouchStart;
-    public event Action<Vector2> OnTouchHold;
-    public event Action<Vector2> OnTouchEnd;
+    public event Action<Vector3> OnTouchStart;
+    public event Action<Vector3> OnTouchHold;
+    public event Action<Vector3> OnTouchEnd;
 
     public float HorizontalInput { get; private set; }
 
@@ -34,14 +34,12 @@ public class InputManager : MonoBehaviour
         inputActions.Enable();
 
         inputActions.Gameplay.TouchPress.started += HandleTouchPressStarted;
-        inputActions.Gameplay.TouchPress.performed += HandleTouchPressPerformed;
         inputActions.Gameplay.TouchPress.canceled += HandleTouchPressCanceled;
     }
 
     private void OnDisable()
     {
         inputActions.Gameplay.TouchPress.started -= HandleTouchPressStarted;
-        inputActions.Gameplay.TouchPress.performed -= HandleTouchPressPerformed;
         inputActions.Gameplay.TouchPress.canceled -= HandleTouchPressCanceled;
 
         inputActions.Disable();
@@ -50,6 +48,11 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         HorizontalInput = inputActions.Gameplay.MoveHorizontal.ReadValue<float>();
+
+        if (inputActions.Gameplay.TouchPress.IsPressed())
+        {
+            OnTouchHold?.Invoke(GetWorldTouchPosition());
+        }
     }
 
     private Vector2 GetTouchPosition()
@@ -57,18 +60,21 @@ public class InputManager : MonoBehaviour
         return inputActions.Gameplay.TouchPosition.ReadValue<Vector2>();
     }
 
-    private void HandleTouchPressStarted(InputAction.CallbackContext ctx)
+    private Vector3 GetWorldTouchPosition()
     {
-        OnTouchStart?.Invoke(GetTouchPosition());
+        Vector3 screenPos = inputActions.Gameplay.TouchPosition.ReadValue<Vector2>();
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+        worldPos.z = 0;
+        return worldPos;
     }
 
-    private void HandleTouchPressPerformed(InputAction.CallbackContext ctx)
+    private void HandleTouchPressStarted(InputAction.CallbackContext ctx)
     {
-        OnTouchHold?.Invoke(GetTouchPosition());
+        OnTouchStart?.Invoke(GetWorldTouchPosition());
     }
 
     private void HandleTouchPressCanceled(InputAction.CallbackContext ctx)
     {
-        OnTouchEnd?.Invoke(GetTouchPosition());
+        OnTouchEnd?.Invoke(GetWorldTouchPosition());
     }
 }

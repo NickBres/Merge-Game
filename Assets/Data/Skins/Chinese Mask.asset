@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Chinese Mask
   m_EditorClassIdentifier: 
   skinID: Chinese Mask
-  sprite: {fileID: 723153424554195183, guid: 1f1f19fe243034928ac817664f1c799e, type: 3}
+  sprite: {fileID: 21300000, guid: 1f1f19fe243034928ac817664f1c799e, type: 3}
   displayName: Chinese Mask
   rarity: 10

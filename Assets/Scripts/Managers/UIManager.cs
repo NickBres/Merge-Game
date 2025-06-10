@@ -111,10 +111,20 @@ public class UIManager : MonoBehaviour
         wallsPanel.SetActive(false);
     }
 
-    public void PlayButtonCallback()
+    public void PlayRushButtonCallback()
     {
-        SetGame();
+        GameManager.instance.SetGameMode(GameMode.Rush);
         GameManager.instance.SetGameState(GameState.Game);
+
+        SetGame();
+    }
+
+    public void PlayZenButtonCallback()
+    {
+        GameManager.instance.SetGameMode(GameMode.Zen);
+        GameManager.instance.SetGameState(GameState.Game);
+
+        SetGame();
     }
 
     public void RestartButtonCallback()

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Party
   m_EditorClassIdentifier: 
   skinID: Party
-  sprite: {fileID: -959670263140898326, guid: eb2512cd144db4112bc3568407fd84f6, type: 3}
+  sprite: {fileID: 21300000, guid: eb2512cd144db4112bc3568407fd84f6, type: 3}
   displayName: Party
   rarity: 2

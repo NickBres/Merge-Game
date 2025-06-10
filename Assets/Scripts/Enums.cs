@@ -1,5 +1,9 @@
 using UnityEngine;
-
+public enum GameMode
+{
+    Rush,
+    Zen
+}
 public enum AnimalType
 {
     Snake = 2,

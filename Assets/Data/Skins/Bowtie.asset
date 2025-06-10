@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Bowtie
   m_EditorClassIdentifier: 
   skinID: Bowtie
-  sprite: {fileID: 5007395434484744977, guid: 544924f7f8d2445a18953965df436613, type: 3}
+  sprite: {fileID: 21300000, guid: 544924f7f8d2445a18953965df436613, type: 3}
   displayName: Bowtie
   rarity: 2
