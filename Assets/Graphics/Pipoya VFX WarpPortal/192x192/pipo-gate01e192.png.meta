@@ -208,6 +208,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -972,7 +985,41 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      pipo-gate01e192_0: -2724368130127571546
+      pipo-gate01e192_1: -8448730599459152942
+      pipo-gate01e192_10: 3527806815129948653
+      pipo-gate01e192_11: 6830604274461138431
+      pipo-gate01e192_12: -6314537956336335244
+      pipo-gate01e192_13: -5083439757941132723
+      pipo-gate01e192_14: -6133046538801396806
+      pipo-gate01e192_15: 978089190085299110
+      pipo-gate01e192_16: 3512363143828563151
+      pipo-gate01e192_17: -6527819399381905018
+      pipo-gate01e192_18: 6357091524537543356
+      pipo-gate01e192_19: 2405914300900208341
+      pipo-gate01e192_2: 4901319707509571372
+      pipo-gate01e192_20: 6066286059016644508
+      pipo-gate01e192_21: 3995938551146853287
+      pipo-gate01e192_22: 3074867088138390172
+      pipo-gate01e192_23: 7460957490792728816
+      pipo-gate01e192_24: -976230036431703841
+      pipo-gate01e192_25: 2149908463242114914
+      pipo-gate01e192_26: 8495059857253187872
+      pipo-gate01e192_27: -6606235339679395241
+      pipo-gate01e192_28: -138014228439170158
+      pipo-gate01e192_29: 265935509816921574
+      pipo-gate01e192_3: 7255671656445790285
+      pipo-gate01e192_30: -2301388725414969386
+      pipo-gate01e192_31: -6472094083909844459
+      pipo-gate01e192_32: -6037948297628378229
+      pipo-gate01e192_33: 6122666957387626906
+      pipo-gate01e192_4: -3895750547385602911
+      pipo-gate01e192_5: 157714586102454616
+      pipo-gate01e192_6: -8917251627324824796
+      pipo-gate01e192_7: 6748962157839445876
+      pipo-gate01e192_8: 6710995756588742852
+      pipo-gate01e192_9: 9011804973473122204
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

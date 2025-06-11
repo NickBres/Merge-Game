@@ -164,12 +164,14 @@ public class AnimalSelector : MonoBehaviour
     {
         currentType = GetNextAnimalType(currentType);
         UpdateUI();
+        UIManager.ClickAndVibrate();
     }
 
     public void OnPreviousAnimalClicked()
     {
         currentType = GetPreviousAnimalType(currentType);
         UpdateUI();
+        UIManager.ClickAndVibrate();
     }
 
     public AnimalType GetCurrentAnimalType()

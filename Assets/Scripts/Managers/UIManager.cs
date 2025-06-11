@@ -123,6 +123,7 @@ public class UIManager : MonoBehaviour
         GameManager.instance.SetGameState(GameState.Game);
 
         SetGame();
+        ClickAndVibrate();
     }
 
     public void PlayZenButtonCallback()
@@ -131,17 +132,14 @@ public class UIManager : MonoBehaviour
         GameManager.instance.SetGameState(GameState.Game);
 
         SetGame();
-    }
-
-    public void RestartButtonCallback()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        ClickAndVibrate();
     }
 
     public void MainMenuButtonCallback()
     {
         GameManager.instance.SetGameState(GameState.Menu);
         SetMenu();
+        ClickAndVibrate();
     }
 
     public void MainMenuWithResetCallback()
@@ -151,6 +149,7 @@ public class UIManager : MonoBehaviour
         GameManager.instance.SetGameState(GameState.Menu);
         Skills.instance.Reset();
         SetMenu();
+        ClickAndVibrate();
     }
 
 
@@ -159,24 +158,34 @@ public class UIManager : MonoBehaviour
     {
         SetPause();
         GameManager.instance.SetGameState(GameState.Pause);
+        ClickAndVibrate();
     }
 
     public void ResumeButtonCallback()
     {
         SetGame();
         GameManager.instance.SetGameState(GameState.Game);
+        ClickAndVibrate();
     }
 
     public void SkinsButtonCallback()
     {
         GameManager.instance.SetGameState(GameState.Menu);
         SetSkins();
+        ClickAndVibrate();
     }
 
     public void ShopButtonCallback()
     {
         GameManager.instance.SetGameState(GameState.Menu);
         SetShop();
+        ClickAndVibrate();
+    }
+
+    public static void ClickAndVibrate()
+    {
+        AudioManager.instance.PlayClickSound();
+        VibrationManager.instance.Vibrate(VibrationType.Light);
     }
 
 

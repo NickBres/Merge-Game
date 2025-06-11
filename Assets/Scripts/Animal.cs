@@ -108,6 +108,7 @@ public class Animal : MonoBehaviour
         {
             mergeEffect.transform.SetParent(null);
             mergeEffect.Play();
+            VibrationManager.instance.Vibrate(VibrationType.Medium);
         }
 
         Destroy(gameObject);

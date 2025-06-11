@@ -33,6 +33,8 @@ public class GameplayController : MonoBehaviour
     private AnimalType nextAnimalType;
     private bool isFrozen = false;
     private bool isRush;
+    [SerializeField] private float rushAccelerationTime = 1f; // Time in seconds to reach max speed
+    private float rushHoldTime = 0f;
 
     private bool isTouchOverUI;
 
@@ -241,6 +243,8 @@ public class GameplayController : MonoBehaviour
         if (!GameManager.instance.IsGameState() || isTouchOverUI || IsTouchOverUI(screenPos))
             return;
 
+        if (isRush) rushHoldTime = 0f;
+
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);
         touchStartPos = new Vector2(screenPoint.x, screenPoint.y);
 
@@ -267,7 +271,7 @@ public class GameplayController : MonoBehaviour
 
         if (isRush)
         {
-
+            rushHoldTime = 0f;
             // Swipe down
             if (delta.y < -swipeThreshold)
             {
@@ -295,8 +299,12 @@ public class GameplayController : MonoBehaviour
 
         if (isRush)
         {
+            rushHoldTime += Time.deltaTime;
+            float speedMultiplier = Mathf.Clamp01(rushHoldTime / rushAccelerationTime);
+            float adjustedSpeed = moveSpeed * speedMultiplier;
+
             Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);
-            MoveAnimal(moveSpeed * Time.deltaTime * (screenPoint.x < Screen.width / 2 ? -1 : 1));
+            MoveAnimal(adjustedSpeed * Time.deltaTime * (screenPoint.x < Screen.width / 2 ? -1 : 1));
         }
         else
         {
@@ -551,14 +559,10 @@ public class GameplayController : MonoBehaviour
     {
         return nextAnimal;
     }
-
-#if UNITY_EDITOR
-    // Get the current active animal (editor only)
     public Animal GetCurrentAnimal()
     {
         return currentAnimal;
     }
-#endif
 
     #endregion
 

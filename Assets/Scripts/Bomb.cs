@@ -52,6 +52,7 @@ public class Bomb : Animal
             }
         }
         AudioManager.instance.PlayExplosionSound(transform.position);
+        VibrationManager.instance.Vibrate(VibrationType.Heavy);
         Disappear();
     }
 

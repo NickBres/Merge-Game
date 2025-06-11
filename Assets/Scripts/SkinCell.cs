@@ -35,6 +35,7 @@ public class SkinCell : MonoBehaviour
 
         AnimalType currentAnimal = AnimalSelector.instance.GetCurrentAnimalType();
         PlayerDataManager.instance.AssignSkinToAnimal(currentAnimal, skinData.name);
+        UIManager.ClickAndVibrate();
         OnSkinChanged?.Invoke();
     }
 

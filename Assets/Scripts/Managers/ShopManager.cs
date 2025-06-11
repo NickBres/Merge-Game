@@ -46,25 +46,29 @@ public class ShopManager : MonoBehaviour
 
     public void BuyMagicSweep()
     {
-        if(!PlayerDataManager.instance.BuyMagicSweep(magicSweepPrice))
+        if (!PlayerDataManager.instance.BuyMagicSweep(magicSweepPrice))
         {
             AudioManager.instance.PlayErrorSound();
+            VibrationManager.instance.Vibrate(VibrationType.Light);
         }
     }
 
     public void BuyUpgradeAnimals()
     {
-        if(!PlayerDataManager.instance.BuyUpgrade(upgradeAnimalsPrice))
+        
+        if (!PlayerDataManager.instance.BuyUpgrade(upgradeAnimalsPrice))
         {
             AudioManager.instance.PlayErrorSound();
+            VibrationManager.instance.Vibrate(VibrationType.Light);
         }
     }
 
     public void BuyBomb()
     {
-        if(!PlayerDataManager.instance.BuyBomb(bombPrice))
+        if (!PlayerDataManager.instance.BuyBomb(bombPrice))
         {
             AudioManager.instance.PlayErrorSound();
+            VibrationManager.instance.Vibrate(VibrationType.Light);
         }
     }
 
@@ -73,11 +77,13 @@ public class ShopManager : MonoBehaviour
         if (PlayerDataManager.instance.GetBalance() >= chestPrice)
         {
             PlayerDataManager.instance.SpendCoins(chestPrice);
+            VibrationManager.instance.Vibrate(VibrationType.Light);
             OpenChest();
         }
         else
         {
             AudioManager.instance.PlayErrorSound();
+            VibrationManager.instance.Vibrate(VibrationType.Heavy);
         }
         
     }

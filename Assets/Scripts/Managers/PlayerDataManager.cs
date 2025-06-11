@@ -33,7 +33,6 @@ public class PlayerDataManager : MonoBehaviour
             Destroy(gameObject);
         }
         LoadData();
-        AddCoins(10000);
     }
 
     private void Start()

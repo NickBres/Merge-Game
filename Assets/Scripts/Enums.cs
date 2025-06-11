@@ -19,6 +19,13 @@ public enum AnimalType
     Bomb = 2048
 }
 
+   public enum VibrationType
+    {
+        Light,
+        Medium,
+        Heavy
+    }
+
 public enum Rarity
 {
     None = 0,      // 1 / 0 = 100% (not applicable)

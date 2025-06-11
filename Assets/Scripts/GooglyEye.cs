@@ -26,13 +26,13 @@ public class GooglyEye : MonoBehaviour
             return;
         }
 
+        Vector2 worldDirection = (target.position - transform.position).normalized;
+        Vector2 localDirection = transform.InverseTransformDirection(worldDirection);
 
-        Vector2 direction = (target.position - transform.position).normalized;
-
-        if (direction.y > 0.5f)
-            spriteRenderer.sprite = direction.x < 0 ? leftTop : rightTop;
-        else if (direction.y < -0.5f)
-            spriteRenderer.sprite = direction.x < 0 ? leftBottom : rightBottom;
+        if (localDirection.y > 0.5f)
+            spriteRenderer.sprite = localDirection.x < 0 ? leftTop : rightTop;
+        else if (localDirection.y < -0.5f)
+            spriteRenderer.sprite = localDirection.x < 0 ? leftBottom : rightBottom;
         else
             spriteRenderer.sprite = middle;
     }
