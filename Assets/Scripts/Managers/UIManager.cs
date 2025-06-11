@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject animalSelectorPanel;
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private GameObject rewardPanel;
+    [SerializeField] private GameObject optionsPanel;
 
 
     void Awake()
@@ -62,6 +63,13 @@ public class UIManager : MonoBehaviour
         skinsPanel.SetActive(false);
         animalSelectorPanel.SetActive(false);
         wallsPanel.SetActive(false);
+        optionsPanel.SetActive(false);
+    }
+
+    public void SetOptions()
+    {
+        optionsPanel.SetActive(true);
+        menuPanel.SetActive(false);
     }
 
     private void SetShop()

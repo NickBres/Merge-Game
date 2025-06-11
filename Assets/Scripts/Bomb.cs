@@ -50,7 +50,6 @@ public class Bomb : Animal
                 }
             }
         }
-
         AudioManager.instance.PlayExplosionSound(transform.position);
         Disappear();
     }

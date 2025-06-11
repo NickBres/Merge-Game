@@ -33,6 +33,7 @@ public class PlayerDataManager : MonoBehaviour
             Destroy(gameObject);
         }
         LoadData();
+        AddCoins(10000);
     }
 
     private void Start()
@@ -146,6 +147,7 @@ public class PlayerDataManager : MonoBehaviour
             coins -= amount;
             SaveData();
             OnCoinsChanged?.Invoke();
+            AudioManager.instance.PlayCoinsSound();
             return true;
         }
         return false;

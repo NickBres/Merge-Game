@@ -11,7 +11,7 @@ public class GooglyEye : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
-    private Transform target => AnimalManager.instance.currentAnimal?.transform;
+    private Transform target => GameplayController.instance.currentAnimal?.transform;
 
     void Start()
     {

@@ -2,16 +2,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(AnimalManager))]
+[RequireComponent(typeof(GameplayController))]
 public class AnimalManagerUI : MonoBehaviour
 {
     [Header(" Elements ")]
-    private AnimalManager animalManager;
+    private GameplayController animalManager;
     [SerializeField] private Image nextAnimalImage;
     void Awake()
     {
-        animalManager = GetComponent<AnimalManager>();
-        AnimalManager.onNextAnimalSet += UpdateNextImage;
+        animalManager = GetComponent<GameplayController>();
+        GameplayController.onNextAnimalSet += UpdateNextImage;
     }
 
     private void UpdateNextImage()
@@ -25,6 +25,6 @@ public class AnimalManagerUI : MonoBehaviour
     
     void OnDestroy()
     {
-        AnimalManager.onNextAnimalSet -= UpdateNextImage;
+        GameplayController.onNextAnimalSet -= UpdateNextImage;
     }
 }

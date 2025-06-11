@@ -54,5 +54,10 @@ public class RewardScreenManager : MonoBehaviour
 
         // Set background color based on rarity
         rewardTextBox.color = SkinCell.GetColorByRarity(skinData.rarity);
+
+        if(skinData.rarity == Rarity.Legendary)
+        {
+            AudioManager.instance.PlayLegendarySound();
+        }
     }
 }

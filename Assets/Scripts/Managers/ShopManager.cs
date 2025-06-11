@@ -46,17 +46,26 @@ public class ShopManager : MonoBehaviour
 
     public void BuyMagicSweep()
     {
-        PlayerDataManager.instance.BuyMagicSweep(magicSweepPrice);
+        if(!PlayerDataManager.instance.BuyMagicSweep(magicSweepPrice))
+        {
+            AudioManager.instance.PlayErrorSound();
+        }
     }
 
     public void BuyUpgradeAnimals()
     {
-        PlayerDataManager.instance.BuyUpgrade(upgradeAnimalsPrice);
+        if(!PlayerDataManager.instance.BuyUpgrade(upgradeAnimalsPrice))
+        {
+            AudioManager.instance.PlayErrorSound();
+        }
     }
 
     public void BuyBomb()
     {
-        PlayerDataManager.instance.BuyBomb(bombPrice);
+        if(!PlayerDataManager.instance.BuyBomb(bombPrice))
+        {
+            AudioManager.instance.PlayErrorSound();
+        }
     }
 
     public void BuyChest()
@@ -66,6 +75,11 @@ public class ShopManager : MonoBehaviour
             PlayerDataManager.instance.SpendCoins(chestPrice);
             OpenChest();
         }
+        else
+        {
+            AudioManager.instance.PlayErrorSound();
+        }
+        
     }
 
     private void OpenChest()
@@ -95,7 +109,7 @@ public class ShopManager : MonoBehaviour
                             Rarity.Legendary => chestPrice * 2,
                             _ => 0
                         };
-                        UIManager.instance.SetReward();
+                        UIManager.instance.SetReward(); 
                         PlayerDataManager.instance.AddCoins(coinsToAdd);
                         RewardScreenManager.instance.ShowReward(skinData, isDuplicate, coinsToAdd);
                     }

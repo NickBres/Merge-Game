@@ -9,9 +9,9 @@ using Random = UnityEngine.Random;
 using UnityEngine.UI;
 
 
-public class AnimalManager : MonoBehaviour
+public class GameplayController : MonoBehaviour
 {
-    public static AnimalManager instance;
+    public static GameplayController instance;
     [Header(" Elements ")]
     [SerializeField] private Transform animalsParent;
     [SerializeField] private Animal[] animalPrefabsRound;

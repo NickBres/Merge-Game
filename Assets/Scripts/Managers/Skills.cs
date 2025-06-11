@@ -20,7 +20,8 @@ public class Skills : MonoBehaviour
     {
         if (isOnCooldown || !PlayerDataManager.instance.UseMagicSweep())
             return;
-        AnimalManager.instance.RemoveAnimalsUpTo(magicSweepUpTo, true);
+        AudioManager.instance.PlayMagicSound();
+        GameplayController.instance.RemoveAnimalsUpTo(magicSweepUpTo, true);
         StartCoroutine(CooldownCoroutine());
     }
 
@@ -28,6 +29,7 @@ public class Skills : MonoBehaviour
     {
         if (isOnCooldown || !PlayerDataManager.instance.UseUpgrade())
             return;
+        AudioManager.instance.PlayUpgradeSound();
         progressUI.Show(true);
         StartCoroutine(CooldownCoroutine());
         UpgradeAnimalsSkill(progress =>
@@ -40,7 +42,7 @@ public class Skills : MonoBehaviour
 
     private void UpgradeAnimalsSkill(System.Action<float> onProgress)
     {
-        AnimalManager.instance.SwapSpawnableAnimals(animalsToSpawn);
+        GameplayController.instance.SwapSpawnableAnimals(animalsToSpawn);
         StartCoroutine(RestoreAnimalsCoroutine(onProgress));
     }
 
@@ -55,14 +57,15 @@ public class Skills : MonoBehaviour
         }
 
         onProgress?.Invoke(0f); // Ensure 0% at the end
-        AnimalManager.instance.RestoreSpawnableAnimals();
+        GameplayController.instance.RestoreSpawnableAnimals();
     }
 
     public void BombSkill()
     {
         if (isOnCooldown || !PlayerDataManager.instance.UseBomb())
             return;
-        AnimalManager.instance.SetNextAnimal(AnimalType.Bomb);
+        AudioManager.instance.PlayFuseSound();
+        GameplayController.instance.SetNextAnimal(AnimalType.Bomb);
         StartCoroutine(CooldownCoroutine());
     }
 
