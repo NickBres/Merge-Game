@@ -13,6 +13,11 @@ public class GameplayController : MonoBehaviour
 {
     public static GameplayController instance;
     [Header(" Elements ")]
+    [Header(" Boundaries ")]
+    [SerializeField] private Transform leftWall;
+    [SerializeField] private Transform rightWall;
+    public float MinX => leftWall.position.x;
+    public float MaxX => rightWall.position.x;
     [SerializeField] private Transform animalsParent;
     [SerializeField] private Animal[] animalPrefabsRound;
     [SerializeField] private Animal[] animalPrefabsSquare;
@@ -35,6 +40,7 @@ public class GameplayController : MonoBehaviour
 
     [Header(" Settings ")]
     [SerializeField] private float fallingSpeed = 5f;
+    private float currentFallingSpeed;
     [SerializeField] private float maxFallingSpeed = 10f;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Transform animalSpawnPoint;
@@ -51,6 +57,9 @@ public class GameplayController : MonoBehaviour
     [Header(" Actions ")]
     public static Action onNextAnimalSet;
 
+    #region Unity Lifecycle
+
+    // Initialize singleton, subscribe to events
     void Awake()
     {
         if (instance == null)
@@ -73,24 +82,27 @@ public class GameplayController : MonoBehaviour
         GameManager.OnGameModeChanged += CheckGameMode;
         isRush = GameManager.instance.GetGameMode() == GameMode.Rush;
         raycaster = uiCanvas.GetComponent<GraphicRaycaster>();
+        currentFallingSpeed = fallingSpeed;
     }
 
+    // Initialize spawnable animals and next animal
     void Start()
     {
-        currentSpawnableAnimals = new HashSet<AnimalType>();
-        RestoreSpawnableAnimals();
-        ResetNextAnimal();
+        ResetGameplay();
     }
 
+    // Update loop to handle animal movement and spawning
     private void Update()
     {
+        if (GameManager.instance.GetGameState() != GameState.Game) return;
+
         isTouchOverUI = EventSystem.current.IsPointerOverGameObject();
         if (isRush)
         {
             if (currentAnimal != null && !isFrozen)
             {
 
-                currentAnimal.MoveVertically(-fallingSpeed * Time.deltaTime);
+                currentAnimal.MoveVertically(-currentFallingSpeed * Time.deltaTime);
                 ManagePlayerInput();
             }
             else if (canSpawn && !isFrozen)
@@ -100,7 +112,61 @@ public class GameplayController : MonoBehaviour
         }
     }
 
+    // Unsubscribe from events
+    void OnDestroy()
+    {
+        MergeManager.onMergeAnimal -= MergeAnimals;
+        InputManager.instance.OnTouchStart -= HandleTouchStart;
+        InputManager.instance.OnTouchEnd -= HandleTouchEnd;
+        InputManager.instance.OnTouchHold -= HandleTouchHold;
 
+    }
+
+    public void ResetGameplay()
+    {
+        foreach (Transform child in animalsParent)
+        {
+            Destroy(child.gameObject);
+        }
+        currentAnimal = null;
+        currentFallingSpeed = fallingSpeed;
+        isFrozen = false;
+        canSpawn = true;
+        currentSpawnableAnimals = new HashSet<AnimalType>(defaultSpawnableAnimals);
+        ResetNextAnimal();
+    }
+
+    #endregion
+
+    #region Event Handling
+
+    // Handle game state changes to freeze/unfreeze animals
+    private void CheckState(GameState state)
+    {
+        if (animalsParent == null)
+            return;
+
+        if (state == GameState.Game)
+        {
+            UnfreezeAnimals();
+        }
+        else
+        {
+            FreezeAnimals();
+        }
+    }
+
+    // Update rush mode flag on game mode change
+    private void CheckGameMode(GameMode mode)
+    {
+        isRush = mode == GameMode.Rush;
+    }
+
+    #endregion
+
+    #region Animal Management
+
+    // Select a random next animal from current spawnable animals
     private void ResetNextAnimal()
     {
         nextAnimalType = currentSpawnableAnimals.ElementAt(Random.Range(0, currentSpawnableAnimals.Count));
@@ -108,6 +174,7 @@ public class GameplayController : MonoBehaviour
         onNextAnimalSet?.Invoke();
     }
 
+    // Set next animal explicitly
     public void SetNextAnimal(AnimalType animalType)
     {
         nextAnimalType = animalType;
@@ -115,23 +182,34 @@ public class GameplayController : MonoBehaviour
         onNextAnimalSet?.Invoke();
     }
 
-    private void ManagePlayerInput()
+    // Get an animal prefab by type, randomly choosing round or square variant
+    public Animal GetAnimalFromType(AnimalType animalType)
     {
-        // Horizontal Movement
-        float inputX = InputManager.instance.HorizontalInput;
-
-        if (inputX != 0)
+        bool isRound = Random.value > 0.5f;
+        if (isRound)
         {
-            currentAnimal?.MoveHorizontally(inputX * moveSpeed * Time.deltaTime);
+            for (int i = 0; i < animalPrefabsRound.Length; i++)
+            {
+                if (animalPrefabsRound[i].GetAnimalType() == animalType)
+                {
+                    return animalPrefabsRound[i];
+                }
+            }
         }
-        // drop
-        if (InputManager.instance.InputActions.Gameplay.FastDrop.WasPressedThisFrame())
+        else
         {
-            ReleaseAnimal();
+            for (int i = 0; i < animalPrefabsSquare.Length; i++)
+            {
+                if (animalPrefabsSquare[i].GetAnimalType() == animalType)
+                {
+                    return animalPrefabsSquare[i];
+                }
+            }
         }
-
+        return null;
     }
 
+    // Replace current spawnable animals with a new list
     public void SwapSpawnableAnimals(List<AnimalType> toSwap)
     {
         currentSpawnableAnimals.Clear();
@@ -142,6 +220,7 @@ public class GameplayController : MonoBehaviour
         ResetNextAnimal();
     }
 
+    // Restore spawnable animals to default list
     public void RestoreSpawnableAnimals()
     {
         currentSpawnableAnimals.Clear();
@@ -152,6 +231,11 @@ public class GameplayController : MonoBehaviour
         ResetNextAnimal();
     }
 
+    #endregion
+
+    #region Input Handling
+
+    // Handle touch start input
     private void HandleTouchStart(Vector3 screenPos)
     {
         if (!GameManager.instance.IsGameState() || isTouchOverUI || IsTouchOverUI(screenPos))
@@ -170,28 +254,7 @@ public class GameplayController : MonoBehaviour
         }
     }
 
-
-    private void CheckState(GameState state)
-    {
-        if (animalsParent == null)
-            return;
-
-        if (state == GameState.Game)
-        {
-            UnfreezeAnimals();
-        }
-        else
-        {
-            FreezeAnimals();
-        }
-    }
-
-    private void CheckGameMode(GameMode mode)
-    {
-        isRush = mode == GameMode.Rush;
-    }
-
-
+    // Handle touch end input, including swipe detection and tap movement
     private void HandleTouchEnd(Vector3 screenPos)
     {
         if (!GameManager.instance.IsGameState() || isTouchOverUI || IsTouchOverUI(screenPos)) // Check if the touch is over a UI element
@@ -212,15 +275,7 @@ public class GameplayController : MonoBehaviour
                 return;
             }
 
-            // Tap left/right
-            if (screenPoint.x < Screen.width / 2)
-            {
-                currentAnimal.MoveHorizontally(-1 * moveSpeed * Time.deltaTime); // left
-            }
-            else
-            {
-                currentAnimal.MoveHorizontally(moveSpeed * Time.deltaTime); // right
-            }
+            MoveAnimal(moveSpeed * Time.deltaTime * (screenPoint.x < Screen.width / 2 ? -1 : 1));
 
         }
         else
@@ -230,6 +285,7 @@ public class GameplayController : MonoBehaviour
         }
     }
 
+    // Handle touch hold input for continuous movement or positioning
     private void HandleTouchHold(Vector3 screenPos)
     {
         if (!GameManager.instance.IsGameState() || isTouchOverUI || IsTouchOverUI(screenPos))
@@ -240,24 +296,51 @@ public class GameplayController : MonoBehaviour
         if (isRush)
         {
             Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);
-            if (screenPoint.x < Screen.width / 2)
-            {
-                currentAnimal.MoveHorizontally(-1 * moveSpeed * Time.deltaTime);
-            }
-            else
-            {
-                currentAnimal.MoveHorizontally(moveSpeed * Time.deltaTime);
-            }
+            MoveAnimal(moveSpeed * Time.deltaTime * (screenPoint.x < Screen.width / 2 ? -1 : 1));
         }
         else
         {
-            Vector3 clampedPos = screenPos;
-            clampedPos.y = animalSpawnPoint.position.y;
-            clampedPos.z = currentAnimal.transform.position.z;
-            currentAnimal.SetPosition(clampedPos);
+            Vector3 newPos = screenPos;
+            float minX = MinX + 0.5f;
+            float maxX = MaxX - 0.5f;
+            newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
+            newPos.y = animalSpawnPoint.position.y;
+            newPos.z = currentAnimal.transform.position.z;
+            currentAnimal.SetPosition(newPos);
         }
     }
 
+    // Manage horizontal movement and fast drop input
+    private void ManagePlayerInput()
+    {
+        // Horizontal Movement
+        float inputX = InputManager.instance.HorizontalInput;
+
+        if (inputX != 0)
+        {
+            float moveDist = inputX * moveSpeed * Time.deltaTime;
+            MoveAnimal(moveDist);
+        }
+        // drop
+        if (InputManager.instance.InputActions.Gameplay.FastDrop.WasPressedThisFrame())
+        {
+            ReleaseAnimal();
+        }
+    }
+
+    private void MoveAnimal(float moveDist)
+    {
+        if (currentAnimal == null) return;
+        Vector3 newPos = currentAnimal.transform.position + new Vector3(moveDist, 0, 0);
+        float minX = MinX + 0.5f;
+        float maxX = MaxX - 0.5f;
+        newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
+        newPos.y = currentAnimal.transform.position.y;
+        newPos.z = currentAnimal.transform.position.z;
+        currentAnimal.SetPosition(newPos);
+    }
+
+    // Check if a world position corresponds to a UI element
     private bool IsTouchOverUI(Vector3 worldPos)
     {
         pointerEventData = new PointerEventData(EventSystem.current);
@@ -266,9 +349,21 @@ public class GameplayController : MonoBehaviour
         List<RaycastResult> results = new List<RaycastResult>();
         raycaster.Raycast(pointerEventData, results);
 
-        return results.Count > 0;
+        foreach (var result in results)
+        {
+            if (result.gameObject.CompareTag("IgnoreRaycast"))
+                continue;
+
+            return true; // Some other UI element was hit
+        }
+        return false;
     }
 
+    #endregion
+
+    #region Animal Spawning and Releasing
+
+    // Spawn a new animal at a given horizontal position or default position
     private void RespawnAnimal(float x = 0)
     {
 
@@ -278,7 +373,7 @@ public class GameplayController : MonoBehaviour
         ResetNextAnimal();
         canSpawn = false;
         DelaySpawn();
-        
+
         if (isRush)
         {
             ScoreManager.instance.ResetCombo();
@@ -286,6 +381,7 @@ public class GameplayController : MonoBehaviour
         }
     }
 
+    // Calculate spawn position with optional horizontal offset
     private Vector2 CalculateSpawnPosition(float x)
     {
         Vector2 spawnPosition = new Vector2(x, animalSpawnPoint.position.y);
@@ -297,8 +393,7 @@ public class GameplayController : MonoBehaviour
         return spawnPosition;
     }
 
-
-
+    // Enable physics on current animal and clear reference
     private void ReleaseAnimal()
     {
         if (currentAnimal == null)
@@ -309,11 +404,55 @@ public class GameplayController : MonoBehaviour
         currentAnimal = null;
     }
 
+    // Delay allowing next spawn
+    private void DelaySpawn()
+    {
+        Invoke("StopControlTimer", spawnDelay);
+    }
+
+    // Allow spawning again
+    private void StopControlTimer()
+    {
+        canSpawn = true;
+    }
+
+    // Instantiate a new animal prefab at a position
+    private Animal SpawnAnimal(Animal animal, Vector2 position)
+    {
+        Animal newAnimal = Instantiate(animal,
+            position,
+            Quaternion.identity,
+            animalsParent);
+        ApplySkinToAnimal(newAnimal);
+        return newAnimal;
+    }
+
+    #endregion
+
+    #region Merge Logic
+
+    // Handle merging animals by spawning new merged animal and updating score/combo
+    private void MergeAnimals(AnimalType type, Vector2 spawnPosition)
+    {
+        Animal newAnimal = GetAnimalFromType(type);
+        newAnimal = SpawnAnimal(newAnimal, spawnPosition);
+        newAnimal.EnablePhysics();
+        IncreaseFallingSpeed((int)type);
+        ComboPopUp.instance.ShowCombo(spawnPosition, ScoreManager.instance.GetComboCount());
+        ScoreManager.instance.IncrementCombo();
+    }
+
+    #endregion
+
+    #region Gameplay Mechanics
+
+    // Remove all animals smaller than a given type, optionally adding to score
     public void RemoveAnimalsUpTo(AnimalType upTo, bool addToScore)
     {
         StartCoroutine(RemoveAllSmallAnimalsCoroutine(upTo, addToScore));
     }
 
+    // Coroutine to remove small animals sequentially with delay
     private System.Collections.IEnumerator RemoveAllSmallAnimalsCoroutine(AnimalType upTo, bool addToScore)
     {
         FreezeAnimals();
@@ -342,71 +481,16 @@ public class GameplayController : MonoBehaviour
         UnfreezeAnimals();
     }
 
-    public Animal GetAnimalFromType(AnimalType animalType)
-    {
-        bool isRound = Random.value > 0.5f;
-        if (isRound)
-        {
-            for (int i = 0; i < animalPrefabsRound.Length; i++)
-            {
-                if (animalPrefabsRound[i].GetAnimalType() == animalType)
-                {
-                    return animalPrefabsRound[i];
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < animalPrefabsSquare.Length; i++)
-            {
-                if (animalPrefabsSquare[i].GetAnimalType() == animalType)
-                {
-                    return animalPrefabsSquare[i];
-                }
-            }
-        }
-        return null;
-    }
-
-
-    private void StopControlTimer()
-    {
-        canSpawn = true;
-    }
-
-    private Animal SpawnAnimal(Animal animal, Vector2 position)
-    {
-        Animal newAnimal = Instantiate(animal,
-            position,
-            Quaternion.identity,
-            animalsParent);
-        ApplySkinToAnimal(newAnimal);
-        return newAnimal;
-    }
-
-    private void MergeAnimals(AnimalType type, Vector2 spawnPosition)
-    {
-        Animal newAnimal = GetAnimalFromType(type);
-        newAnimal = SpawnAnimal(newAnimal, spawnPosition);
-        newAnimal.EnablePhysics();
-        IncreaseFallingSpeed((int)type);
-        ComboPopUp.instance.ShowCombo(spawnPosition, ScoreManager.instance.GetComboCount());
-        ScoreManager.instance.IncrementCombo();
-    }
-
-    private void DelaySpawn()
-    {
-        Invoke("StopControlTimer", spawnDelay);
-    }
-
+    // Increase falling speed based on animal type using normalized log scale
     private void IncreaseFallingSpeed(int amount)
     {
         // Normalize amount from 2–1024 to a 0–1 range using log scale
         float normalized = Mathf.InverseLerp(2f, 1024f, amount);
         float speedBoost = Mathf.Lerp(0.05f, 0.3f, normalized); // low type = small boost, high type = bigger
-        fallingSpeed = Mathf.Min(fallingSpeed + speedBoost, maxFallingSpeed);
+        currentFallingSpeed = Mathf.Min(currentFallingSpeed + speedBoost, maxFallingSpeed);
     }
 
+    // Freeze all animals' physics
     private void FreezeAnimals()
     {
         if (isFrozen)
@@ -417,8 +501,11 @@ public class GameplayController : MonoBehaviour
             animal.DisablePhysics(true);
         }
         isFrozen = true;
+        canSpawn = false;
+        GameOverManager.instance.SetCanLoose(false);
     }
 
+    // Unfreeze animals, enabling physics except for current animal which is unfrozen differently
     private void UnfreezeAnimals()
     {
         if (!isFrozen)
@@ -432,8 +519,15 @@ public class GameplayController : MonoBehaviour
                 animal.EnablePhysics();
         }
         isFrozen = false;
+        canSpawn = true;
+        GameOverManager.instance.SetCanLoose(true);
     }
 
+    #endregion
+
+    #region Skin Application
+
+    // Apply skin sprite to animal if available
     public void ApplySkinToAnimal(Animal animal)
     {
         var skin = SkinManager.instance.GetSkinForAnimal(animal.GetAnimalType());
@@ -448,32 +542,37 @@ public class GameplayController : MonoBehaviour
         }
     }
 
-    void OnDestroy()
-    {
-        MergeManager.onMergeAnimal -= MergeAnimals;
-        InputManager.instance.OnTouchStart -= HandleTouchStart;
-        InputManager.instance.OnTouchEnd -= HandleTouchEnd;
-        InputManager.instance.OnTouchHold -= HandleTouchHold;
+    #endregion
 
-    }
+    #region Public Accessors
 
+    // Get the next animal prefab
     public Animal GetNextAnimal()
     {
         return nextAnimal;
     }
 
 #if UNITY_EDITOR
+    // Get the current active animal (editor only)
+    public Animal GetCurrentAnimal()
+    {
+        return currentAnimal;
+    }
+#endif
+
+    #endregion
+
+    #region Gizmos
+
+#if UNITY_EDITOR
+    // Draw spawn line gizmo in editor
     private void OnDrawGizmos()
     {
         if (!enableGizmos) return;
         Gizmos.color = Color.red;
         Gizmos.DrawLine(new Vector3(-50, animalSpawnPoint.position.y, 0), new Vector3(50, animalSpawnPoint.position.y, 0));
     }
-
-    public Animal GetCurrentAnimal()
-    {
-        return currentAnimal;
-    }
-
 #endif
+
+    #endregion
 }

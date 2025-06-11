@@ -68,6 +68,7 @@ public class Bomb : Animal
     // Override to disable default Animal merging behavior when colliding.
     protected override void OnCollisionStay2D(Collision2D collision)
     {
+        if (collision.collider.CompareTag("Wall")) return; // prevent early trigger on wall
         hasCollided = true;
     }
 }

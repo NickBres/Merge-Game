@@ -81,11 +81,13 @@ public class Animal : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.collider.CompareTag("Wall")) return;
         onCollision?.Invoke();
     }
 
     protected virtual void OnCollisionStay2D(Collision2D collision)
     {
+        if (collision.collider.CompareTag("Wall")) return;
         hasCollided = true;
 
         if (!canBeMerged || isFrozen)

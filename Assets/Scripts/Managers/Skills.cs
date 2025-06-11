@@ -20,8 +20,10 @@ public class Skills : MonoBehaviour
     {
         if (isOnCooldown || !PlayerDataManager.instance.UseMagicSweep())
             return;
+        GameOverManager.instance.SetCanLoose(false);
         AudioManager.instance.PlayMagicSound();
         GameplayController.instance.RemoveAnimalsUpTo(magicSweepUpTo, true);
+        GameOverManager.instance.SetCanLoose(true);
         StartCoroutine(CooldownCoroutine());
     }
 

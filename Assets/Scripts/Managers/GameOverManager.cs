@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GameOverManager : MonoBehaviour
 {
+    public static GameOverManager instance;
     [Header(" Elements ")]
     [SerializeField] private GameObject deadLine;
     [SerializeField] private Transform animalsParent;
@@ -15,6 +16,19 @@ public class GameOverManager : MonoBehaviour
     private float timer;
     private bool timerActive = false;
     private bool isGameOver = false;
+    private bool canLoose = true;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -52,13 +66,13 @@ public class GameOverManager : MonoBehaviour
 
     private void CheckAnimals()
     {
-        if (animalsParent.childCount == 0)
+        if (animalsParent.childCount == 0 || !canLoose)
             return;
 
         foreach (Transform child in animalsParent)
         {
             Animal animal = child.GetComponent<Animal>();
-            if (animal.HasCollided())
+            if (animal.HasCollided() && animal != GameplayController.instance.currentAnimal)
             {
                 CheckCloseToDeadLine(child);
                 if (child.position.y > deadLine.transform.position.y)
@@ -102,5 +116,10 @@ public class GameOverManager : MonoBehaviour
 
         scoreText.text = score.ToString();
         coinsText.text = "+" + coins.ToString();
+    }
+
+    public void SetCanLoose(bool canLoose)
+    {
+        this.canLoose = canLoose;
     }
 }

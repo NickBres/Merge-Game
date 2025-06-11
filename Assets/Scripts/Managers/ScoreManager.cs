@@ -134,6 +134,12 @@ public class ScoreManager : MonoBehaviour
     {
         comboCount = 1;
     }
+    
+    public void ResetScore()
+    {
+        score = 0;
+        UpdateScore();
+    }
 
     public void IncrementCombo()
     {
@@ -145,7 +151,7 @@ public class ScoreManager : MonoBehaviour
         {
             comboCount *= 2;
         }
-        
+
     }
 
     public int GetComboCount()

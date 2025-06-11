@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
             return;
         }
         GameManager.OnGameStateChanged += OnGameStateChangedCallback;
+        OnGameStateChangedCallback(GameState.Menu);
     }
 
     private void OnGameStateChangedCallback(GameState gameState)
@@ -59,11 +60,12 @@ public class UIManager : MonoBehaviour
         gameOverPanel.SetActive(false);
         menuPanel.SetActive(true);
         gamePanel.SetActive(false);
-        pausePanel.SetActive(false);
         skinsPanel.SetActive(false);
         animalSelectorPanel.SetActive(false);
         wallsPanel.SetActive(false);
         optionsPanel.SetActive(false);
+        shopPanel.SetActive(false);
+        pausePanel.SetActive(false);
     }
 
     public void SetOptions()
@@ -76,23 +78,20 @@ public class UIManager : MonoBehaviour
     {
         menuPanel.SetActive(false);
         shopPanel.SetActive(true);
+        rewardPanel.SetActive(false);
 
-        wallsPanel.SetActive(false);
     }
 
     public void SetReward()
     {
         rewardPanel.SetActive(true);
         shopPanel.SetActive(false);
-
-        wallsPanel.SetActive(false);
     }
 
     private void SetGame()
     {
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
-        pausePanel.SetActive(false);
         wallsPanel.SetActive(true);
     }
 
@@ -115,8 +114,6 @@ public class UIManager : MonoBehaviour
         menuPanel.SetActive(false);
         skinsPanel.SetActive(true);
         animalSelectorPanel.SetActive(true);
-
-        wallsPanel.SetActive(false);
     }
 
     public void PlayRushButtonCallback()
@@ -140,6 +137,22 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void MainMenuButtonCallback()
+    {
+        GameManager.instance.SetGameState(GameState.Menu);
+        SetMenu();
+    }
+
+    public void MainMenuWithResetCallback()
+    {
+        GameplayController.instance.ResetGameplay();
+        ScoreManager.instance.ResetScore();
+        GameManager.instance.SetGameState(GameState.Menu);
+        SetMenu();
+    }
+
+
+
     public void PauseButtonCallback()
     {
         SetPause();
@@ -154,13 +167,17 @@ public class UIManager : MonoBehaviour
 
     public void SkinsButtonCallback()
     {
+        GameManager.instance.SetGameState(GameState.Menu);
         SetSkins();
     }
 
     public void ShopButtonCallback()
     {
+        GameManager.instance.SetGameState(GameState.Menu);
         SetShop();
     }
+
+
 
     
     void OnDestroy()

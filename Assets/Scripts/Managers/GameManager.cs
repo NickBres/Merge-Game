@@ -25,18 +25,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         SetGameState(GameState.Menu);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
 
     public void SetGameState(GameState newGameState)
