@@ -36,6 +36,7 @@ public class Bomb : Animal
         {
             if (hit.TryGetComponent(out Animal animal))
             {
+                if (animal == this) continue;
                 float distance = Vector2.Distance(transform.position, animal.transform.position);
                 if (distance <= explosionRadius)
                 {

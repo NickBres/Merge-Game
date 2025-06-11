@@ -93,6 +93,7 @@ public class UIManager : MonoBehaviour
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
         wallsPanel.SetActive(true);
+        pausePanel.SetActive(false);
     }
 
     private void SetGameOver()
@@ -148,6 +149,7 @@ public class UIManager : MonoBehaviour
         GameplayController.instance.ResetGameplay();
         ScoreManager.instance.ResetScore();
         GameManager.instance.SetGameState(GameState.Menu);
+        Skills.instance.Reset();
         SetMenu();
     }
 

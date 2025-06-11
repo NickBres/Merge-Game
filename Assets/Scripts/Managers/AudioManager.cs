@@ -32,9 +32,15 @@ public class AudioManager : MonoBehaviour
             return;
         }
         MergeManager.onMergeAnimal += PlayMergeSound;
-        OptionsManager.onSFXToggle += ToggleSFX;
-        OptionsManager.onMusicToggle += ToggleMusic;
+        OptionsManager.OnSFXChanged += ToggleSFX;
+        OptionsManager.OnMusicChanged += ToggleMusic;
 
+        
+    }
+
+    void Start()
+    {
+        OptionsManager.instance.LoadSettings();
         PlayRandomMusic();
     }
 
@@ -43,8 +49,8 @@ public class AudioManager : MonoBehaviour
     void OnDestroy()
     {
         MergeManager.onMergeAnimal -= PlayMergeSound;
-        OptionsManager.onSFXToggle -= ToggleSFX;
-        OptionsManager.onMusicToggle -= ToggleMusic;
+        OptionsManager.OnSFXChanged -= ToggleSFX;
+        OptionsManager.OnMusicChanged -= ToggleMusic;
     }
 
     public void PlayMergeSound(AnimalType animalType, Vector2 position)

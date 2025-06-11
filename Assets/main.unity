@@ -3657,7 +3657,7 @@ GameObject:
   - component: {fileID: 605150549}
   m_Layer: 0
   m_Name: Icon
-  m_TagString: Untagged
+  m_TagString: IgnoreRaycast
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3695,7 +3695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.69803923}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5793,7 +5793,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 956123708}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: RestartButtonCallback
+        m_MethodName: MainMenuWithResetCallback
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6002,7 +6002,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 956123708}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: RestartButtonCallback
+        m_MethodName: ShopButtonCallback
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7708,7 +7708,7 @@ GameObject:
   - component: {fileID: 1087629459}
   m_Layer: 0
   m_Name: Skill Timer
-  m_TagString: Untagged
+  m_TagString: IgnoreRaycast
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7740,7 +7740,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.69803923}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -9845,6 +9845,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 506337734448116275, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 1015157787163256547, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.01
@@ -10004,7 +10008,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 506337734448116275, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_Name
-      value: Left Wall (1)
+      value: Right Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 506337734448116275, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 1015157787163256547, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalScale.x
@@ -10655,7 +10663,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 956123708}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: RestartButtonCallback
+        m_MethodName: MainMenuButtonCallback
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11824,7 +11832,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 506337734448116275, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_Name
-      value: Ground (1)
+      value: Ceiling
+      objectReference: {fileID: 0}
+    - target: {fileID: 506337734448116275, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 1015157787163256547, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12244,8 +12256,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a417b8ee8e77f438da098e67673ab467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sfxOnToggle: {fileID: 1882411825}
-  musicOffToggle: {fileID: 2868640476986486998}
+  sfxToggle: {fileID: 0}
+  musicToggle: {fileID: 0}
 --- !u!1 &1576880938
 GameObject:
   m_ObjectHideFlags: 0
@@ -12834,7 +12846,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 956123708}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: RestartButtonCallback
+        m_MethodName: MainMenuButtonCallback
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14718,7 +14730,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 956123708}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: RestartButtonCallback
+        m_MethodName: MainMenuButtonCallback
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15290,17 +15302,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4140957916191968845, guid: 17c68abbbb0eb4a19ad2321614b3c648, type: 3}
   m_PrefabInstance: {fileID: 1971839651}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1882411825 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3236095097393807285, guid: 17c68abbbb0eb4a19ad2321614b3c648, type: 3}
-  m_PrefabInstance: {fileID: 1971839651}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1888472766
 GameObject:
   m_ObjectHideFlags: 0
@@ -16128,7 +16129,7 @@ GameObject:
   - component: {fileID: 1970140887}
   - component: {fileID: 1970140888}
   m_Layer: 0
-  m_Name: Animal Manager
+  m_Name: Gameplay Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16162,6 +16163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b8b7aa0ce6b941efbf4bd0b929aae3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftWall: {fileID: 1133263759}
+  rightWall: {fileID: 563695801}
   animalsParent: {fileID: 1880840839}
   animalPrefabsRound:
   - {fileID: -3797133296387751621, guid: 76592b22878484fe8834939bda993cc0, type: 3}
@@ -17035,7 +17038,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 956123708}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: RestartButtonCallback
+        m_MethodName: MainMenuWithResetCallback
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17765,17 +17768,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2868640476986486998 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2691009444708578382, guid: f4109abb5f3324b5f9ecdf7643a4f562, type: 3}
-  m_PrefabInstance: {fileID: 7398133038265011269}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &3625465045672689966 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1361091425848855373, guid: f4109abb5f3324b5f9ecdf7643a4f562, type: 3}
@@ -17937,6 +17929,10 @@ PrefabInstance:
     - target: {fileID: 506337734448116275, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_Name
       value: Left Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 506337734448116275, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 1015157787163256547, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalScale.x

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Skills : MonoBehaviour
 {
+    public static Skills instance;
     [SerializeField] private UpgradeProgressUI progressUI;
     [SerializeField] private UpgradeProgressUI magicSweepCooldownUI;
     [SerializeField] private UpgradeProgressUI upgradeAnimalsCooldownUI;
@@ -15,6 +16,18 @@ public class Skills : MonoBehaviour
 
     [SerializeField] private float cooldownDuration = 5f;
     private bool isOnCooldown = false;
+
+    void Awake()
+    {
+         if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void MagicSweepSkill()
     {
@@ -98,5 +111,19 @@ public class Skills : MonoBehaviour
         bombCooldownUI.Show(false);
 
         isOnCooldown = false;
+    }
+
+    public void Reset()
+    {
+        StopAllCoroutines();
+        isOnCooldown = false;
+
+        magicSweepCooldownUI.Show(false);
+        upgradeAnimalsCooldownUI.Show(false);
+        bombCooldownUI.Show(false);
+
+        magicSweepCooldownUI.SetProgress(0f);
+        upgradeAnimalsCooldownUI.SetProgress(0f);
+        bombCooldownUI.SetProgress(0f);
     }
 }

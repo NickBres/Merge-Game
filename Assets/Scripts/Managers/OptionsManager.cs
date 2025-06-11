@@ -5,99 +5,63 @@ public class OptionsManager : MonoBehaviour
 {
     public static OptionsManager instance;
 
-    [Header(" Elements ")]
-    [SerializeField] private Toggle sfxOnToggle;
-    [SerializeField] private Toggle musicOffToggle;
+    [SerializeField] private Toggle sfxToggle;
+    [SerializeField] private Toggle musicToggle;
 
-    public static System.Action<bool> onSFXToggle;
-    public static System.Action<bool> onMusicToggle;
-    private const string sfxKey = "sfxOn";
-    private const string musicKey = "musicMuted";
+    public static System.Action<bool> OnSFXChanged;
+    public static System.Action<bool> OnMusicChanged;
+
+    private const string SFX_KEY = "sfx_enabled";
+    private const string MUSIC_KEY = "music_enabled";
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
+            LoadSettings();
         }
         else
         {
             Destroy(gameObject);
-            return;
         }
-
-        LoadData();
     }
 
     private void Start()
     {
-        sfxOnToggle.onValueChanged.AddListener(OnSoundToggleChanged);
-        musicOffToggle.onValueChanged.AddListener(OnMusicToggleChanged);
+        sfxToggle.onValueChanged.AddListener(HandleSFXToggle);
+        musicToggle.onValueChanged.AddListener(HandleMusicToggle);
     }
 
-    private void OnSoundToggleChanged(bool isOn)
+    private void OnDestroy()
     {
-        onSFXToggle?.Invoke(isOn);
-        SaveData();
+        sfxToggle.onValueChanged.RemoveListener(HandleSFXToggle);
+        musicToggle.onValueChanged.RemoveListener(HandleMusicToggle);
     }
 
-    private void OnMusicToggleChanged(bool isOn)
+    private void HandleSFXToggle(bool isOn)
     {
-        onMusicToggle?.Invoke(!isOn); // Toggle ON = muted → pass false to indicate music off
-        SaveData();
-    }
-
-    private void LoadData()
-    {
-        if (PlayerPrefs.HasKey(sfxKey))
-        {
-            bool isOn = PlayerPrefs.GetInt(sfxKey) == 1;
-            SetSfxToggle(isOn);
-        }
-        if (PlayerPrefs.HasKey(musicKey))
-        {
-            bool isMusicMuted = PlayerPrefs.GetInt(musicKey) == 1;
-            SetMusicToggle(isMusicMuted); // Pass true if music is muted
-        }
-        else
-        {
-            SetSfxToggle(true);
-            SetMusicToggle(false);
-            SaveData(); // Save defaults if no data exists
-        }
-
-        Debug.Log($"OptionsManager loaded: SFX On = {sfxOnToggle.isOn}, Music Muted = {musicOffToggle.isOn}");
-    }
-
-    private void SaveData()
-    {
-        PlayerPrefs.SetInt(sfxKey, sfxOnToggle.isOn ? 1 : 0);
-        PlayerPrefs.SetInt(musicKey, musicOffToggle.isOn ? 1 : 0);
+        PlayerPrefs.SetInt(SFX_KEY, isOn ? 1 : 0);
         PlayerPrefs.Save();
-
-        Debug.Log($"OptionsManager saved: SFX On = {sfxOnToggle.isOn}, Music Muted = {musicOffToggle.isOn}");
+        OnSFXChanged?.Invoke(isOn);
     }
 
-    void OnDestroy()
+    private void HandleMusicToggle(bool isOn)
     {
-        sfxOnToggle.onValueChanged.RemoveListener(OnSoundToggleChanged);
-        musicOffToggle.onValueChanged.RemoveListener(OnMusicToggleChanged);
+        PlayerPrefs.SetInt(MUSIC_KEY, isOn ? 0 : 1);
+        PlayerPrefs.Save();
+        OnMusicChanged?.Invoke(!isOn);
     }
 
-    private void SetSfxToggle(bool isSoundOn)
+    public void LoadSettings()
     {
-        sfxOnToggle.onValueChanged.RemoveListener(OnSoundToggleChanged); // Temporarily detach
-        sfxOnToggle.isOn = isSoundOn;
-        sfxOnToggle.onValueChanged.AddListener(OnSoundToggleChanged); // Reattach
-        onSFXToggle?.Invoke(isSoundOn); // Ensure audio state is updated on load
-    }
+        bool sfxOn = PlayerPrefs.GetInt(SFX_KEY, 1) == 1;
+        bool musicOn = PlayerPrefs.GetInt(MUSIC_KEY, 1) == 1;
 
-    private void SetMusicToggle(bool isMusicMuted)
-    {
-        musicOffToggle.onValueChanged.RemoveListener(OnMusicToggleChanged); // Temporarily detach
-        musicOffToggle.isOn = isMusicMuted; // Toggle visually shows "muted" when ON
-        musicOffToggle.onValueChanged.AddListener(OnMusicToggleChanged); // Reattach
-        onMusicToggle?.Invoke(!isMusicMuted); // Ensure audio state is updated on load
-    }
+        sfxToggle.isOn = sfxOn;
+        musicToggle.isOn = !musicOn;
 
+        OnSFXChanged?.Invoke(sfxOn);
+        OnMusicChanged?.Invoke(musicOn);
+    }
 }
