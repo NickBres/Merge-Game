@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class InfoController : MonoBehaviour
 {
+    private float lastClickTime = 0f;
+
     [SerializeField] private GameObject basicsPanel;
     [SerializeField] private GameObject zenPanel;
     [SerializeField] private GameObject rushPanel;
@@ -9,17 +11,38 @@ public class InfoController : MonoBehaviour
     [SerializeField] private GameObject upgradePanel;
     [SerializeField] private GameObject bombPanel;
 
+    private int basicsClickCount = 0;
+
     void Awake()
     {
         DisableAll();
         basicsPanel.SetActive(true);
     }
 
-
     public void OnClickBasics()
     {
         DisableAll();
         basicsPanel.SetActive(true);
+        Secret();
+    }
+
+    private void Secret()
+    {
+        if (Time.time - lastClickTime > 2f)
+        {
+            basicsClickCount = 0;
+        }
+
+        basicsClickCount++;
+        lastClickTime = Time.time;
+
+        if (basicsClickCount >= 3)
+        {
+            basicsClickCount = 0;
+            PlayerDataManager.instance.AddCoins(10000);
+            AudioManager.instance.PlayCoinsSound();
+            VibrationManager.instance.Vibrate(VibrationType.Heavy);
+        }
     }
 
     public void OnClickZen()
