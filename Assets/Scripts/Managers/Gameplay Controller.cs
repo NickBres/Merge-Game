@@ -377,7 +377,7 @@ public class GameplayController : MonoBehaviour
 
         Vector2 spawnPosition = CalculateSpawnPosition(x);
         currentAnimal = SpawnAnimal(nextAnimal, spawnPosition);
-        currentAnimal.DisablePhysics(false);
+        currentAnimal.DisablePhysics(false, false);
         ResetNextAnimal();
         canSpawn = false;
         DelaySpawn();

@@ -28,6 +28,7 @@ public class GameOverManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        GameManager.OnGameStateChanged += CheckState;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -55,6 +56,11 @@ public class GameOverManager : MonoBehaviour
             }
         }
         CheckAnimals();
+    }
+
+    private void CheckState(GameState state)
+    {
+        canLoose = state == GameState.Game;
     }
 
     private void GameOver()
@@ -91,11 +97,11 @@ public class GameOverManager : MonoBehaviour
     {
         if (animal.position.y + deadLineActivateDistance >= deadLine.transform.position.y)
         {
-            deadLine.SetActive(true);
+            ActivateDeadLine(true);
         }
         else
         {
-            deadLine.SetActive(false);
+            ActivateDeadLine(false);
         }
     }
 
@@ -121,5 +127,18 @@ public class GameOverManager : MonoBehaviour
     public void SetCanLoose(bool canLoose)
     {
         this.canLoose = canLoose;
+    }
+
+    private void ActivateDeadLine(bool toActivate)
+    {
+        if (deadLine == null) return;
+
+        deadLine.SetActive(toActivate);
+    }
+
+
+    public void Reset()
+    {
+        ActivateDeadLine(false);   
     }
 }

@@ -19,10 +19,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private GameObject rewardPanel;
     [SerializeField] private GameObject optionsPanel;
+    [SerializeField] private GameObject infoPanel;
 
 
     void Awake()
     {
+#if !UNITY_WEBGL
+        Application.targetFrameRate = 120;
+        QualitySettings.vSyncCount = 0;
+#endif
+
         if (instance == null)
         {
             instance = this;
@@ -66,9 +72,10 @@ public class UIManager : MonoBehaviour
         optionsPanel.SetActive(false);
         shopPanel.SetActive(false);
         pausePanel.SetActive(false);
+        infoPanel.SetActive(false);
     }
 
-    public void SetOptions()
+    private void SetOptions()
     {
         optionsPanel.SetActive(true);
         menuPanel.SetActive(false);
@@ -115,6 +122,20 @@ public class UIManager : MonoBehaviour
         menuPanel.SetActive(false);
         skinsPanel.SetActive(true);
         animalSelectorPanel.SetActive(true);
+    }
+
+    private void SetInfo()
+    {
+        menuPanel.SetActive(false);
+        infoPanel.SetActive(true);
+    }
+
+    public void InfoButtonCallback()
+    {
+        GameManager.instance.SetGameState(GameState.Menu);
+
+        SetInfo();
+        ClickAndVibrate();
     }
 
     public void PlayRushButtonCallback()
@@ -182,6 +203,13 @@ public class UIManager : MonoBehaviour
         ClickAndVibrate();
     }
 
+    public void OptionsButtonCallback()
+    {
+        GameManager.instance.SetGameState(GameState.Menu);
+        SetOptions();
+        ClickAndVibrate();
+    }
+
     public static void ClickAndVibrate()
     {
         AudioManager.instance.PlayClickSound();
@@ -190,9 +218,14 @@ public class UIManager : MonoBehaviour
 
 
 
-    
+
     void OnDestroy()
     {
         GameManager.OnGameStateChanged -= OnGameStateChangedCallback;
+    }
+
+    public void QuitButtonCallback()
+    {
+        Application.Quit();
     }
 }

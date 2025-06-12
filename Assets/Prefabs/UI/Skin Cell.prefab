@@ -154,7 +154,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -5930384173837249105, guid: ddb640d8936a24b308e0d8e8b7a18b93, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f5ff71c84a2e9468a95676fbf9e36551, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -218,8 +218,8 @@ MonoBehaviour:
   skinData: {fileID: 11400000, guid: 8d97c947bd6dc4e108f333f5030a4e1f, type: 2}
   skinImage: {fileID: 2913138539097220483}
   background: {fileID: 4096707975500782034}
-  selectedBackground: {fileID: 8900450184890682882, guid: f5ff71c84a2e9468a95676fbf9e36551, type: 3}
-  defaultBackground: {fileID: -5930384173837249105, guid: ddb640d8936a24b308e0d8e8b7a18b93, type: 3}
+  selectedBackground: {fileID: 21300000, guid: f5ff71c84a2e9468a95676fbf9e36551, type: 3}
+  defaultBackground: {fileID: 21300000, guid: ddb640d8936a24b308e0d8e8b7a18b93, type: 3}
 --- !u!114 &2569335973330644659
 MonoBehaviour:
   m_ObjectHideFlags: 0

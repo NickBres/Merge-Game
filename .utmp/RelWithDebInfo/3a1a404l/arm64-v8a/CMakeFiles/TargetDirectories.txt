@@ -1,0 +1,8 @@
+/Users/nickbres/UnityProjects/Merge Game/.utmp/RelWithDebInfo/3a1a404l/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/nickbres/UnityProjects/Merge Game/.utmp/RelWithDebInfo/3a1a404l/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/nickbres/UnityProjects/Merge Game/.utmp/RelWithDebInfo/3a1a404l/arm64-v8a/GameActivity/CMakeFiles/game.dir
+/Users/nickbres/UnityProjects/Merge Game/.utmp/RelWithDebInfo/3a1a404l/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+/Users/nickbres/UnityProjects/Merge Game/.utmp/RelWithDebInfo/3a1a404l/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
+/Users/nickbres/UnityProjects/Merge Game/.utmp/RelWithDebInfo/3a1a404l/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+/Users/nickbres/UnityProjects/Merge Game/.utmp/RelWithDebInfo/3a1a404l/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+/Users/nickbres/UnityProjects/Merge Game/.utmp/RelWithDebInfo/3a1a404l/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

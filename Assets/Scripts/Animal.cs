@@ -57,6 +57,7 @@ public class Animal : MonoBehaviour
 
     public void EnablePhysics()
     {
+        rigidBody.bodyType = RigidbodyType2D.Dynamic;
         rigidBody.linearVelocity = storedVelocity;
         rigidBody.gravityScale = 1f;
         //animalCollider.enabled = true;
@@ -64,8 +65,9 @@ public class Animal : MonoBehaviour
         isFrozen = false;
     }
 
-    public void DisablePhysics(bool disableMovement)
+    public void DisablePhysics(bool disableMovement, bool disableRB = true)
     {
+        if(disableRB) rigidBody.bodyType = RigidbodyType2D.Kinematic;
         storedVelocity = rigidBody.linearVelocity;
         rigidBody.linearVelocity = Vector2.zero;
         rigidBody.gravityScale = 0f;
