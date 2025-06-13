@@ -139,6 +139,8 @@ public class GameOverManager : MonoBehaviour
 
     public void Reset()
     {
-        ActivateDeadLine(false);   
+        ActivateDeadLine(false);
+        StopTimer();
+        isGameOver = false;
     }
 }

@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -11,7 +12,8 @@ public class ScoreManager : MonoBehaviour
 
     [Header(" Settings ")]
     private int score = 0;
-    private int bestScore = 0;
+    private int bestScoreZen = 0;
+    private int bestScoreRush = 0;
     private int comboCount = 1;
 
     [Header(" Data ")]
@@ -37,7 +39,8 @@ public class ScoreManager : MonoBehaviour
     void Start()
     {
         LoadData();
-        UpdateScore();
+        UpdateTextScore();
+        UpdateTextBestScore();
     }
 
     // Update is called once per frame
@@ -55,24 +58,18 @@ public class ScoreManager : MonoBehaviour
     public void UpdateScore(AnimalType animalType, Vector2 unused)
     {
         score += (int)((int)animalType * comboCount);
-        UpdateScore();
+        UpdateTextScore();
     }
 
-    private void UpdateScore()
+    private void UpdateTextScore()
     {
         scoreText.text = score.ToString();
     }
 
-    private void UpdateBestScore()
+    private void UpdateTextBestScore()
     {
-        if (GameManager.instance.GetGameMode() == GameMode.Zen)
-        {
-            bestScoreTextZen.text = bestScore.ToString();
-        }
-        else if (GameManager.instance.GetGameMode() == GameMode.Rush)
-        {
-            bestScoreTextRush.text = bestScore.ToString();
-        }
+        bestScoreTextZen.text = bestScoreZen.ToString();
+        bestScoreTextRush.text = bestScoreRush.ToString();
     }
 
     private void GameStateChanged(GameState gameState)
@@ -85,7 +82,7 @@ public class ScoreManager : MonoBehaviour
         else if (gameState == GameState.Menu)
         {
             LoadData();
-            UpdateBestScore();
+            UpdateTextBestScore();
         }
     }
 
@@ -96,12 +93,17 @@ public class ScoreManager : MonoBehaviour
 
     private void SetBestScore()
     {
-        if (score > bestScore)
+        LoadData();
+        if (GameManager.instance.GetGameMode() == GameMode.Zen && score > bestScoreZen)
         {
-            bestScore = score;
+            bestScoreZen = score;
             SaveData();
         }
-        //score = 0;
+        if (GameManager.instance.GetGameMode() == GameMode.Rush && score > bestScoreRush)
+        {
+            bestScoreRush = score;
+            SaveData();
+        }
     }
 
     public int GetScore()
@@ -111,34 +113,20 @@ public class ScoreManager : MonoBehaviour
 
     private void LoadData()
     {
-        bestScore = PlayerPrefs.GetInt(bestScoreZenKey, 0);
-        bestScoreTextZen.text = bestScore.ToString();
-        bestScore = PlayerPrefs.GetInt(bestScoreRushKey, 0);
-        bestScoreTextRush.text = bestScore.ToString();
+        bestScoreZen = PlayerPrefs.GetInt(bestScoreZenKey, 0);
+        bestScoreRush = PlayerPrefs.GetInt(bestScoreRushKey, 0);
     }
 
     private void SaveData()
     {
-        if (GameManager.instance.GetGameMode() == GameMode.Zen)
-        {
-            PlayerPrefs.SetInt(bestScoreZenKey, bestScore);
-        }
-        else if (GameManager.instance.GetGameMode() == GameMode.Rush)
-        {
-            PlayerPrefs.SetInt(bestScoreRushKey, bestScore);
-        }
+        PlayerPrefs.SetInt(bestScoreZenKey, bestScoreZen);
+        PlayerPrefs.SetInt(bestScoreRushKey, bestScoreRush);
         PlayerPrefs.Save();
     }
 
     public void ResetCombo()
     {
         comboCount = 1;
-    }
-    
-    public void ResetScore()
-    {
-        score = 0;
-        UpdateScore();
     }
 
     public void IncrementCombo()
@@ -152,10 +140,20 @@ public class ScoreManager : MonoBehaviour
             comboCount *= 2;
         }
 
+        comboCount = math.min(comboCount, 64);
+
     }
 
     public int GetComboCount()
     {
         return comboCount;
+    }
+
+    public void Reset()
+    {
+        LoadData();
+        score = 0;
+        UpdateTextScore();
+        UpdateTextBestScore();
     }
 }

@@ -165,11 +165,12 @@ public class UIManager : MonoBehaviour
 
     public void MainMenuWithResetCallback()
     {
-        GameplayController.instance.ResetGameplay();
-        ScoreManager.instance.ResetScore();
-        GameManager.instance.SetGameState(GameState.Menu);
-        Skills.instance.Reset();
         SetMenu();
+        GameplayController.instance.ResetGameplay();
+        GameOverManager.instance.Reset();
+        Skills.instance.Reset();
+        ScoreManager.instance.Reset();
+        GameManager.instance.SetGameState(GameState.Menu);
         ClickAndVibrate();
     }
 
