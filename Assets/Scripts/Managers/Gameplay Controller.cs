@@ -309,8 +309,15 @@ public class GameplayController : MonoBehaviour
         else
         {
             Vector3 newPos = screenPos;
-            float minX = MinX + 0.5f;
-            float maxX = MaxX - 0.5f;
+            float halfWidth = 0.5f;
+            var collider = currentAnimal.GetComponent<Collider2D>();
+            if (collider != null)
+            {
+                halfWidth = collider.bounds.extents.x + 0.2f;
+            }
+
+            float minX = MinX + halfWidth;
+            float maxX = MaxX - halfWidth;
             newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
             newPos.y = animalSpawnPoint.position.y;
             newPos.z = currentAnimal.transform.position.z;
@@ -340,8 +347,15 @@ public class GameplayController : MonoBehaviour
     {
         if (currentAnimal == null) return;
         Vector3 newPos = currentAnimal.transform.position + new Vector3(moveDist, 0, 0);
-        float minX = MinX + 0.5f;
-        float maxX = MaxX - 0.5f;
+        float halfWidth = 0.5f;
+        var collider = currentAnimal.GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            halfWidth = collider.bounds.extents.x + 0.2f;
+        }
+
+        float minX = MinX + halfWidth;
+        float maxX = MaxX - halfWidth;
         newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
         newPos.y = currentAnimal.transform.position.y;
         newPos.z = currentAnimal.transform.position.z;

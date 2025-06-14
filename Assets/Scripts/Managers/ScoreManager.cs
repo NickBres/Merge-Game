@@ -140,7 +140,7 @@ public class ScoreManager : MonoBehaviour
             comboCount *= 2;
         }
 
-        comboCount = math.min(comboCount, 64);
+        comboCount = Mathf.Min(comboCount, 64);
 
     }
 

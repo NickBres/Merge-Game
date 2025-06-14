@@ -5,9 +5,10 @@ public class BackgroundManager : MonoBehaviour
 {   
     [SerializeField] private GameObject background;
     [SerializeField] private List<Sprite> backgounds;
-    [SerializeField] private float parallaxStrength = 0.5f;
+    [SerializeField] private float parallaxStrength = 1f;
     private SpriteRenderer currentBackground;
     private Vector3 initialPosition;
+    private Vector3 currentOffset;
 
     void Awake()
     {
@@ -28,6 +29,8 @@ public class BackgroundManager : MonoBehaviour
     void Update()
     {
         Vector3 tilt = Input.acceleration;
-        background.transform.position = initialPosition + new Vector3(tilt.x, tilt.y, 0) * parallaxStrength;
+        Vector3 targetOffset = new Vector3(tilt.x, tilt.y, 0) * parallaxStrength;
+        currentOffset = Vector3.Lerp(currentOffset, targetOffset, Time.deltaTime * 5f); // smoothing factor
+        background.transform.position = initialPosition + currentOffset;
     }
 }

@@ -10,12 +10,14 @@ public class SkinsUIManager : MonoBehaviour
     {
         AnimalSelector.OnAnimalChanged += ResetGrid; // Subscribe to the event
         SkinCell.OnSkinChanged += ResetGrid; // Subscribe to skin change event
+        ShopManager.OnGotSkin += ResetGrid;
     }
 
     void OnDestroy()
     {
         AnimalSelector.OnAnimalChanged -= ResetGrid; // Unsubscribe to avoid memory leaks
         SkinCell.OnSkinChanged -= ResetGrid; // Unsubscribe to skin change event
+        ShopManager.OnGotSkin -= ResetGrid;
     }
 
     private void Start()

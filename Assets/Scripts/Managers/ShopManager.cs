@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System;
+
+using Random = UnityEngine.Random;
 
 public class ShopManager : MonoBehaviour
 {
@@ -17,6 +20,8 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private int magicSweepPrice;
     [SerializeField] private int upgradeAnimalsPrice;
     [SerializeField] private int bombPrice;
+
+    public static Action OnGotSkin;
 
 
     void Awake()
@@ -55,7 +60,7 @@ public class ShopManager : MonoBehaviour
 
     public void BuyUpgradeAnimals()
     {
-        
+
         if (!PlayerDataManager.instance.BuyUpgrade(upgradeAnimalsPrice))
         {
             AudioManager.instance.PlayErrorSound();
@@ -85,7 +90,7 @@ public class ShopManager : MonoBehaviour
             AudioManager.instance.PlayErrorSound();
             VibrationManager.instance.Vibrate(VibrationType.Heavy);
         }
-        
+
     }
 
     private void OpenChest()
@@ -115,7 +120,7 @@ public class ShopManager : MonoBehaviour
                             Rarity.Legendary => chestPrice * 2,
                             _ => 0
                         };
-                        UIManager.instance.SetReward(); 
+                        UIManager.instance.SetReward();
                         PlayerDataManager.instance.AddCoins(coinsToAdd);
                         RewardScreenManager.instance.ShowReward(skinData, isDuplicate, coinsToAdd);
                     }
@@ -124,9 +129,10 @@ public class ShopManager : MonoBehaviour
                         UIManager.instance.SetReward();
                         PlayerDataManager.instance.OwnSkin(skinData.name);
                         RewardScreenManager.instance.ShowReward(skinData, isDuplicate, 0);
+                        OnGotSkin?.Invoke();
                     }
-                    
-                    
+
+
                     break;
                 }
             }
