@@ -6510,7 +6510,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7252869fa15ff4a5eab01861146f9f46, type: 3}
   - {fileID: 21300000, guid: 62bd8119e9d864c05b2b64e265000c66, type: 3}
   - {fileID: 21300000, guid: 345b7237a54084fa7a83eb2ee051f3e7, type: 3}
-  parallaxStrength: 1
+  parallaxStrength: 0.5
 --- !u!1 &724612500
 GameObject:
   m_ObjectHideFlags: 0
@@ -22008,8 +22008,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 863b73361bbdd43538069a9ee7d1d5da, type: 2}
-  m_sharedMaterial: {fileID: -2071634378788209452, guid: 863b73361bbdd43538069a9ee7d1d5da, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1a39cf0cbfd7e4504b620a781c783a47, type: 2}
+  m_sharedMaterial: {fileID: 879383064319680498, guid: 1a39cf0cbfd7e4504b620a781c783a47, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

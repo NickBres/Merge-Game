@@ -14,7 +14,7 @@ public class MergeManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Animal.onCollisionWithAnimal += CollisionBetweenFruitsCallback;
+        Animal.onCollisionWithAnimal += CollisionBetweenAnimalsCallback;
     }
 
     // Update is called once per frame
@@ -23,27 +23,63 @@ public class MergeManager : MonoBehaviour
 
     }
 
-    private void CollisionBetweenFruitsCallback(Animal sender, Animal otherFruit)
+    private void CollisionBetweenAnimalsCallback(Animal sender)
     {
         if (lastSender != null)
             return;
 
         lastSender = sender;
-        ProcessMerge(sender, otherFruit);
 
-
+        // Start the multi-animal merge process
+        TryMultiMerge(sender);
     }
 
-    private void ProcessMerge(Animal sender, Animal otherAnimal)
+    private void TryMultiMerge(Animal startAnimal)
     {
-        AnimalType mergeAnimalType = (AnimalType)((int)sender.GetAnimalType() + (int)otherAnimal.GetAnimalType());
+        var mergeType = startAnimal.GetAnimalType();
+        var toMerge = new System.Collections.Generic.List<Animal>();
+        var toCheck = new System.Collections.Generic.Queue<Animal>();
 
-        Vector2 animalSpawnPosition = (sender.transform.position + otherAnimal.transform.position) / 2;
+        toMerge.Add(startAnimal);
+        toCheck.Enqueue(startAnimal);
 
-        sender.Disappear();
-        otherAnimal.Disappear();
+        while (toCheck.Count > 0)
+        {
+            var current = toCheck.Dequeue();
+            foreach (var other in current.GetCurrentCollisions())
+            {
+                if (other == null || other == current)
+                    continue;
 
-        onMergeAnimal?.Invoke(mergeAnimalType, animalSpawnPosition);
+                if (other.GetAnimalType() == mergeType && !toMerge.Contains(other))
+                {
+                    toMerge.Add(other);
+                    toCheck.Enqueue(other);
+                }
+            }
+        }
+
+        if (toMerge.Count >= 2)
+        {
+            Vector2 spawnPos = Vector2.zero;
+            int count = 0;
+            foreach (var animal in toMerge)
+            {
+                spawnPos += (Vector2)animal.transform.position;
+                animal.Disappear();
+                if (count > 1)
+                    ScoreManager.instance.IncrementCombo();
+                count++;
+            }
+
+            spawnPos /= toMerge.Count;
+            int rawValue = (int)mergeType * toMerge.Count;
+            int closestPowerOfTwo = Mathf.NextPowerOfTwo(rawValue);
+            if (closestPowerOfTwo > rawValue) closestPowerOfTwo /= 2;
+            closestPowerOfTwo = Mathf.Min(closestPowerOfTwo, 2048);
+            AnimalType newType = (AnimalType)closestPowerOfTwo;
+            onMergeAnimal?.Invoke(newType, spawnPos);
+        }
 
         StartCoroutine(ResetLastSender());
     }
@@ -56,6 +92,6 @@ public class MergeManager : MonoBehaviour
 
     void OnDestroy()
     {
-        Animal.onCollisionWithAnimal -= CollisionBetweenFruitsCallback;
+        Animal.onCollisionWithAnimal -= CollisionBetweenAnimalsCallback;
     }
 }

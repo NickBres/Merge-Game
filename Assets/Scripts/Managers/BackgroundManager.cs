@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BackgroundManager : MonoBehaviour
-{   
+{
+    public static BackgroundManager instance;
     [SerializeField] private GameObject background;
     [SerializeField] private List<Sprite> backgounds;
     [SerializeField] private float parallaxStrength = 1f;
@@ -12,6 +13,15 @@ public class BackgroundManager : MonoBehaviour
 
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
         currentBackground = background.GetComponent<SpriteRenderer>();
         Reset();
     }
@@ -21,7 +31,7 @@ public class BackgroundManager : MonoBehaviour
         initialPosition = background.transform.position;
     }
 
-    private void Reset()
+    public void Reset()
     {
         currentBackground.sprite = backgounds[Random.Range(0, backgounds.Count)];
     }

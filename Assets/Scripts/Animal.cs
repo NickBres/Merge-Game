@@ -2,9 +2,12 @@ using UnityEngine;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Animal : MonoBehaviour
 {
+    private readonly HashSet<Animal> currentCollisions = new HashSet<Animal>();
+    public List<Animal> GetCurrentCollisions() => new List<Animal>(currentCollisions);
 
 
     [Header(" Data ")]
@@ -13,7 +16,7 @@ public class Animal : MonoBehaviour
     private Vector2 storedVelocity;
 
     [Header(" Actions ")]
-    public static Action<Animal, Animal> onCollisionWithAnimal;
+    public static Action<Animal> onCollisionWithAnimal;
     public event Action onCollision;
 
     private Rigidbody2D rigidBody;
@@ -37,7 +40,7 @@ public class Animal : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Invoke("AllowMerge", 0.3f);
+        ResolveSpawnOverlaps();
     }
 
     // Update is called once per frame
@@ -67,7 +70,7 @@ public class Animal : MonoBehaviour
 
     public void DisablePhysics(bool disableMovement, bool disableRB = true)
     {
-        if(disableRB) rigidBody.bodyType = RigidbodyType2D.Kinematic;
+        if (disableRB) rigidBody.bodyType = RigidbodyType2D.Kinematic;
         storedVelocity = rigidBody.linearVelocity;
         rigidBody.linearVelocity = Vector2.zero;
         rigidBody.gravityScale = 0f;
@@ -84,7 +87,22 @@ public class Animal : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Wall")) return;
+
+        Invoke("AllowMerge", 0.3f);
         onCollision?.Invoke();
+
+        if (collision.collider.TryGetComponent(out Animal other) && other != this)
+        {
+            currentCollisions.Add(other);
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.TryGetComponent(out Animal other) && other != this)
+        {
+            currentCollisions.Remove(other);
+        }
     }
 
     protected virtual void OnCollisionStay2D(Collision2D collision)
@@ -100,7 +118,7 @@ public class Animal : MonoBehaviour
             if (otherFruit.GetAnimalType() != type || !otherFruit.CanMerge())
                 return;
 
-            onCollisionWithAnimal?.Invoke(this, otherFruit);
+            onCollisionWithAnimal?.Invoke(this);
         }
     }
 
@@ -128,7 +146,7 @@ public class Animal : MonoBehaviour
 
     public Sprite GetSprite()
     {
-        if(spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
         return spriteRenderer.sprite;
     }
 
@@ -180,5 +198,33 @@ public class Animal : MonoBehaviour
             return;
         this.transform.position = newPosition;
     }
-    
+
+
+    private void ResolveSpawnOverlaps()
+    {
+        Collider2D myCollider = GetComponent<Collider2D>();
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.SetLayerMask(LayerMask.GetMask("Animal"));
+        filter.useTriggers = false;
+
+        Collider2D[] results = new Collider2D[10];
+        int count = Physics2D.OverlapCollider(myCollider, filter, results);
+
+        for (int i = 0; i < count; i++)
+        {
+            Collider2D other = results[i];
+            if (other != null && other.gameObject != this.gameObject)
+            {
+                Vector2 dir = (other.transform.position - transform.position).normalized;
+                Rigidbody2D otherRb = other.attachedRigidbody;
+                if (otherRb != null)
+                    otherRb.position += dir * 0.2f;
+
+                if (rigidBody != null)
+                    rigidBody.position -= dir * 0.2f;
+            }
+        }
+    }
+
+
 }
