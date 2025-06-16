@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6102620383036209805}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Skin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5034384641433635340}
   - component: {fileID: 201478066195285545}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Skin Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: -3131911983270790588}
   - component: {fileID: 8792479529942056690}
   - component: {fileID: 2342346290307606685}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 512 Hippo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,7 +391,7 @@ GameObject:
   - component: {fileID: 3613081138774315492}
   - component: {fileID: 8241987752792731241}
   - component: {fileID: 7715354741625724789}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Merge Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5335,6 +5335,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GooglyEye
       objectReference: {fileID: 0}
+    - target: {fileID: 6246441354395230578, guid: da9f1f8609d0f45cf806b82836e03355, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5408,6 +5412,10 @@ PrefabInstance:
     - target: {fileID: 6246441354395230578, guid: da9f1f8609d0f45cf806b82836e03355, type: 3}
       propertyPath: m_Name
       value: GooglyEye (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6246441354395230578, guid: da9f1f8609d0f45cf806b82836e03355, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

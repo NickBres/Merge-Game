@@ -51,6 +51,21 @@ public class Animal : MonoBehaviour
 
     private void AllowMerge()
     {
+        StartCoroutine(WaitForMergeCondition());
+    }
+
+    private System.Collections.IEnumerator WaitForMergeCondition()
+    {
+        float timer = 3f;
+        while (timer > 0f)
+        {
+            if (rigidBody.linearVelocity.magnitude < 0.05f)
+                break;
+
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
         canBeMerged = true;
     }
     public void Unfreeze()
@@ -87,8 +102,6 @@ public class Animal : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Wall")) return;
-
-        Invoke("AllowMerge", 0.3f);
         onCollision?.Invoke();
 
         if (collision.collider.TryGetComponent(out Animal other) && other != this)
@@ -109,6 +122,9 @@ public class Animal : MonoBehaviour
     {
         if (collision.collider.CompareTag("Wall")) return;
         hasCollided = true;
+
+
+        AllowMerge();
 
         if (!canBeMerged || isFrozen)
             return;
@@ -208,21 +224,46 @@ public class Animal : MonoBehaviour
         filter.useTriggers = false;
 
         Collider2D[] results = new Collider2D[10];
-        int count = Physics2D.OverlapCollider(myCollider, filter, results);
+        List<Rigidbody2D> affectedRigidbodies = new List<Rigidbody2D>();
 
+        int count = Physics2D.OverlapCollider(myCollider, filter, results);
         for (int i = 0; i < count; i++)
         {
-            Collider2D other = results[i];
-            if (other != null && other.gameObject != this.gameObject)
+            if (results[i] != null && results[i].attachedRigidbody != null)
             {
-                Vector2 dir = (other.transform.position - transform.position).normalized;
-                Rigidbody2D otherRb = other.attachedRigidbody;
-                if (otherRb != null)
-                    otherRb.position += dir * 0.2f;
-
-                if (rigidBody != null)
-                    rigidBody.position -= dir * 0.2f;
+                var rb = results[i].attachedRigidbody;
+                rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+                affectedRigidbodies.Add(rb);
             }
+        }
+
+        rigidBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+        StartCoroutine(WaitAndResetCollisionMode(affectedRigidbodies));
+    }
+
+    private System.Collections.IEnumerator WaitAndResetCollisionMode(List<Rigidbody2D> affectedRigidbodies)
+    {
+        Collider2D myCollider = GetComponent<Collider2D>();
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.SetLayerMask(LayerMask.GetMask("Animal"));
+        filter.useTriggers = false;
+
+        Collider2D[] results = new Collider2D[10];
+
+        while (true)
+        {
+            int count = Physics2D.OverlapCollider(myCollider, filter, results);
+            if (count == 0)
+                break;
+            yield return null;
+        }
+
+        rigidBody.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
+        foreach (var rb in affectedRigidbodies)
+        {
+            if (rb != null)
+                rb.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
         }
     }
 

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7911573801407944124}
   - component: {fileID: 1805450539783757305}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Skin Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 6542776394933473619}
   - component: {fileID: 5663278696602327452}
   - component: {fileID: 2420070376203424967}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Merge Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4987,7 +4987,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5432622508265714331}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Skin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5024,7 +5024,7 @@ GameObject:
   - component: {fileID: -3131911983270790588}
   - component: {fileID: 1462281523549432384}
   - component: {fileID: 3401283799548241047}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 32 Monkey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5423,6 +5423,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GooglyEye (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6246441354395230578, guid: da9f1f8609d0f45cf806b82836e03355, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5496,6 +5500,10 @@ PrefabInstance:
     - target: {fileID: 6246441354395230578, guid: da9f1f8609d0f45cf806b82836e03355, type: 3}
       propertyPath: m_Name
       value: GooglyEye
+      objectReference: {fileID: 0}
+    - target: {fileID: 6246441354395230578, guid: da9f1f8609d0f45cf806b82836e03355, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

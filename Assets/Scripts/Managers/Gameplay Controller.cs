@@ -26,6 +26,7 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private Canvas uiCanvas;
     private GraphicRaycaster raycaster;
     private PointerEventData pointerEventData;
+    [SerializeField] private AimLine aimLine;
 
 
     public Animal currentAnimal;
@@ -85,6 +86,7 @@ public class GameplayController : MonoBehaviour
         isRush = GameManager.instance.GetGameMode() == GameMode.Rush;
         raycaster = uiCanvas.GetComponent<GraphicRaycaster>();
         currentFallingSpeed = fallingSpeed;
+        aimLine.DisableLine();
     }
 
     // Initialize spawnable animals and next animal
@@ -248,13 +250,16 @@ public class GameplayController : MonoBehaviour
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);
         touchStartPos = new Vector2(screenPoint.x, screenPoint.y);
 
-        if (!isRush && currentAnimal == null)
+
+
+        if (!isRush)
         {
-            if (canSpawn)
+            if (canSpawn && currentAnimal == null)
             {
+                aimLine.EnableLine();
+                aimLine.MoveLine(screenPos.x);
                 RespawnAnimal(screenPos.x);
             }
-            return;
         }
     }
 
@@ -284,6 +289,7 @@ public class GameplayController : MonoBehaviour
         }
         else
         {
+            aimLine.DisableLine();
             ScoreManager.instance.ResetCombo();
             ReleaseAnimal();
         }
@@ -322,6 +328,7 @@ public class GameplayController : MonoBehaviour
             newPos.y = animalSpawnPoint.position.y;
             newPos.z = currentAnimal.transform.position.z;
             currentAnimal.SetPosition(newPos);
+            aimLine.MoveLine(newPos.x);
         }
     }
 

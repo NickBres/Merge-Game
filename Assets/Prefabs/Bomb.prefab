@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7105933724435233344}
   - component: {fileID: 4340005759128005167}
   - component: {fileID: 6027220978809663877}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Merge Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4902,7 +4902,7 @@ GameObject:
   - component: {fileID: 6836683090304430067}
   - component: {fileID: 3899995130177135478}
   - component: {fileID: 4608959384197450841}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bomb Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9792,7 +9792,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2701665179678902709}
   - component: {fileID: 2265232165650557093}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Skin Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9878,7 +9878,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2454396648747693485}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Skin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9915,7 +9915,7 @@ GameObject:
   - component: {fileID: 2361062667458949247}
   - component: {fileID: 1043265007231913875}
   - component: {fileID: 3058638387518920944}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}

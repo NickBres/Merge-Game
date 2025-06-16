@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3874246263525047851}
   - component: {fileID: 2184512040304980044}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Skin Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 914174340691612586}
   - component: {fileID: 2262195923538679318}
   - component: {fileID: 64403866710958924}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Merge Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4987,7 +4987,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7178647483323738497}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Skin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5024,7 +5024,7 @@ GameObject:
   - component: {fileID: -3131911983270790588}
   - component: {fileID: 4504370753346692399}
   - component: {fileID: 3737766957275862029}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 8 Rabbit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5358,6 +5358,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GooglyEye (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6246441354395230578, guid: da9f1f8609d0f45cf806b82836e03355, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5431,6 +5435,10 @@ PrefabInstance:
     - target: {fileID: 6246441354395230578, guid: da9f1f8609d0f45cf806b82836e03355, type: 3}
       propertyPath: m_Name
       value: GooglyEye
+      objectReference: {fileID: 0}
+    - target: {fileID: 6246441354395230578, guid: da9f1f8609d0f45cf806b82836e03355, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
