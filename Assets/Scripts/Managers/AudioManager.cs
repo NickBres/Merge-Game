@@ -13,6 +13,35 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource legendarySource;
     [SerializeField] private AudioSource magicSource;
     [SerializeField] private AudioSource upgradeSource;
+    [SerializeField] private AudioSource gameOverSource;
+    [SerializeField] private AudioSource newHighScoreSource;
+    [SerializeField] private AudioSource cawabangaSource;
+    [SerializeField] private AudioSource epicSource;
+    [SerializeField] private AudioSource wowSource;
+    public void PlayGameOverSound()
+    {
+        gameOverSource.Play();
+    }
+
+    public void PlayNewHighScoreSound()
+    {
+        newHighScoreSource.Play();
+    }
+
+    public void PlayCawabangaSound()
+    {
+        cawabangaSource.Play();
+    }
+
+    public void PlayEpicSound()
+    {
+        epicSource.Play();
+    }
+
+    public void PlayWowSound()
+    {
+        wowSource.Play();
+    }
 
     [Header(" Music ")]
     [SerializeField] private AudioSource musicSource;
@@ -120,7 +149,11 @@ public class AudioManager : MonoBehaviour
         legendarySource.mute = !isOn;
         magicSource.mute = !isOn;
         upgradeSource.mute = !isOn;
-
+        gameOverSource.mute = !isOn;
+        newHighScoreSource.mute = !isOn;
+        cawabangaSource.mute = !isOn;
+        epicSource.mute = !isOn;
+        wowSource.mute = !isOn;
     }
 
     private void ToggleMusic(bool isOn)

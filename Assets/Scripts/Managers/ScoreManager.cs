@@ -98,11 +98,17 @@ public class ScoreManager : MonoBehaviour
         {
             bestScoreZen = score;
             SaveData();
+            AudioManager.instance.PlayNewHighScoreSound();
         }
-        if (GameManager.instance.GetGameMode() == GameMode.Rush && score > bestScoreRush)
+        else if (GameManager.instance.GetGameMode() == GameMode.Rush && score > bestScoreRush)
         {
             bestScoreRush = score;
             SaveData();
+            AudioManager.instance.PlayNewHighScoreSound();
+        }
+        else
+        {
+            AudioManager.instance.PlayGameOverSound();
         }
     }
 
@@ -134,14 +140,48 @@ public class ScoreManager : MonoBehaviour
         if (GameManager.instance.GetGameMode() == GameMode.Zen)
         {
             comboCount += 1;
+            ComboSoundZen();
         }
         else if (GameManager.instance.GetGameMode() == GameMode.Rush)
         {
             comboCount *= 2;
+            ComboSoundRush();
         }
 
         comboCount = Mathf.Min(comboCount, 64);
 
+    }
+
+    private void ComboSoundRush()
+    {
+        if (comboCount == 64)
+        {
+            AudioManager.instance.PlayCawabangaSound();
+        }
+        else if (comboCount == 32)
+        {
+            AudioManager.instance.PlayEpicSound();
+        }
+        else if (comboCount == 16)
+        {
+            AudioManager.instance.PlayWowSound();
+        }
+    }
+
+    private void ComboSoundZen()
+    {
+        if (comboCount == 9)
+        {
+            AudioManager.instance.PlayCawabangaSound();
+        }
+        else if (comboCount == 7)
+        {
+            AudioManager.instance.PlayEpicSound();
+        }
+        else if (comboCount == 5)
+        {
+            AudioManager.instance.PlayWowSound();
+        }
     }
 
     public int GetComboCount()
