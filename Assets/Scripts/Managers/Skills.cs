@@ -31,7 +31,7 @@ public class Skills : MonoBehaviour
 
     public void MagicSweepSkill()
     {
-        if (isOnCooldown || !PlayerDataManager.instance.UseMagicSweep())
+        if (isOnCooldown || !PlayerDataManager.instance.UseMagicSweep() || GameManager.instance.GetGameState() != GameState.Game)
             return;
         GameOverManager.instance.SetCanLoose(false);
         AudioManager.instance.PlayMagicSound();
@@ -42,7 +42,7 @@ public class Skills : MonoBehaviour
 
     public void UpgradeAnimalsSkill()
     {
-        if (isOnCooldown || !PlayerDataManager.instance.UseUpgrade())
+        if (isOnCooldown || !PlayerDataManager.instance.UseUpgrade() || GameManager.instance.GetGameState() != GameState.Game)
             return;
         AudioManager.instance.PlayUpgradeSound();
         progressUI.Show(true);
@@ -66,7 +66,8 @@ public class Skills : MonoBehaviour
         float elapsed = animalsUpgradeDuration;
         while (elapsed > 0)
         {
-            elapsed -= Time.deltaTime;
+            if(GameManager.instance.GetGameState() == GameState.Game)
+                elapsed -= Time.deltaTime;
             onProgress?.Invoke(elapsed / animalsUpgradeDuration);
             yield return null;
         }
@@ -77,7 +78,7 @@ public class Skills : MonoBehaviour
 
     public void BombSkill()
     {
-        if (isOnCooldown || !PlayerDataManager.instance.UseBomb())
+        if (isOnCooldown || !PlayerDataManager.instance.UseBomb() || GameManager.instance.GetGameState() != GameState.Game)
             return;
         AudioManager.instance.PlayFuseSound();
         GameplayController.instance.SetNextAnimal(AnimalType.Bomb);
@@ -92,9 +93,10 @@ public class Skills : MonoBehaviour
         bombCooldownUI.Show(true);
 
         float elapsed = cooldownDuration;
-        while (elapsed > 0)
+        while (elapsed > 0 )
         {
-            elapsed -= Time.deltaTime;
+            if(GameManager.instance.GetGameState() == GameState.Game)
+                elapsed -= Time.deltaTime;
             float progress = elapsed / cooldownDuration;
             magicSweepCooldownUI.SetProgress(progress);
             upgradeAnimalsCooldownUI.SetProgress(progress);
@@ -121,9 +123,11 @@ public class Skills : MonoBehaviour
         magicSweepCooldownUI.Show(false);
         upgradeAnimalsCooldownUI.Show(false);
         bombCooldownUI.Show(false);
+        progressUI.Show(false);
 
         magicSweepCooldownUI.SetProgress(0f);
         upgradeAnimalsCooldownUI.SetProgress(0f);
         bombCooldownUI.SetProgress(0f);
+        progressUI.SetProgress(0f);
     }
 }

@@ -114,7 +114,7 @@ public class UIManager : MonoBehaviour
     private void SetPause()
     {
         pausePanel.SetActive(true);
-
+        gamePanel.SetActive(false);
     }
 
     private void SetSkins()

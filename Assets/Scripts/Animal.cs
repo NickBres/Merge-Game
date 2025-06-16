@@ -35,14 +35,6 @@ public class Animal : MonoBehaviour
         mergeEffect = GetComponentInChildren<ParticleSystem>();
         skinRenderer = transform.Find("Skin/Skin Renderer")?.GetComponent<SpriteRenderer>();
     }
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        ResolveSpawnOverlaps();
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -108,6 +100,7 @@ public class Animal : MonoBehaviour
         {
             currentCollisions.Add(other);
         }
+
     }
 
     void OnCollisionExit2D(Collision2D collision)
@@ -136,6 +129,9 @@ public class Animal : MonoBehaviour
 
             onCollisionWithAnimal?.Invoke(this);
         }
+
+
+        //ResolveSpawnOverlaps();
     }
 
     public void Disappear()
@@ -227,6 +223,8 @@ public class Animal : MonoBehaviour
         List<Rigidbody2D> affectedRigidbodies = new List<Rigidbody2D>();
 
         int count = Physics2D.OverlapCollider(myCollider, filter, results);
+        if (count == 0)
+            return;
         for (int i = 0; i < count; i++)
         {
             if (results[i] != null && results[i].attachedRigidbody != null)

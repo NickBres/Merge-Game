@@ -138,6 +138,7 @@ public class GameplayController : MonoBehaviour
         canSpawn = true;
         currentSpawnableAnimals = new HashSet<AnimalType>(defaultSpawnableAnimals);
         ResetNextAnimal();
+        aimLine.DisableLine();
     }
 
     #endregion
@@ -276,7 +277,7 @@ public class GameplayController : MonoBehaviour
 
         if (isRush)
         {
-            rushHoldTime = 0f;
+            rushHoldTime = 1f;
             // Swipe down
             if (delta.y < -swipeThreshold)
             {
@@ -284,13 +285,12 @@ public class GameplayController : MonoBehaviour
                 return;
             }
 
-            MoveAnimal(moveSpeed * Time.deltaTime * (screenPoint.x < Screen.width / 2 ? -1 : 1));
+            MoveAnimal(moveSpeed * 2 * Time.deltaTime * (screenPoint.x < Screen.width / 2 ? -1 : 1));
 
         }
         else
         {
             aimLine.DisableLine();
-            ScoreManager.instance.ResetCombo();
             ReleaseAnimal();
         }
     }
@@ -306,7 +306,7 @@ public class GameplayController : MonoBehaviour
         if (isRush)
         {
             rushHoldTime += Time.deltaTime;
-            float speedMultiplier = Mathf.Clamp01(rushHoldTime / rushAccelerationTime);
+            float speedMultiplier = Mathf.Clamp(rushHoldTime / rushAccelerationTime, 1f, 3f); // goes from 1x to 3x
             float adjustedSpeed = moveSpeed * speedMultiplier;
 
             Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);
@@ -405,7 +405,6 @@ public class GameplayController : MonoBehaviour
 
         if (isRush)
         {
-            ScoreManager.instance.ResetCombo();
             currentAnimal.onCollision += ReleaseAnimal;
         }
     }
@@ -431,6 +430,8 @@ public class GameplayController : MonoBehaviour
         currentAnimal.EnablePhysics();
         currentAnimal.onCollision -= ReleaseAnimal;
         currentAnimal = null;
+
+        ScoreManager.instance.ResetCombo();
     }
 
     // Delay allowing next spawn

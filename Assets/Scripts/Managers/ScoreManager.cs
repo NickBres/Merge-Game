@@ -154,15 +154,15 @@ public class ScoreManager : MonoBehaviour
 
     private void ComboSoundRush()
     {
-        if (comboCount == 64)
+        if (comboCount == 32)
         {
             AudioManager.instance.PlayCawabangaSound();
         }
-        else if (comboCount == 32)
+        else if (comboCount == 16)
         {
             AudioManager.instance.PlayEpicSound();
         }
-        else if (comboCount == 16)
+        else if (comboCount == 8)
         {
             AudioManager.instance.PlayWowSound();
         }
@@ -170,11 +170,11 @@ public class ScoreManager : MonoBehaviour
 
     private void ComboSoundZen()
     {
-        if (comboCount == 9)
+        if (comboCount == 7)
         {
             AudioManager.instance.PlayCawabangaSound();
         }
-        else if (comboCount == 7)
+        else if (comboCount == 6)
         {
             AudioManager.instance.PlayEpicSound();
         }

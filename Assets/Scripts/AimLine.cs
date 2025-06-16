@@ -4,6 +4,7 @@ public class AimLine : MonoBehaviour
 {
     [SerializeField] private Transform originPoint;
 
+
     public void EnableLine()
     {
         gameObject.SetActive(true);
