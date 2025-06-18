@@ -474,9 +474,15 @@ public class GameplayController : MonoBehaviour
         newAnimal = SpawnAnimal(newAnimal, spawnPosition);
         newAnimal.EnablePhysics();
         IncreaseFallingSpeed((int)type);
+        if (ScoreManager.instance.isEpicCombo())
+        {
+            newAnimal.MakeExplosive();
+        }
         ComboPopUp.instance.ShowCombo(spawnPosition, ScoreManager.instance.GetComboCount());
         ScoreManager.instance.IncrementCombo();
     }
+
+
 
     #endregion
 

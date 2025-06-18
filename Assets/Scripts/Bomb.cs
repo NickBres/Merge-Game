@@ -22,39 +22,10 @@ public class Bomb : Animal
     private IEnumerator ExplodeAfterDelay()
     {
         yield return new WaitForSeconds(explosionDelay);
-        Explode();
+        Explode(effectRadius, explosionRadius);
     }
 
-    private void Explode()
-    {
-        if (exploded) return;
-        exploded = true;
 
-
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, effectRadius);
-        foreach (var hit in hitColliders)
-        {
-            if (hit.TryGetComponent(out Animal animal))
-            {
-                if (animal == this) continue;
-                float distance = Vector2.Distance(transform.position, animal.transform.position);
-                if (distance <= explosionRadius)
-                {
-                    ScoreManager.instance.UpdateScore(animal.GetAnimalType(), Vector2.zero);
-                    animal.Disappear(); // Delete animal
-                }
-                else
-                {
-                    Vector2 forceDir = (animal.transform.position - transform.position).normalized;
-                    float force = 5f * (1f - distance / effectRadius);
-                    animal.Push(forceDir * force);
-                }
-            }
-        }
-        AudioManager.instance.PlayExplosionSound(transform.position);
-        VibrationManager.instance.Vibrate(VibrationType.Heavy);
-        Disappear();
-    }
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()

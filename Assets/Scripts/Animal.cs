@@ -9,11 +9,14 @@ public class Animal : MonoBehaviour
     private readonly HashSet<Animal> currentCollisions = new HashSet<Animal>();
     public List<Animal> GetCurrentCollisions() => new List<Animal>(currentCollisions);
 
-
     [Header(" Data ")]
     [SerializeField] private AnimalType type;
     protected bool canBeMerged = false;
     private Vector2 storedVelocity;
+
+    [Header(" Bomb ")]
+    private SpriteRenderer crackRenderer;
+    protected bool isExplosive = false;
 
     [Header(" Actions ")]
     public static Action<Animal> onCollisionWithAnimal;
@@ -34,11 +37,15 @@ public class Animal : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         mergeEffect = GetComponentInChildren<ParticleSystem>();
         skinRenderer = transform.Find("Skin/Skin Renderer")?.GetComponent<SpriteRenderer>();
+        crackRenderer = transform.Find("Crack")?.GetComponent<SpriteRenderer>();
+        if (crackRenderer != null)
+            crackRenderer.enabled = false;
     }
+
     // Update is called once per frame
     void Update()
     {
-
+        FlashCrack();
     }
 
     protected void AllowMerge()
@@ -136,6 +143,11 @@ public class Animal : MonoBehaviour
 
     public void Disappear()
     {
+        if (isExplosive)
+        {
+            Explode(1.5f, 3f, 5f);
+            return;
+        }
         if (mergeEffect != null)
         {
             mergeEffect.transform.SetParent(null);
@@ -265,5 +277,64 @@ public class Animal : MonoBehaviour
         }
     }
 
+    private void FlashCrack()
+    {
+        if (!isExplosive || crackRenderer == null)
+            return;
+
+        float t = Mathf.PingPong(Time.time, 1f);
+        Color c = Color.Lerp(Color.yellow, new Color(1f, 0.5f, 0f), t); // yellow ↔ orange
+        crackRenderer.color = c;
+    }
+
+    public void MakeExplosive()
+    {
+        isExplosive = true;
+        if (crackRenderer != null)
+            crackRenderer.enabled = true;
+    }
+
+    protected void Explode(float killRadius, float pushRadius, float force = 5f)
+    {
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, pushRadius);
+        foreach (var hit in hitColliders)
+        {
+            if (hit.TryGetComponent(out Animal other) && other != this)
+            {
+                float distance = Vector2.Distance(transform.position, other.transform.position);
+
+                // Destroy animals with lower type in kill radius
+                if (distance <= killRadius && other.GetAnimalType() < this.GetAnimalType())
+                {
+                    other.Disappear();
+                    ScoreManager.instance.UpdateScore(other.GetAnimalType(), transform.position);
+                }
+                else
+                {
+                    // Push animals within push radius
+                    Vector2 pushDirection = (other.transform.position - transform.position).normalized;
+                    float strength = Mathf.Lerp(force, 0f, distance / pushRadius);
+                    other.Push(pushDirection * strength);
+                }
+            }
+        }
+
+        // Optional: play effect and destroy self
+        if (mergeEffect != null)
+        {
+            mergeEffect.transform.SetParent(null);
+            mergeEffect.Play();
+        }
+
+        VibrationManager.instance.Vibrate(VibrationType.Heavy);
+        AudioManager.instance.PlayExplosionSound(transform.position);
+        Destroy(gameObject);
+    }
+    
+
 
 }
+
+
+
+

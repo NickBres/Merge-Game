@@ -140,51 +140,73 @@ public class ScoreManager : MonoBehaviour
         if (GameManager.instance.GetGameMode() == GameMode.Zen)
         {
             comboCount += 1;
-            ComboSoundZen();
         }
         else if (GameManager.instance.GetGameMode() == GameMode.Rush)
         {
             comboCount *= 2;
-            ComboSoundRush();
         }
 
         comboCount = Mathf.Min(comboCount, 64);
-
+        ComboEffect();
     }
 
-    private void ComboSoundRush()
+    private void ComboEffect()
     {
-        if (comboCount == 32)
+        if (isCawabungaCombo())
         {
             ComboText.instance.ShowCawabunga();
         }
-        else if (comboCount == 16)
+        else if (isEpicCombo())
         {
-            
+
             ComboText.instance.ShowEpic();
         }
-        else if (comboCount == 8)
+        else if (isWOWCombo())
         {
             ComboText.instance.ShowWOW();
             GameplayController.instance.SetNextCapybara();
         }
     }
 
-    private void ComboSoundZen()
+   
+
+    public bool isEpicCombo()
     {
-        if (comboCount == 7)
+        if (GameManager.instance.GetGameMode() == GameMode.Zen)
         {
-            ComboText.instance.ShowCawabunga();
+            return comboCount == 6;
         }
-        else if (comboCount == 6)
+        else if (GameManager.instance.GetGameMode() == GameMode.Rush)
         {
-            ComboText.instance.ShowEpic();
+            return comboCount == 16;
         }
-        else if (comboCount == 5)
+        return false;
+    }
+
+    public bool isCawabungaCombo()
+    {
+        if (GameManager.instance.GetGameMode() == GameMode.Zen)
         {
-            ComboText.instance.ShowWOW();
-            GameplayController.instance.SetNextCapybara();
+            return comboCount == 7;
         }
+        else if (GameManager.instance.GetGameMode() == GameMode.Rush)
+        {
+            return comboCount == 32;
+        }
+        return false;
+    }
+
+    public bool isWOWCombo()
+    {
+        if (GameManager.instance.GetGameMode() == GameMode.Zen)
+        {
+            return comboCount == 5;
+        }
+        else if (GameManager.instance.GetGameMode() == GameMode.Rush)
+        {
+            return comboCount == 8;
+        }
+        return false;
     }
 
     public int GetComboCount()
