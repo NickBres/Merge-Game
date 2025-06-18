@@ -12,7 +12,7 @@ public class Animal : MonoBehaviour
 
     [Header(" Data ")]
     [SerializeField] private AnimalType type;
-    private bool canBeMerged = false;
+    protected bool canBeMerged = false;
     private Vector2 storedVelocity;
 
     [Header(" Actions ")]
@@ -27,7 +27,7 @@ public class Animal : MonoBehaviour
     [SerializeField] private ParticleSystem mergeEffect;
 
     protected bool hasCollided = false;
-    private bool isFrozen = false;
+    protected bool isFrozen = false;
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -41,7 +41,7 @@ public class Animal : MonoBehaviour
 
     }
 
-    private void AllowMerge()
+    protected void AllowMerge()
     {
         StartCoroutine(WaitForMergeCondition());
     }
@@ -122,9 +122,9 @@ public class Animal : MonoBehaviour
         if (!canBeMerged || isFrozen)
             return;
 
-        if (collision.collider.TryGetComponent(out Animal otherFruit))
+        if (collision.collider.TryGetComponent(out Animal otherAnimal))
         {
-            if (otherFruit.GetAnimalType() != type || !otherFruit.CanMerge())
+            if (otherAnimal.GetAnimalType() != type || !otherAnimal.CanMerge())
                 return;
 
             onCollisionWithAnimal?.Invoke(this);

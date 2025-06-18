@@ -21,6 +21,7 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private Transform animalsParent;
     [SerializeField] private Animal[] animalPrefabsRound;
     [SerializeField] private Animal[] animalPrefabsSquare;
+    [SerializeField] private Capybara capybaraPrefab;
     [SerializeField] private List<AnimalType> defaultSpawnableAnimals;
     private HashSet<AnimalType> currentSpawnableAnimals;
     [SerializeField] private Canvas uiCanvas;
@@ -179,11 +180,16 @@ public class GameplayController : MonoBehaviour
         onNextAnimalSet?.Invoke();
     }
 
-    // Set next animal explicitly
     public void SetNextAnimal(AnimalType animalType)
     {
         nextAnimalType = animalType;
         nextAnimal = GetAnimalFromType(animalType);
+        onNextAnimalSet?.Invoke();
+    }
+
+    public void SetNextCapybara()
+    {
+        nextAnimal = capybaraPrefab;
         onNextAnimalSet?.Invoke();
     }
 
@@ -285,7 +291,7 @@ public class GameplayController : MonoBehaviour
                 return;
             }
 
-            MoveAnimal(moveSpeed * 2 * Time.deltaTime * (screenPoint.x < Screen.width / 2 ? -1 : 1));
+            MoveAnimal(moveSpeed * Time.deltaTime * (screenPoint.x < Screen.width / 2 ? -1 : 1));
 
         }
         else
@@ -306,7 +312,7 @@ public class GameplayController : MonoBehaviour
         if (isRush)
         {
             rushHoldTime += Time.deltaTime;
-            float speedMultiplier = Mathf.Clamp(rushHoldTime / rushAccelerationTime, 1f, 3f); // goes from 1x to 3x
+            float speedMultiplier = Mathf.Clamp(rushHoldTime / rushAccelerationTime, 1f, 2f); // goes from 1x to 2x
             float adjustedSpeed = moveSpeed * speedMultiplier;
 
             Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);

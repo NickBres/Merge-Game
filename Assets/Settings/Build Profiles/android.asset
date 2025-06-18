@@ -191,7 +191,7 @@ MonoBehaviour:
     - line: '|   androidMaxAspectRatio: 2.4'
     - line: '|   androidMinAspectRatio: 1'
     - line: '|   applicationIdentifier:'
-    - line: '|     Android: com.DefaultCompany.com.unity.template.mobile2D'
+    - line: '|     Android: com.NickBres.Mergimals'
     - line: '|     Lumin: com.DefaultCompany.com.unity.template.mobile2D'
     - line: '|     Standalone: com.DefaultCompany.com.unity.template.mobile2D'
     - line: '|     iPhone: com.DefaultCompany.com.unity.template.mobile2D'
@@ -296,8 +296,8 @@ MonoBehaviour:
     - line: '|   AndroidTargetArchitectures: 2'
     - line: '|   AndroidSplashScreenScale: 0'
     - line: '|   androidSplashScreen: {instanceID: 0}'
-    - line: '|   AndroidKeystoreName: '
-    - line: '|   AndroidKeyaliasName: '
+    - line: '|   AndroidKeystoreName: /Users/nickbres/Documents/NickBres.keystore'
+    - line: '|   AndroidKeyaliasName: mergimals'
     - line: '|   AndroidEnableArmv9SecurityFeatures: 0'
     - line: '|   AndroidEnableArm64MTE: 0'
     - line: '|   AndroidBuildApkPerCpuArchitecture: 0'
@@ -306,7 +306,7 @@ MonoBehaviour:
     - line: '|   AndroidEnableTango: 0'
     - line: '|   androidEnableBanner: 1'
     - line: '|   androidUseLowAccuracyLocation: 0'
-    - line: '|   androidUseCustomKeystore: 0'
+    - line: '|   androidUseCustomKeystore: 1'
     - line: '|   m_AndroidBanners:'
     - line: '|   - width: 320'
     - line: '|     height: 180'
@@ -995,10 +995,10 @@ MonoBehaviour:
         m_BuildSubtarget: 0
         m_BuildSystem: 1
         m_ExportAsGoogleAndroidProject: 0
-        m_DebugSymbolLevel: 1
+        m_DebugSymbolLevel: 2
         m_DebugSymbolFormat: 5
         m_CurrentDeploymentTargetId: __builtin__target_default
         m_BuildType: 2
-        m_BuildAppBundle: 0
+        m_BuildAppBundle: 1
         m_IPAddressToConnect: 
         m_SymlinkSources: 0

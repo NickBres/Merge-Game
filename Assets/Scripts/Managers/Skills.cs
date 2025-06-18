@@ -81,7 +81,7 @@ public class Skills : MonoBehaviour
         if (isOnCooldown || !PlayerDataManager.instance.UseBomb() || GameManager.instance.GetGameState() != GameState.Game)
             return;
         AudioManager.instance.PlayFuseSound();
-        GameplayController.instance.SetNextAnimal(AnimalType.Bomb);
+        GameplayController.instance.SetNextAnimal(AnimalType.Special);
         StartCoroutine(CooldownCoroutine());
     }
 

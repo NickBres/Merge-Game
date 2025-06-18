@@ -15,7 +15,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource upgradeSource;
     [SerializeField] private AudioSource gameOverSource;
     [SerializeField] private AudioSource newHighScoreSource;
-    [SerializeField] private AudioSource cawabangaSource;
+    [SerializeField] private AudioSource cawabungaSource;
     [SerializeField] private AudioSource epicSource;
     [SerializeField] private AudioSource wowSource;
     public void PlayGameOverSound()
@@ -28,9 +28,9 @@ public class AudioManager : MonoBehaviour
         newHighScoreSource.Play();
     }
 
-    public void PlayCawabangaSound()
+    public void PlayCawabungaSound()
     {
-        cawabangaSource.Play();
+        cawabungaSource.Play();
     }
 
     public void PlayEpicSound()
@@ -151,7 +151,7 @@ public class AudioManager : MonoBehaviour
         upgradeSource.mute = !isOn;
         gameOverSource.mute = !isOn;
         newHighScoreSource.mute = !isOn;
-        cawabangaSource.mute = !isOn;
+        cawabungaSource.mute = !isOn;
         epicSource.mute = !isOn;
         wowSource.mute = !isOn;
     }

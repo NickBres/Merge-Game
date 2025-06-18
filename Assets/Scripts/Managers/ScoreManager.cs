@@ -156,15 +156,17 @@ public class ScoreManager : MonoBehaviour
     {
         if (comboCount == 32)
         {
-            AudioManager.instance.PlayCawabangaSound();
+            ComboText.instance.ShowCawabunga();
         }
         else if (comboCount == 16)
         {
-            AudioManager.instance.PlayEpicSound();
+            
+            ComboText.instance.ShowEpic();
         }
         else if (comboCount == 8)
         {
-            AudioManager.instance.PlayWowSound();
+            ComboText.instance.ShowWOW();
+            GameplayController.instance.SetNextCapybara();
         }
     }
 
@@ -172,15 +174,16 @@ public class ScoreManager : MonoBehaviour
     {
         if (comboCount == 7)
         {
-            AudioManager.instance.PlayCawabangaSound();
+            ComboText.instance.ShowCawabunga();
         }
         else if (comboCount == 6)
         {
-            AudioManager.instance.PlayEpicSound();
+            ComboText.instance.ShowEpic();
         }
         else if (comboCount == 5)
         {
-            AudioManager.instance.PlayWowSound();
+            ComboText.instance.ShowWOW();
+            GameplayController.instance.SetNextCapybara();
         }
     }
 

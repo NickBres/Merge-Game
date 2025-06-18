@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject gamePanel;
+    [SerializeField] private GameObject gameBackPanel;
     [SerializeField] private GameObject wallsPanel;
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject skinsPanel;
@@ -66,6 +67,7 @@ public class UIManager : MonoBehaviour
         gameOverPanel.SetActive(false);
         menuPanel.SetActive(true);
         gamePanel.SetActive(false);
+        gameBackPanel.SetActive(false);
         skinsPanel.SetActive(false);
         animalSelectorPanel.SetActive(false);
         wallsPanel.SetActive(false);
@@ -99,6 +101,7 @@ public class UIManager : MonoBehaviour
     {
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
+        gameBackPanel.SetActive(true);
         wallsPanel.SetActive(true);
         pausePanel.SetActive(false);
     }
@@ -107,6 +110,7 @@ public class UIManager : MonoBehaviour
     {
         gameOverPanel.SetActive(true);
         gamePanel.SetActive(false);
+        gameBackPanel.SetActive(false);
 
         wallsPanel.SetActive(false);
     }
@@ -115,6 +119,7 @@ public class UIManager : MonoBehaviour
     {
         pausePanel.SetActive(true);
         gamePanel.SetActive(false);
+        gameBackPanel.SetActive(false);
     }
 
     private void SetSkins()
