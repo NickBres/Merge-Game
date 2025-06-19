@@ -5,6 +5,8 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
     [Header(" Elements ")]
     [SerializeField] private AudioSource mergeSource;
+    [SerializeField] private AudioSource icedSource;
+    [SerializeField] private AudioSource iceBreakSource;
     [SerializeField] private AudioSource explosionSource;
     [SerializeField] private AudioSource clickSource;
     [SerializeField] private AudioSource coinsSource;
@@ -18,6 +20,17 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource cawabungaSource;
     [SerializeField] private AudioSource epicSource;
     [SerializeField] private AudioSource wowSource;
+
+
+    public void PlayIcedSound()
+    {
+        icedSource.Play();
+    }
+    public void PlayIceBreakSound()
+    {
+        iceBreakSource.Play();
+    }
+
     public void PlayGameOverSound()
     {
         gameOverSource.Play();
@@ -141,6 +154,8 @@ public class AudioManager : MonoBehaviour
     private void ToggleSFX(bool isOn)
     {
         mergeSource.mute = !isOn;
+        icedSource.mute = !isOn;
+        iceBreakSource.mute = !isOn;
         explosionSource.mute = !isOn;
         clickSource.mute = !isOn;
         coinsSource.mute = !isOn;

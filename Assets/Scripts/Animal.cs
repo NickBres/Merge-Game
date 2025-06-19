@@ -18,6 +18,10 @@ public class Animal : MonoBehaviour
     private SpriteRenderer crackRenderer;
     protected bool isExplosive = false;
 
+    [Header(" Effects ")]
+    [SerializeField] private ParticleSystem mergeEffect;
+    private GameObject iceCube;
+
     [Header(" Actions ")]
     public static Action<Animal> onCollisionWithAnimal;
     public event Action onCollision;
@@ -26,10 +30,8 @@ public class Animal : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer skinRenderer;
 
-    [Header(" Effects ")]
-    [SerializeField] private ParticleSystem mergeEffect;
-
     protected bool hasCollided = false;
+    protected bool isIced = false;
     protected bool isFrozen = false;
     private void Awake()
     {
@@ -38,8 +40,12 @@ public class Animal : MonoBehaviour
         mergeEffect = GetComponentInChildren<ParticleSystem>();
         skinRenderer = transform.Find("Skin/Skin Renderer")?.GetComponent<SpriteRenderer>();
         crackRenderer = transform.Find("Crack")?.GetComponent<SpriteRenderer>();
+        iceCube = transform.Find("IceCube")?.gameObject;
         if (crackRenderer != null)
             crackRenderer.enabled = false;
+        // iceCube assignment retained, do not modify here
+        if (iceCube != null)
+            iceCube.SetActive(false);
     }
 
     // Update is called once per frame
@@ -67,6 +73,32 @@ public class Animal : MonoBehaviour
 
         canBeMerged = true;
     }
+    public void ApplyIce()
+    {
+        isIced = true;
+        if (iceCube != null)
+        {
+            iceCube.SetActive(true);
+            AudioManager.instance.PlayIcedSound();
+        }
+    }
+
+    public void RemoveIce()
+    {
+        isIced = false;
+        if (iceCube != null)
+        {
+            iceCube.SetActive(false);
+            AudioManager.instance.PlayIceBreakSound();
+        }
+
+    }
+
+    public bool HasIce()
+    {
+        return isIced;
+    }
+
     public void Unfreeze()
     {
         isFrozen = false;
@@ -103,7 +135,8 @@ public class Animal : MonoBehaviour
         if (collision.collider.CompareTag("Wall")) return;
         onCollision?.Invoke();
 
-        if (collision.collider.TryGetComponent(out Animal other) && other != this)
+        Animal other = collision.collider.GetComponent<Animal>() ?? collision.collider.GetComponentInParent<Animal>();
+        if (other != null && other != this)
         {
             currentCollisions.Add(other);
         }
@@ -120,7 +153,7 @@ public class Animal : MonoBehaviour
 
     protected virtual void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Wall")) return;
+        if (collision.collider.CompareTag("Wall") || HasIce()) return;
         hasCollided = true;
 
 
@@ -222,61 +255,6 @@ public class Animal : MonoBehaviour
             return;
         this.transform.position = newPosition;
     }
-
-
-    private void ResolveSpawnOverlaps()
-    {
-        Collider2D myCollider = GetComponent<Collider2D>();
-        ContactFilter2D filter = new ContactFilter2D();
-        filter.SetLayerMask(LayerMask.GetMask("Animal"));
-        filter.useTriggers = false;
-
-        Collider2D[] results = new Collider2D[10];
-        List<Rigidbody2D> affectedRigidbodies = new List<Rigidbody2D>();
-
-        int count = Physics2D.OverlapCollider(myCollider, filter, results);
-        if (count == 0)
-            return;
-        for (int i = 0; i < count; i++)
-        {
-            if (results[i] != null && results[i].attachedRigidbody != null)
-            {
-                var rb = results[i].attachedRigidbody;
-                rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-                affectedRigidbodies.Add(rb);
-            }
-        }
-
-        rigidBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-
-        StartCoroutine(WaitAndResetCollisionMode(affectedRigidbodies));
-    }
-
-    private System.Collections.IEnumerator WaitAndResetCollisionMode(List<Rigidbody2D> affectedRigidbodies)
-    {
-        Collider2D myCollider = GetComponent<Collider2D>();
-        ContactFilter2D filter = new ContactFilter2D();
-        filter.SetLayerMask(LayerMask.GetMask("Animal"));
-        filter.useTriggers = false;
-
-        Collider2D[] results = new Collider2D[10];
-
-        while (true)
-        {
-            int count = Physics2D.OverlapCollider(myCollider, filter, results);
-            if (count == 0)
-                break;
-            yield return null;
-        }
-
-        rigidBody.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
-        foreach (var rb in affectedRigidbodies)
-        {
-            if (rb != null)
-                rb.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
-        }
-    }
-
     private void FlashCrack()
     {
         if (!isExplosive || crackRenderer == null)
@@ -304,10 +282,18 @@ public class Animal : MonoBehaviour
                 float distance = Vector2.Distance(transform.position, other.transform.position);
 
                 // Destroy animals with lower type in kill radius
-                if (distance <= killRadius && other.GetAnimalType() < this.GetAnimalType())
+                if (distance <= killRadius)
                 {
-                    other.Disappear();
-                    ScoreManager.instance.UpdateScore(other.GetAnimalType(), transform.position);
+                    if (other.HasIce())
+                    {
+                        other.RemoveIce();
+                    }
+                    else if (other.GetAnimalType() < this.GetAnimalType())
+                    {
+                        other.Disappear();
+                        ScoreManager.instance.UpdateScore(other.GetAnimalType(), transform.position);
+                    }
+                    
                 }
                 else
                 {
@@ -330,11 +316,7 @@ public class Animal : MonoBehaviour
         AudioManager.instance.PlayExplosionSound(transform.position);
         Destroy(gameObject);
     }
-    
+
 
 
 }
-
-
-
-

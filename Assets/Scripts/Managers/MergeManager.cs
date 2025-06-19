@@ -48,7 +48,7 @@ public class MergeManager : MonoBehaviour
             var current = toCheck.Dequeue();
             foreach (var other in current.GetCurrentCollisions())
             {
-                if (other == null || other == current)
+                if (other == null || other == current || other.HasIce())
                     continue;
 
                 if (other.GetAnimalType() == mergeType && !toMerge.Contains(other))
@@ -65,6 +65,7 @@ public class MergeManager : MonoBehaviour
             int count = 0;
             foreach (var animal in toMerge)
             {
+                FindIced(animal);
                 spawnPos += (Vector2)animal.transform.position;
                 animal.Disappear();
                 if (count > 1)
@@ -82,6 +83,20 @@ public class MergeManager : MonoBehaviour
         }
 
         StartCoroutine(ResetLastSender());
+    }
+
+    private void FindIced(Animal animal)
+    {
+        foreach (var other in animal.GetCurrentCollisions())
+        {
+            if (other != null && other != animal && other.isActiveAndEnabled)
+            {
+                if (other.HasIce())
+                {
+                    other.RemoveIce();
+                }
+            }
+        }
     }
 
     IEnumerator ResetLastSender()

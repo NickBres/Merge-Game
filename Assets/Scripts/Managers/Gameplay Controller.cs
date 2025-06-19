@@ -50,6 +50,7 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private Transform animalSpawnPoint;
     [SerializeField] private float spawnDelay = 0.5f;
     [SerializeField] private float spawnPositionOffset = 0;
+    [SerializeField] private float iceChance = 0.1f; 
     private bool canSpawn = true;
     private Vector2 touchStartPos;
     [SerializeField] private float swipeThreshold = 50f; // in pixels
@@ -474,12 +475,16 @@ public class GameplayController : MonoBehaviour
         newAnimal = SpawnAnimal(newAnimal, spawnPosition);
         newAnimal.EnablePhysics();
         IncreaseFallingSpeed((int)type);
+        ComboPopUp.instance.ShowCombo(spawnPosition, ScoreManager.instance.GetComboCount());
+        ScoreManager.instance.IncrementCombo();
         if (ScoreManager.instance.isEpicCombo())
         {
             newAnimal.MakeExplosive();
         }
-        ComboPopUp.instance.ShowCombo(spawnPosition, ScoreManager.instance.GetComboCount());
-        ScoreManager.instance.IncrementCombo();
+        if (Random.value < iceChance)
+        {
+            newAnimal.ApplyIce();
+        }
     }
 
 
