@@ -47,7 +47,7 @@ public class GameOverManager : MonoBehaviour
 
     private void ManageGameOver()
     {
-        if (timerActive)
+        if (timerActive && canLoose)
         {
             timer += Time.deltaTime;
             if (timer >= durationThreshold)

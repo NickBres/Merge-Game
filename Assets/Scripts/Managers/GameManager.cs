@@ -48,6 +48,15 @@ public class GameManager : MonoBehaviour
         return gameState == GameState.Game;
     }
 
+    void OnApplicationPause(bool pause)
+{
+    if (pause && gameState == GameState.Game)
+    {
+        // App is in background
+        SetGameState(GameState.Pause);
+    }
+}
+
     public void SetGameMode(GameMode newGameMode)
     {
         gameMode = newGameMode;
