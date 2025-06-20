@@ -50,7 +50,7 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private Transform animalSpawnPoint;
     [SerializeField] private float spawnDelay = 0.5f;
     [SerializeField] private float spawnPositionOffset = 0;
-    [SerializeField] private float iceChance = 0.1f; 
+    [SerializeField] private float iceChance = 0.1f;
     private bool canSpawn = true;
     private Vector2 touchStartPos;
     [SerializeField] private float swipeThreshold = 50f; // in pixels
@@ -456,11 +456,17 @@ public class GameplayController : MonoBehaviour
     // Instantiate a new animal prefab at a position
     private Animal SpawnAnimal(Animal animal, Vector2 position)
     {
+        EnsureSpawnAreaClear(position, animal);
         Animal newAnimal = Instantiate(animal,
             position,
             Quaternion.identity,
             animalsParent);
         ApplySkinToAnimal(newAnimal);
+
+        if (newAnimal.GetComponent<Capybara>() != null)
+        {
+            AudioManager.instance.PlayChoirSound();
+        }
         return newAnimal;
     }
 
@@ -601,6 +607,38 @@ public class GameplayController : MonoBehaviour
     public Animal GetCurrentAnimal()
     {
         return currentAnimal;
+    }
+
+    #endregion
+
+
+    #region Helper Methods
+
+    private void EnsureSpawnAreaClear(Vector2 spawnPoint, Animal prefab)
+    {
+        int maxAttempts = 10;
+        float radius = prefab.GetComponent<Collider2D>().bounds.extents.magnitude;
+        LayerMask animalLayer = LayerMask.GetMask("Animal"); // Ensure your animal objects are on the "Animal" layer
+
+        for (int attempt = 0; attempt < maxAttempts; attempt++)
+        {
+            Collider2D[] hits = Physics2D.OverlapCircleAll(spawnPoint, radius, animalLayer);
+            if (hits.Length == 0)
+                break;
+
+            foreach (var hit in hits)
+            {
+                Animal a = hit.GetComponent<Animal>();
+                if (a != null)
+                {
+                    Vector2 pushDir = (a.transform.position - (Vector3)spawnPoint).normalized;
+                    if (pushDir == Vector2.zero) pushDir = UnityEngine.Random.insideUnitCircle.normalized;
+                    a.Push(pushDir * 0.5f); // Assumes Animal has a Push method
+                }
+            }
+
+            Physics2D.SyncTransforms(); // Make sure physics state is updated
+        }
     }
 
     #endregion

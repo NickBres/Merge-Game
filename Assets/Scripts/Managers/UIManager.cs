@@ -135,6 +135,7 @@ public class UIManager : MonoBehaviour
         infoPanel.SetActive(true);
     }
 
+
     public void InfoButtonCallback()
     {
         GameManager.instance.SetGameState(GameState.Menu);

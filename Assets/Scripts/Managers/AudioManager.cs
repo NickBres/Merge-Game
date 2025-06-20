@@ -5,6 +5,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
     [Header(" Elements ")]
     [SerializeField] private AudioSource mergeSource;
+    [SerializeField] private AudioSource choirSource;
     [SerializeField] private AudioSource icedSource;
     [SerializeField] private AudioSource iceBreakSource;
     [SerializeField] private AudioSource explosionSource;
@@ -25,6 +26,11 @@ public class AudioManager : MonoBehaviour
     public void PlayIcedSound()
     {
         icedSource.Play();
+    }
+
+    public void PlayChoirSound()
+    {
+        choirSource.Play();
     }
     public void PlayIceBreakSound()
     {
@@ -169,6 +175,7 @@ public class AudioManager : MonoBehaviour
         cawabungaSource.mute = !isOn;
         epicSource.mute = !isOn;
         wowSource.mute = !isOn;
+        choirSource.mute = !isOn;
     }
 
     private void ToggleMusic(bool isOn)
@@ -187,6 +194,16 @@ public class AudioManager : MonoBehaviour
         musicSource.clip = randomClip;
         // musicSource.loop = true;
         musicSource.Play();
+    }
+
+    public void SpeedUpMusic()
+    {
+        musicSource.pitch = 1.25f;
+    }
+
+    public void ResetMusicSpeed()
+    {
+        musicSource.pitch = 1f;
     }
 
     void Update()

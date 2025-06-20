@@ -39,12 +39,13 @@ public class RewardScreenManager : MonoBehaviour
             case Rarity.Rare: portalAnimator.SetTrigger("PlayBlue"); break;
             case Rarity.Epic: portalAnimator.SetTrigger("PlayPurple"); break;
             case Rarity.Legendary: portalAnimator.SetTrigger("PlayGold"); break;
+            default:  portalAnimator.SetTrigger("PlayGreen"); break;
         }
     }
 
-    public void ShowReward(SkinDataSO skinData, bool isDuplicate, int coinAmount = 0)
+    public void ShowReward(SkinDataSO skinData, bool isDuplicate, int coinAmount = 0, Rarity rarity = Rarity.None)
     {
-        SetupPortal(skinData.rarity);
+        SetupPortal(rarity);
 
         // Show skin image
         skinIcon.sprite = isDuplicate ? coinsImg : skinData.sprite;
@@ -53,9 +54,9 @@ public class RewardScreenManager : MonoBehaviour
         rewardText.text = isDuplicate ? $"+{coinAmount}" : skinData.name;
 
         // Set background color based on rarity
-        rewardTextBox.color = SkinCell.GetColorByRarity(skinData.rarity);
+        rewardTextBox.color = SkinCell.GetColorByRarity(rarity);
 
-        if(skinData.rarity == Rarity.Legendary)
+        if(rarity == Rarity.Legendary)
         {
             AudioManager.instance.PlayLegendarySound();
         }

@@ -422,14 +422,14 @@ MonoBehaviour:
     - line: '|   - m_BuildTarget: iPhone'
     - line: '|     m_Icons:'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 180'
     - line: '|       m_Height: 180'
     - line: '|       m_Kind: 0'
     - line: '|       m_SubKind: iPhone'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 120'
     - line: '|       m_Height: 120'
@@ -443,112 +443,112 @@ MonoBehaviour:
     - line: '|       m_Kind: 0'
     - line: '|       m_SubKind: iPad'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 152'
     - line: '|       m_Height: 152'
     - line: '|       m_Kind: 0'
     - line: '|       m_SubKind: iPad'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 76'
     - line: '|       m_Height: 76'
     - line: '|       m_Kind: 0'
     - line: '|       m_SubKind: iPad'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 120'
     - line: '|       m_Height: 120'
     - line: '|       m_Kind: 3'
     - line: '|       m_SubKind: iPhone'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 80'
     - line: '|       m_Height: 80'
     - line: '|       m_Kind: 3'
     - line: '|       m_SubKind: iPhone'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 80'
     - line: '|       m_Height: 80'
     - line: '|       m_Kind: 3'
     - line: '|       m_SubKind: iPad'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 40'
     - line: '|       m_Height: 40'
     - line: '|       m_Kind: 3'
     - line: '|       m_SubKind: iPad'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 87'
     - line: '|       m_Height: 87'
     - line: '|       m_Kind: 1'
     - line: '|       m_SubKind: iPhone'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 58'
     - line: '|       m_Height: 58'
     - line: '|       m_Kind: 1'
     - line: '|       m_SubKind: iPhone'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 29'
     - line: '|       m_Height: 29'
     - line: '|       m_Kind: 1'
     - line: '|       m_SubKind: iPhone'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 58'
     - line: '|       m_Height: 58'
     - line: '|       m_Kind: 1'
     - line: '|       m_SubKind: iPad'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 29'
     - line: '|       m_Height: 29'
     - line: '|       m_Kind: 1'
     - line: '|       m_SubKind: iPad'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 60'
     - line: '|       m_Height: 60'
     - line: '|       m_Kind: 2'
     - line: '|       m_SubKind: iPhone'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 40'
     - line: '|       m_Height: 40'
     - line: '|       m_Kind: 2'
     - line: '|       m_SubKind: iPhone'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 40'
     - line: '|       m_Height: 40'
     - line: '|       m_Kind: 2'
     - line: '|       m_SubKind: iPad'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 20'
     - line: '|       m_Height: 20'
     - line: '|       m_Kind: 2'
     - line: '|       m_SubKind: iPad'
     - line: '|     - m_Textures:'
-    - line: '|       - {fileID: 2800000, guid: 506fb8b61b3fb43a18763b4c4466b574,
+    - line: '|       - {fileID: 2800000, guid: f1a4768bb6fb04a22a6c96793bc7ae3f,
         type: 3}'
     - line: '|       m_Width: 1024'
     - line: '|       m_Height: 1024'

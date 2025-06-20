@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
+    private float frenzyTimer = 0f;
+    private bool isFrenzyActive = false;
+
     public static ScoreManager instance;
     [Header(" Elements ")]
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI bestScoreTextZen;
     [SerializeField] private TextMeshProUGUI bestScoreTextRush;
+    [SerializeField] private GameObject frenzyBack;
 
     [Header(" Settings ")]
+    [SerializeField] private int frenzyTime = 20;
     private int score = 0;
     private int bestScoreZen = 0;
     private int bestScoreRush = 0;
     private int comboCount = 1;
+    private int multiplier = 1;
 
     [Header(" Data ")]
     private const string bestScoreZenKey = "BestScoreZen";
@@ -57,13 +63,13 @@ public class ScoreManager : MonoBehaviour
 
     public void UpdateScore(AnimalType animalType, Vector2 unused)
     {
-        score += (int)((int)animalType * comboCount);
+        score += (int)((int)animalType * comboCount * multiplier);
         UpdateTextScore();
     }
 
     private void UpdateTextScore()
     {
-        scoreText.text = score.ToString();
+        scoreText.text = (multiplier > 1 ? "x" + multiplier + " " : "") + score.ToString();
     }
 
     private void UpdateTextBestScore()
@@ -155,6 +161,7 @@ public class ScoreManager : MonoBehaviour
         if (isCawabungaCombo())
         {
             ComboText.instance.ShowCawabunga();
+            EnableFrenzy();
         }
         else if (isEpicCombo())
         {
@@ -220,5 +227,44 @@ public class ScoreManager : MonoBehaviour
         score = 0;
         UpdateTextScore();
         UpdateTextBestScore();
+        DisableFrenzy();
+    }
+
+    public void EnableFrenzy()
+    {
+        frenzyTimer += frenzyTime;
+        multiplier *= 2;
+        multiplier = Mathf.Min(multiplier, 8);
+        UpdateTextScore();
+
+        if (!isFrenzyActive)
+        {
+            StartCoroutine(FrenzyRoutine());
+        }
+    }
+
+    private System.Collections.IEnumerator FrenzyRoutine()
+    {
+        isFrenzyActive = true;
+        frenzyBack.SetActive(true);
+        AudioManager.instance.SpeedUpMusic();
+
+        while (frenzyTimer > 0 && GameManager.instance.GetGameState() == GameState.Game)
+        {
+            frenzyTimer -= Time.deltaTime;
+            yield return null;
+        }
+
+        DisableFrenzy();
+    }
+
+    private void DisableFrenzy()
+    {
+        multiplier = 1;
+        frenzyBack.SetActive(false);
+        AudioManager.instance.ResetMusicSpeed();
+        frenzyTimer = 0f;
+        isFrenzyActive = false;
+        UpdateTextScore();
     }
 }

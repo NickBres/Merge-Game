@@ -95,47 +95,42 @@ public class ShopManager : MonoBehaviour
 
     private void OpenChest()
     {
-        // sort skins by rarity, from highest to lowest
-        skinsInChest.Sort((a, b) => ((int)b.rarity).CompareTo((int)a.rarity));
-        var sortedSkins = skinsInChest;
+        // Filter out owned skins
+        List<SkinDataSO> availableSkins = skinsInChest.FindAll(skin => !PlayerDataManager.instance.HasSkin(skin.name));
 
-        bool gotSomething = false;
+        // Determine rarity by roll
+        float roll = Random.Range(0f, 1f);
+        Rarity selectedRarity;
+        if (roll < 0.55f) selectedRarity = Rarity.Common;
+        else if (roll < 0.80f) selectedRarity = Rarity.Rare;
+        else if (roll < 0.95f) selectedRarity = Rarity.Epic;
+        else selectedRarity = Rarity.Legendary;
 
-        while (!gotSomething)
+        List<SkinDataSO> raritySkins = availableSkins.FindAll(skin => skin.rarity == selectedRarity);
+
+        if (raritySkins.Count > 0)
         {
-            foreach (SkinDataSO skinData in sortedSkins)
+            // Choose one randomly
+            SkinDataSO selectedSkin = raritySkins[Random.Range(0, raritySkins.Count)];
+            PlayerDataManager.instance.OwnSkin(selectedSkin.name);
+            UIManager.instance.SetReward();
+            RewardScreenManager.instance.ShowReward(selectedSkin, false, 0, selectedSkin.rarity);
+            OnGotSkin?.Invoke();
+        }
+        else
+        {
+            // No skins of chosen rarity, compensate
+            int coinsToAdd = selectedRarity switch
             {
-                float chance = 1f / (int)skinData.rarity;
-                if (Random.Range(0f, 1f) < chance) // got the skin
-                {
-                    gotSomething = true;
-                    bool isDuplicate = PlayerDataManager.instance.HasSkin(skinData.name);
-                    if (isDuplicate) // player already has this skin, give coins instead                    
-                    {
-                        int coinsToAdd = skinData.rarity switch
-                        {
-                            Rarity.Common => (int)(chestPrice / 3),
-                            Rarity.Rare => (int)(chestPrice / 2),
-                            Rarity.Epic => (int)(chestPrice),
-                            Rarity.Legendary => chestPrice * 2,
-                            _ => 0
-                        };
-                        UIManager.instance.SetReward();
-                        PlayerDataManager.instance.AddCoins(coinsToAdd);
-                        RewardScreenManager.instance.ShowReward(skinData, isDuplicate, coinsToAdd);
-                    }
-                    else
-                    {
-                        UIManager.instance.SetReward();
-                        PlayerDataManager.instance.OwnSkin(skinData.name);
-                        RewardScreenManager.instance.ShowReward(skinData, isDuplicate, 0);
-                        OnGotSkin?.Invoke();
-                    }
-
-
-                    break;
-                }
-            }
+                Rarity.Common => (int)(chestPrice / 3),
+                Rarity.Rare => (int)(chestPrice / 2),
+                Rarity.Epic => (int)(chestPrice),
+                Rarity.Legendary => chestPrice * 2,
+                _ => 0
+            };
+            PlayerDataManager.instance.AddCoins(coinsToAdd);
+            UIManager.instance.SetReward();
+            RewardScreenManager.instance.ShowReward(null, true, coinsToAdd, selectedRarity);
         }
     }
 
