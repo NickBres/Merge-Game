@@ -36,11 +36,11 @@ public class InfoController : MonoBehaviour
         basicsClickCount++;
         lastClickTime = Time.time;
 
-        if (basicsClickCount >= 3)
+        if (basicsClickCount >= 4)
         {
             basicsClickCount = 0;
             PlayerDataManager.instance.AddCoins(10000);
-            AudioManager.instance.PlayCoinsSound();
+            AudioManager.instance.PlayChoirSound();
             VibrationManager.instance.Vibrate(VibrationType.Heavy);
         }
     }

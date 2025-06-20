@@ -37,7 +37,7 @@ public class SkinsUIManager : MonoBehaviour
         foreach (var skin in allSkins)
         {
             SkinCell cell = Instantiate(skinCellPrefab, gridParent);
-            bool isSelected = currAnimalSkin != null && skin.name == currAnimalSkin.name;
+            bool isSelected = currAnimalSkin != null && skin.skinID == currAnimalSkin.skinID;
             cell.Initialize(skin, isSelected);
         }
 
