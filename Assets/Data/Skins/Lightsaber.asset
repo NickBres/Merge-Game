@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skinID: Lightsaber
   sprite: {fileID: 21300000, guid: 02a460574fb1749edaf9cc1a0e9ce1cc, type: 3}
-  displayName: Lightsaber
-  rarity: 0
+  rarity: 20

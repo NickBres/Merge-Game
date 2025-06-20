@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: Orange
   m_EditorClassIdentifier: 
   skinID: Orange
-  sprite: {fileID: 21300000, guid: ac125f3a3b28a4f03bdfb64f246b550f, type: 3}
-  displayName: Orange
+  sprite: {fileID: 21300000, guid: 7f07ed17819e04fc2b03a0817eca6773, type: 3}
   rarity: 2

@@ -135,6 +135,10 @@ public class UIManager : MonoBehaviour
         infoPanel.SetActive(true);
     }
 
+    public void ExitButtonCallback()
+    {
+        Application.Quit();
+    }
 
     public void InfoButtonCallback()
     {
