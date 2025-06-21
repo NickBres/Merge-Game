@@ -157,7 +157,7 @@ public class ScoreManager : MonoBehaviour
             comboCount *= 2;
         }
 
-        comboCount = Mathf.Min(comboCount, 64);
+        comboCount = Mathf.Min(comboCount, 32);
         ComboEffect();
     }
 
@@ -185,9 +185,9 @@ public class ScoreManager : MonoBehaviour
     public bool isEpicCombo()
     {
         if (GameManager.instance.GetGameMode() == GameMode.Zen)
-            return comboCount >= 6 && comboCount % 6 == 0;
+            return comboCount >= 7 && comboCount % 7 == 0;
         else if (GameManager.instance.GetGameMode() == GameMode.Rush)
-            return comboCount >= 16 && comboCount % 16 == 0;
+            return comboCount == 16;
 
         return false;
     }
@@ -195,9 +195,9 @@ public class ScoreManager : MonoBehaviour
     public bool isCawabungaCombo()
     {
         if (GameManager.instance.GetGameMode() == GameMode.Zen)
-            return comboCount >= 7 && comboCount % 7 == 0;
+            return comboCount >= 8 && comboCount % 8 == 0;
         else if (GameManager.instance.GetGameMode() == GameMode.Rush)
-            return comboCount >= 32 && comboCount % 32 == 0;
+            return comboCount == 32;
 
         return false;
     }
@@ -205,9 +205,9 @@ public class ScoreManager : MonoBehaviour
     public bool isWOWCombo()
     {
         if (GameManager.instance.GetGameMode() == GameMode.Zen)
-            return comboCount >= 5 && comboCount % 5 == 0;
+            return comboCount >= 6 && comboCount % 6 == 0;
         else if (GameManager.instance.GetGameMode() == GameMode.Rush)
-            return comboCount >= 8 && comboCount % 8 == 0;
+            return comboCount == 8;
 
         return false;
     }

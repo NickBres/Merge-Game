@@ -13,13 +13,9 @@ public class AimLine : MonoBehaviour
 
     public void EnableLine()
     {
-        Animal currentAnimal = GameplayController.instance.GetCurrentAnimal();
-        if (currentAnimal != null && lineRenderer != null)
-        {
-            float width = currentAnimal.transform.localScale.x;
-            lineRenderer.startWidth = width;
-            lineRenderer.endWidth = width;
-        }
+
+        if(lineRenderer == null) lineRenderer = GetComponent<LineRenderer>();
+        SetWidth();
         gameObject.SetActive(true);
 
     }
@@ -32,5 +28,16 @@ public class AimLine : MonoBehaviour
     public void MoveLine(Vector3 targetPoint)
     {
         transform.position = targetPoint;
+    }
+
+    private void SetWidth()
+    {
+        Animal currentAnimal = GameplayController.instance.GetCurrentAnimal();
+        if (currentAnimal != null && lineRenderer != null)
+        {
+            float width = currentAnimal.transform.localScale.x;
+            lineRenderer.startWidth = width;
+            lineRenderer.endWidth = width;
+        }
     }
 }

@@ -118,7 +118,8 @@ public class GameplayController : MonoBehaviour
                 RespawnAnimal();
             }
         }
-        aimLine.MoveLine(currentAnimal.transform.position);
+        if(currentAnimal != null)
+            aimLine.MoveLine(currentAnimal.transform.position);
     }
 
     // Unsubscribe from events
