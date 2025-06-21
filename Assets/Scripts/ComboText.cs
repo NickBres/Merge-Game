@@ -30,7 +30,7 @@ public class ComboText : MonoBehaviour
         wowText.SetActive(true);
         FadeIn(wowText, 0.2f);
         ScaleBounce(wowText);
-        StartCoroutine(HideAfterDelay(wowText, 1f));
+        StartCoroutine(HideAfterDelay(wowText, 2f));
         AudioManager.instance.PlayWowSound();
     }
 
@@ -40,7 +40,7 @@ public class ComboText : MonoBehaviour
         FadeIn(epicText, 0.2f);
         Rotate360(epicText);
         ScaleBounce(epicText);
-        StartCoroutine(HideAfterDelay(epicText, 1.2f));
+        StartCoroutine(HideAfterDelay(epicText, 2.2f));
         AudioManager.instance.PlayEpicSound();
     }
 
@@ -50,7 +50,7 @@ public class ComboText : MonoBehaviour
         FadeIn(cawabungaText, 0.2f);
         Shake(cawabungaText);
         ScaleBounce(cawabungaText);
-        StartCoroutine(HideAfterDelay(cawabungaText, 1.5f));
+        StartCoroutine(HideAfterDelay(cawabungaText, 2.5f));
         AudioManager.instance.PlayCawabungaSound();
     }
 

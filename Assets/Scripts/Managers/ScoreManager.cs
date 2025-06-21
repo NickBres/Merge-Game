@@ -148,16 +148,8 @@ public class ScoreManager : MonoBehaviour
 
     public void IncrementCombo()
     {
-        if (GameManager.instance.GetGameMode() == GameMode.Zen)
-        {
-            comboCount += 1;
-        }
-        else if (GameManager.instance.GetGameMode() == GameMode.Rush)
-        {
-            comboCount *= 2;
-        }
-
-        comboCount = Mathf.Min(comboCount, 32);
+        comboCount++;
+        comboCount = Mathf.Min(comboCount, 8);
         ComboEffect();
     }
 
@@ -184,30 +176,21 @@ public class ScoreManager : MonoBehaviour
 
     public bool isEpicCombo()
     {
-        if (GameManager.instance.GetGameMode() == GameMode.Zen)
-            return comboCount >= 7 && comboCount % 7 == 0;
-        else if (GameManager.instance.GetGameMode() == GameMode.Rush)
-            return comboCount == 16;
+        return comboCount >= 7;
 
         return false;
     }
 
     public bool isCawabungaCombo()
     {
-        if (GameManager.instance.GetGameMode() == GameMode.Zen)
-            return comboCount >= 8 && comboCount % 8 == 0;
-        else if (GameManager.instance.GetGameMode() == GameMode.Rush)
-            return comboCount == 32;
+        return comboCount >= 8;
 
         return false;
     }
 
     public bool isWOWCombo()
     {
-        if (GameManager.instance.GetGameMode() == GameMode.Zen)
-            return comboCount >= 6 && comboCount % 6 == 0;
-        else if (GameManager.instance.GetGameMode() == GameMode.Rush)
-            return comboCount == 8;
+        return comboCount >= 6;
 
         return false;
     }
@@ -228,7 +211,7 @@ public class ScoreManager : MonoBehaviour
 
     public void EnableFrenzy()
     {
-        frenzyTimer += frenzyTime;
+        //frenzyTimer += frenzyTime;
         multiplier *= 2;
         multiplier = Mathf.Min(multiplier, 8);
         UpdateTextScore();

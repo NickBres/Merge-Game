@@ -257,8 +257,6 @@ public class GameplayController : MonoBehaviour
         if (!GameManager.instance.IsGameState() || isTouchOverUI || IsTouchOverUI(screenPos))
             return;
 
-        if (isRush) rushHoldTime = 0f;
-
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);
         touchStartPos = new Vector2(screenPoint.x, screenPoint.y);
 
@@ -269,8 +267,6 @@ public class GameplayController : MonoBehaviour
                 RespawnAnimal(screenPos.x);
             }
         }
-        // Reset hold duration on touch start
-        holdDuration = 0f;
     }
 
     // Handle touch end input, including swipe detection and tap movement
@@ -285,9 +281,6 @@ public class GameplayController : MonoBehaviour
     // Handle touch hold input for continuous movement or positioning
     private void HandleTouchHold(Vector3 screenPos)
     {
-        // Add hold duration logic
-        holdDuration += Time.deltaTime;
-        if (holdDuration < moveDelay) return;
 
         if (!GameManager.instance.IsGameState() || isTouchOverUI || IsTouchOverUI(screenPos))
             return;
