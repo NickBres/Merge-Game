@@ -5,8 +5,8 @@ public class InfoController : MonoBehaviour
     private float lastClickTime = 0f;
 
     [SerializeField] private GameObject basicsPanel;
-    [SerializeField] private GameObject zenPanel;
-    [SerializeField] private GameObject rushPanel;
+    [SerializeField] private GameObject controlsPanel;
+    [SerializeField] private GameObject eventsPanel;
     [SerializeField] private GameObject magicSweepPanel;
     [SerializeField] private GameObject upgradePanel;
     [SerializeField] private GameObject bombPanel;
@@ -45,16 +45,16 @@ public class InfoController : MonoBehaviour
         }
     }
 
-    public void OnClickZen()
+    public void OnClickControls()
     {
         DisableAll();
-        zenPanel.SetActive(true);
+        controlsPanel.SetActive(true);
     }
 
-    public void OnClickRush()
+    public void OnClickEvents()
     {
         DisableAll();
-        rushPanel.SetActive(true);
+        eventsPanel.SetActive(true);
     }
 
     public void OnClickMagic()
@@ -77,8 +77,8 @@ public class InfoController : MonoBehaviour
     private void DisableAll()
     {
         basicsPanel.SetActive(false);
-        zenPanel.SetActive(false);
-        rushPanel.SetActive(false);
+        controlsPanel.SetActive(false);
+        eventsPanel.SetActive(false);
         magicSweepPanel.SetActive(false);
         upgradePanel.SetActive(false);
         bombPanel.SetActive(false);

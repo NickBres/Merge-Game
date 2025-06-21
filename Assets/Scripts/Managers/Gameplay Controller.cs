@@ -12,6 +12,9 @@ using UnityEngine.UI;
 public class GameplayController : MonoBehaviour
 {
     public static GameplayController instance;
+    // New fields for touch hold duration and move delay
+    private float holdDuration = 0f;
+    [SerializeField] private float moveDelay = 0.1f; // seconds before movement allowed
     [Header(" Elements ")]
     [Header(" Boundaries ")]
     [SerializeField] private Transform leftWall;
@@ -53,7 +56,6 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private float iceChance = 0.1f;
     private bool canSpawn = true;
     private Vector2 touchStartPos;
-    [SerializeField] private float swipeThreshold = 50f; // in pixels
 
 
     [Header(" Debug ")]
@@ -116,6 +118,7 @@ public class GameplayController : MonoBehaviour
                 RespawnAnimal();
             }
         }
+        aimLine.MoveLine(currentAnimal.transform.position);
     }
 
     // Unsubscribe from events
@@ -258,85 +261,52 @@ public class GameplayController : MonoBehaviour
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);
         touchStartPos = new Vector2(screenPoint.x, screenPoint.y);
 
-
-
         if (!isRush)
         {
             if (canSpawn && currentAnimal == null)
             {
-                aimLine.EnableLine();
-                aimLine.MoveLine(screenPos.x);
                 RespawnAnimal(screenPos.x);
             }
         }
+        // Reset hold duration on touch start
+        holdDuration = 0f;
     }
 
     // Handle touch end input, including swipe detection and tap movement
     private void HandleTouchEnd(Vector3 screenPos)
     {
-        if (!GameManager.instance.IsGameState() || isTouchOverUI || IsTouchOverUI(screenPos)) // Check if the touch is over a UI element
+        if (!GameManager.instance.IsGameState()) 
             return;
 
-        if (currentAnimal == null) return;
-
-        Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);
-        Vector2 delta = new Vector2(screenPoint.x, screenPoint.y) - touchStartPos;
-
-        if (isRush)
-        {
-            rushHoldTime = 1f;
-            // Swipe down
-            if (delta.y < -swipeThreshold)
-            {
-                ReleaseAnimal();
-                return;
-            }
-
-            MoveAnimal(moveSpeed * Time.deltaTime * (screenPoint.x < Screen.width / 2 ? -1 : 1));
-
-        }
-        else
-        {
-            aimLine.DisableLine();
-            ReleaseAnimal();
-        }
+        ReleaseAnimal();
     }
 
     // Handle touch hold input for continuous movement or positioning
     private void HandleTouchHold(Vector3 screenPos)
     {
+        // Add hold duration logic
+        holdDuration += Time.deltaTime;
+        if (holdDuration < moveDelay) return;
+
         if (!GameManager.instance.IsGameState() || isTouchOverUI || IsTouchOverUI(screenPos))
             return;
 
         if (currentAnimal == null) return;
 
-        if (isRush)
+        Vector3 newPos = screenPos;
+        float halfWidth = 0.5f;
+        var collider = currentAnimal.GetComponent<Collider2D>();
+        if (collider != null)
         {
-            rushHoldTime += Time.deltaTime;
-            float speedMultiplier = Mathf.Clamp(rushHoldTime / rushAccelerationTime, 1f, 2f); // goes from 1x to 2x
-            float adjustedSpeed = moveSpeed * speedMultiplier;
-
-            Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);
-            MoveAnimal(adjustedSpeed * Time.deltaTime * (screenPoint.x < Screen.width / 2 ? -1 : 1));
+            halfWidth = collider.bounds.extents.x + 0.2f;
         }
-        else
-        {
-            Vector3 newPos = screenPos;
-            float halfWidth = 0.5f;
-            var collider = currentAnimal.GetComponent<Collider2D>();
-            if (collider != null)
-            {
-                halfWidth = collider.bounds.extents.x + 0.2f;
-            }
 
-            float minX = MinX + halfWidth;
-            float maxX = MaxX - halfWidth;
-            newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
-            newPos.y = animalSpawnPoint.position.y;
-            newPos.z = currentAnimal.transform.position.z;
-            currentAnimal.SetPosition(newPos);
-            aimLine.MoveLine(newPos.x);
-        }
+        float minX = MinX + halfWidth;
+        float maxX = MaxX - halfWidth;
+        newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
+        newPos.y = isRush ? currentAnimal.transform.position.y :animalSpawnPoint.position.y;
+        newPos.z = currentAnimal.transform.position.z;
+        currentAnimal.SetPosition(newPos);
     }
 
     // Manage horizontal movement and fast drop input
@@ -414,6 +384,8 @@ public class GameplayController : MonoBehaviour
         {
             currentAnimal.onCollision += ReleaseAnimal;
         }
+
+        aimLine.EnableLine();
     }
 
     // Calculate spawn position with optional horizontal offset
@@ -439,6 +411,7 @@ public class GameplayController : MonoBehaviour
         currentAnimal = null;
 
         ScoreManager.instance.ResetCombo();
+        aimLine.DisableLine();
     }
 
     // Delay allowing next spawn

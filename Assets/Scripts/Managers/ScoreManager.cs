@@ -25,6 +25,7 @@ public class ScoreManager : MonoBehaviour
     [Header(" Data ")]
     private const string bestScoreZenKey = "BestScoreZen";
     private const string bestScoreRushKey = "BestScoreRush";
+    private bool isScoreChanged = false;
 
     void Awake()
     {
@@ -65,6 +66,7 @@ public class ScoreManager : MonoBehaviour
     {
         score += (int)((int)animalType * comboCount * multiplier);
         UpdateTextScore();
+        isScoreChanged = true;
     }
 
     private void UpdateTextScore()
@@ -94,7 +96,7 @@ public class ScoreManager : MonoBehaviour
 
     public int CalculateCoinsFromScore()
     {
-        return (int)score / 10;
+        return (int)score / 20;
     }
 
     private void SetBestScore()
@@ -138,8 +140,11 @@ public class ScoreManager : MonoBehaviour
 
     public void ResetCombo()
     {
-        comboCount = 1;
+        if (!isScoreChanged)
+            comboCount = 1;
+        isScoreChanged = false;
     }
+
 
     public void IncrementCombo()
     {
@@ -180,39 +185,30 @@ public class ScoreManager : MonoBehaviour
     public bool isEpicCombo()
     {
         if (GameManager.instance.GetGameMode() == GameMode.Zen)
-        {
-            return comboCount == 6;
-        }
+            return comboCount >= 6 && comboCount % 6 == 0;
         else if (GameManager.instance.GetGameMode() == GameMode.Rush)
-        {
-            return comboCount == 16;
-        }
+            return comboCount >= 16 && comboCount % 16 == 0;
+
         return false;
     }
 
     public bool isCawabungaCombo()
     {
         if (GameManager.instance.GetGameMode() == GameMode.Zen)
-        {
-            return comboCount == 7;
-        }
+            return comboCount >= 7 && comboCount % 7 == 0;
         else if (GameManager.instance.GetGameMode() == GameMode.Rush)
-        {
-            return comboCount == 32;
-        }
+            return comboCount >= 32 && comboCount % 32 == 0;
+
         return false;
     }
 
     public bool isWOWCombo()
     {
         if (GameManager.instance.GetGameMode() == GameMode.Zen)
-        {
-            return comboCount == 5;
-        }
+            return comboCount >= 5 && comboCount % 5 == 0;
         else if (GameManager.instance.GetGameMode() == GameMode.Rush)
-        {
-            return comboCount == 8;
-        }
+            return comboCount >= 8 && comboCount % 8 == 0;
+
         return false;
     }
 
