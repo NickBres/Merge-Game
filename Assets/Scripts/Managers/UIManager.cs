@@ -148,18 +148,9 @@ public class UIManager : MonoBehaviour
         ClickAndVibrate();
     }
 
-    public void PlayRushButtonCallback()
-    {
-        GameManager.instance.SetGameMode(GameMode.Rush);
-        GameManager.instance.SetGameState(GameState.Game);
 
-        SetGame();
-        ClickAndVibrate();
-    }
-
-    public void PlayZenButtonCallback()
+    public void PlayButtonCallback()
     {
-        GameManager.instance.SetGameMode(GameMode.Zen);
         GameManager.instance.SetGameState(GameState.Game);
 
         SetGame();

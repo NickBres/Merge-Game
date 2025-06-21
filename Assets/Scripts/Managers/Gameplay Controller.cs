@@ -37,7 +37,6 @@ public class GameplayController : MonoBehaviour
     private Animal nextAnimal;
     private AnimalType nextAnimalType;
     private bool isFrozen = false;
-    private bool isRush;
     [SerializeField] private float rushAccelerationTime = 1f; // Time in seconds to reach max speed
     private float rushHoldTime = 0f;
 
@@ -86,8 +85,6 @@ public class GameplayController : MonoBehaviour
         InputManager.instance.OnTouchHold += HandleTouchHold;
 
         GameManager.OnGameStateChanged += CheckState;
-        GameManager.OnGameModeChanged += CheckGameMode;
-        isRush = GameManager.instance.GetGameMode() == GameMode.Rush;
         raycaster = uiCanvas.GetComponent<GraphicRaycaster>();
         currentFallingSpeed = fallingSpeed;
         aimLine.DisableLine();
@@ -105,19 +102,6 @@ public class GameplayController : MonoBehaviour
         if (GameManager.instance.GetGameState() != GameState.Game) return;
 
         isTouchOverUI = EventSystem.current.IsPointerOverGameObject();
-        if (isRush)
-        {
-            if (currentAnimal != null && !isFrozen)
-            {
-
-                currentAnimal.MoveVertically(-currentFallingSpeed * Time.deltaTime);
-                ManagePlayerInput();
-            }
-            else if (canSpawn && !isFrozen)
-            {
-                RespawnAnimal();
-            }
-        }
         if(currentAnimal != null)
             aimLine.MoveLine(currentAnimal.transform.position);
     }
@@ -166,13 +150,6 @@ public class GameplayController : MonoBehaviour
             FreezeAnimals();
         }
     }
-
-    // Update rush mode flag on game mode change
-    private void CheckGameMode(GameMode mode)
-    {
-        isRush = mode == GameMode.Rush;
-    }
-
     #endregion
 
     #region Animal Management
@@ -259,14 +236,7 @@ public class GameplayController : MonoBehaviour
 
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);
         touchStartPos = new Vector2(screenPoint.x, screenPoint.y);
-
-        if (!isRush)
-        {
-            if (canSpawn && currentAnimal == null)
-            {
-                RespawnAnimal(screenPos.x);
-            }
-        }
+        RespawnAnimal(screenPos.x);
     }
 
     // Handle touch end input, including swipe detection and tap movement
@@ -298,7 +268,7 @@ public class GameplayController : MonoBehaviour
         float minX = MinX + halfWidth;
         float maxX = MaxX - halfWidth;
         newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
-        newPos.y = isRush ? currentAnimal.transform.position.y :animalSpawnPoint.position.y;
+        newPos.y = animalSpawnPoint.position.y;
         newPos.z = currentAnimal.transform.position.z;
         currentAnimal.SetPosition(newPos);
     }
@@ -373,12 +343,6 @@ public class GameplayController : MonoBehaviour
         ResetNextAnimal();
         canSpawn = false;
         DelaySpawn();
-
-        if (isRush)
-        {
-            currentAnimal.onCollision += ReleaseAnimal;
-        }
-
         aimLine.EnableLine();
     }
 
@@ -386,11 +350,6 @@ public class GameplayController : MonoBehaviour
     private Vector2 CalculateSpawnPosition(float x)
     {
         Vector2 spawnPosition = new Vector2(x, animalSpawnPoint.position.y);
-        if (isRush)
-        {
-            spawnPosition.x = animalSpawnPoint.position.x;
-            spawnPosition.y += spawnPositionOffset;
-        }
         return spawnPosition;
     }
 
@@ -447,7 +406,6 @@ public class GameplayController : MonoBehaviour
         Animal newAnimal = GetAnimalFromType(type);
         newAnimal = SpawnAnimal(newAnimal, spawnPosition);
         newAnimal.EnablePhysics();
-        IncreaseFallingSpeed((int)type);
         ComboPopUp.instance.ShowCombo(spawnPosition, ScoreManager.instance.GetComboCount());
         ScoreManager.instance.IncrementCombo();
         if (ScoreManager.instance.isEpicCombo())
@@ -499,15 +457,6 @@ public class GameplayController : MonoBehaviour
         }
 
         UnfreezeAnimals();
-    }
-
-    // Increase falling speed based on animal type using normalized log scale
-    private void IncreaseFallingSpeed(int amount)
-    {
-        // Normalize amount from 2–1024 to a 0–1 range using log scale
-        float normalized = Mathf.InverseLerp(2f, 1024f, amount);
-        float speedBoost = Mathf.Lerp(0.05f, 0.3f, normalized); // low type = small boost, high type = bigger
-        currentFallingSpeed = Mathf.Min(currentFallingSpeed + speedBoost, maxFallingSpeed);
     }
 
     // Freeze all animals' physics

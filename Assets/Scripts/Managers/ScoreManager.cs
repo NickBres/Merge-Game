@@ -10,21 +10,18 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager instance;
     [Header(" Elements ")]
     [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI bestScoreTextZen;
-    [SerializeField] private TextMeshProUGUI bestScoreTextRush;
+    [SerializeField] private TextMeshProUGUI bestScoreText;
     [SerializeField] private GameObject frenzyBack;
 
     [Header(" Settings ")]
     [SerializeField] private int frenzyTime = 20;
     private int score = 0;
-    private int bestScoreZen = 0;
-    private int bestScoreRush = 0;
+    private int bestScore = 0;
     private int comboCount = 1;
     private int multiplier = 1;
 
     [Header(" Data ")]
-    private const string bestScoreZenKey = "BestScoreZen";
-    private const string bestScoreRushKey = "BestScoreRush";
+    private const string bestScoreKey = "BestScore";
     private bool isScoreChanged = false;
 
     void Awake()
@@ -76,8 +73,7 @@ public class ScoreManager : MonoBehaviour
 
     private void UpdateTextBestScore()
     {
-        bestScoreTextZen.text = bestScoreZen.ToString();
-        bestScoreTextRush.text = bestScoreRush.ToString();
+        bestScoreText.text = bestScore.ToString();
     }
 
     private void GameStateChanged(GameState gameState)
@@ -102,15 +98,9 @@ public class ScoreManager : MonoBehaviour
     private void SetBestScore()
     {
         LoadData();
-        if (GameManager.instance.GetGameMode() == GameMode.Zen && score > bestScoreZen)
+        if (score > bestScore)
         {
-            bestScoreZen = score;
-            SaveData();
-            AudioManager.instance.PlayNewHighScoreSound();
-        }
-        else if (GameManager.instance.GetGameMode() == GameMode.Rush && score > bestScoreRush)
-        {
-            bestScoreRush = score;
+            bestScore = score;
             SaveData();
             AudioManager.instance.PlayNewHighScoreSound();
         }
@@ -127,14 +117,12 @@ public class ScoreManager : MonoBehaviour
 
     private void LoadData()
     {
-        bestScoreZen = PlayerPrefs.GetInt(bestScoreZenKey, 0);
-        bestScoreRush = PlayerPrefs.GetInt(bestScoreRushKey, 0);
+        bestScore = PlayerPrefs.GetInt(bestScoreKey, 0);
     }
 
     private void SaveData()
     {
-        PlayerPrefs.SetInt(bestScoreZenKey, bestScoreZen);
-        PlayerPrefs.SetInt(bestScoreRushKey, bestScoreRush);
+        PlayerPrefs.SetInt(bestScoreKey, bestScore);
         PlayerPrefs.Save();
     }
 
@@ -178,21 +166,18 @@ public class ScoreManager : MonoBehaviour
     {
         return comboCount >= 7;
 
-        return false;
     }
 
     public bool isCawabungaCombo()
     {
         return comboCount >= 8;
 
-        return false;
     }
 
     public bool isWOWCombo()
     {
         return comboCount >= 6;
 
-        return false;
     }
 
     public int GetComboCount()
@@ -211,7 +196,7 @@ public class ScoreManager : MonoBehaviour
 
     public void EnableFrenzy()
     {
-        //frenzyTimer += frenzyTime;
+        frenzyTimer += frenzyTime;
         multiplier *= 2;
         multiplier = Mathf.Min(multiplier, 8);
         UpdateTextScore();

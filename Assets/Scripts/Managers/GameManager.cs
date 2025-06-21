@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     [Header(" Settings ")]
     private GameState gameState;
-    private GameMode gameMode;
 
     [Header(" Actions ")]
     public static Action<GameState> OnGameStateChanged;
@@ -55,21 +54,6 @@ public class GameManager : MonoBehaviour
         // App is in background
         SetGameState(GameState.Pause);
     }
-}
-
-    public void SetGameMode(GameMode newGameMode)
-    {
-        gameMode = newGameMode;
-        OnGameModeChanged?.Invoke(gameMode);
-    }
-
-    public GameMode GetGameMode()
-    {
-        return gameMode;
-    }
-    
-    
-
-    
+} 
   
 }
