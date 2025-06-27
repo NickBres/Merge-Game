@@ -178,7 +178,7 @@ public class Animal : MonoBehaviour
     {
         if (isExplosive)
         {
-            Explode(1.5f, 3f, 5f);
+            Explode(2f, 4f, 15f);
             return;
         }
         if (mergeEffect != null)

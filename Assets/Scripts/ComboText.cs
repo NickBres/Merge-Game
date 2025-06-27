@@ -49,7 +49,7 @@ public class ComboText : MonoBehaviour
         cawabungaText.SetActive(true);
         FadeIn(cawabungaText, 0.2f);
         Shake(cawabungaText);
-        ScaleBounce(cawabungaText);
+        //ScaleBounce(cawabungaText);
         StartCoroutine(HideAfterDelay(cawabungaText, 2.5f));
         AudioManager.instance.PlayCawabungaSound();
     }

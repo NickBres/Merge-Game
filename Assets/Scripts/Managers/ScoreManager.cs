@@ -137,7 +137,6 @@ public class ScoreManager : MonoBehaviour
     public void IncrementCombo()
     {
         comboCount++;
-        comboCount = Mathf.Min(comboCount, 8);
         ComboEffect();
     }
 
@@ -145,6 +144,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (isCawabungaCombo())
         {
+            comboCount = 1;
             ComboText.instance.ShowCawabunga();
             EnableFrenzy();
         }
@@ -164,19 +164,19 @@ public class ScoreManager : MonoBehaviour
 
     public bool isEpicCombo()
     {
-        return comboCount >= 7;
+        return comboCount == 8;
 
     }
 
     public bool isCawabungaCombo()
     {
-        return comboCount >= 8;
+        return comboCount == 10;
 
     }
 
     public bool isWOWCombo()
     {
-        return comboCount >= 6;
+        return comboCount == 6;
 
     }
 
@@ -196,7 +196,7 @@ public class ScoreManager : MonoBehaviour
 
     public void EnableFrenzy()
     {
-        frenzyTimer += frenzyTime;
+        frenzyTimer = frenzyTime;
         multiplier *= 2;
         multiplier = Mathf.Min(multiplier, 8);
         UpdateTextScore();
