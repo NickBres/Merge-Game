@@ -135,6 +135,7 @@ public class Animal : MonoBehaviour
         if (collision.collider.CompareTag("Wall")) return;
         onCollision?.Invoke();
 
+
         Animal other = collision.collider.GetComponent<Animal>() ?? collision.collider.GetComponentInParent<Animal>();
         if (other != null && other != this)
         {
@@ -293,7 +294,7 @@ public class Animal : MonoBehaviour
                         other.Disappear();
                         ScoreManager.instance.UpdateScore(other.GetAnimalType(), transform.position);
                     }
-                    
+
                 }
                 else
                 {

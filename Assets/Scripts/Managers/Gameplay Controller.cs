@@ -38,7 +38,6 @@ public class GameplayController : MonoBehaviour
     private AnimalType nextAnimalType;
     private bool isFrozen = false;
     [SerializeField] private float rushAccelerationTime = 1f; // Time in seconds to reach max speed
-    private float rushHoldTime = 0f;
 
     private bool isTouchOverUI;
 
@@ -50,7 +49,6 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private float maxFallingSpeed = 10f;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Transform animalSpawnPoint;
-    [SerializeField] private float spawnDelay = 0.5f;
     [SerializeField] private float spawnPositionOffset = 0;
     [SerializeField] private float iceChance = 0.1f;
     private bool canSpawn = true;
@@ -231,7 +229,7 @@ public class GameplayController : MonoBehaviour
     // Handle touch start input
     private void HandleTouchStart(Vector3 screenPos)
     {
-        if (!GameManager.instance.IsGameState() || isTouchOverUI || IsTouchOverUI(screenPos))
+        if (!GameManager.instance.IsGameState() || isTouchOverUI || IsTouchOverUI(screenPos) || !canSpawn)
             return;
 
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);
@@ -273,43 +271,6 @@ public class GameplayController : MonoBehaviour
         currentAnimal.SetPosition(newPos);
     }
 
-    // Manage horizontal movement and fast drop input
-    private void ManagePlayerInput()
-    {
-        // Horizontal Movement
-        float inputX = InputManager.instance.HorizontalInput;
-
-        if (inputX != 0)
-        {
-            float moveDist = inputX * moveSpeed * Time.deltaTime;
-            MoveAnimal(moveDist);
-        }
-        // drop
-        if (InputManager.instance.InputActions.Gameplay.FastDrop.WasPressedThisFrame())
-        {
-            ReleaseAnimal();
-        }
-    }
-
-    private void MoveAnimal(float moveDist)
-    {
-        if (currentAnimal == null) return;
-        Vector3 newPos = currentAnimal.transform.position + new Vector3(moveDist, 0, 0);
-        float halfWidth = 0.5f;
-        var collider = currentAnimal.GetComponent<Collider2D>();
-        if (collider != null)
-        {
-            halfWidth = collider.bounds.extents.x + 0.2f;
-        }
-
-        float minX = MinX + halfWidth;
-        float maxX = MaxX - halfWidth;
-        newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
-        newPos.y = currentAnimal.transform.position.y;
-        newPos.z = currentAnimal.transform.position.z;
-        currentAnimal.SetPosition(newPos);
-    }
-
     // Check if a world position corresponds to a UI element
     private bool IsTouchOverUI(Vector3 worldPos)
     {
@@ -341,9 +302,9 @@ public class GameplayController : MonoBehaviour
         currentAnimal = SpawnAnimal(nextAnimal, spawnPosition);
         currentAnimal.DisablePhysics(false, false);
         ResetNextAnimal();
-        canSpawn = false;
-        DelaySpawn();
         aimLine.EnableLine();
+
+        currentAnimal.onCollision += EnableSpawn;
     }
 
     // Calculate spawn position with optional horizontal offset
@@ -360,24 +321,13 @@ public class GameplayController : MonoBehaviour
             return;
 
         currentAnimal.EnablePhysics();
-        currentAnimal.onCollision -= ReleaseAnimal;
+        currentAnimal.onCollision -= EnableSpawn;
         currentAnimal = null;
 
         ScoreManager.instance.ResetCombo();
         aimLine.DisableLine();
     }
 
-    // Delay allowing next spawn
-    private void DelaySpawn()
-    {
-        Invoke("StopControlTimer", spawnDelay);
-    }
-
-    // Allow spawning again
-    private void StopControlTimer()
-    {
-        canSpawn = true;
-    }
 
     // Instantiate a new animal prefab at a position
     private Animal SpawnAnimal(Animal animal, Vector2 position)
@@ -523,6 +473,11 @@ public class GameplayController : MonoBehaviour
     public Animal GetCurrentAnimal()
     {
         return currentAnimal;
+    }
+
+    public void EnableSpawn()
+    {
+        canSpawn = true;
     }
 
     #endregion
