@@ -23,6 +23,7 @@
 - Ability system with satisfying visual and sound effects
 - Skin gacha system with rarity-based unlocks
 - Modular and maintainable Unity architecture
+- Tilt affects gravity
 
 ---
 
