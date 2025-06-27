@@ -1,4 +1,5 @@
 # 🐾 Mergimals
+![horizontal](https://github.com/user-attachments/assets/5e629cf5-6bec-4258-9060-e2bd4964fb9b)
 
 **Mergimals** is a cute and relaxing merge puzzle game developed in Unity. Combine animals to discover new species, unlock adorable skins, and chase high scores with satisfying combos and physics-based gameplay.
 
@@ -26,8 +27,12 @@
 ---
 
 ## 📷 Screenshots
+![6 vertical](https://github.com/user-attachments/assets/530a21c6-202c-43af-a619-69d6fc23bce9)
+![5 vertical](https://github.com/user-attachments/assets/c5234871-fcaf-4a38-b003-ecfc34520934)
+![4 vertical](https://github.com/user-attachments/assets/1168ce8a-72ab-4584-9142-fc72f364b3e3)
+![3 vertical](https://github.com/user-attachments/assets/ea3da0bb-cf29-4a3b-9bd3-e75d3acc0b29)
+![2 vertical](https://github.com/user-attachments/assets/958bdd08-6f76-4ec7-b205-a7d1c710c337)
 
-> _[Add screenshots here to showcase gameplay, skins, and combos]_
 
 ---
 
