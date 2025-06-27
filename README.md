@@ -28,18 +28,11 @@
 
 ## 📷 Screenshots
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/530a21c6-202c-43af-a619-69d6fc23bce9" width="200"/>
-  <img src="https://github.com/user-attachments/assets/c5234871-fcaf-4a38-b003-ecfc34520934" width="200"/>
-</p>
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/1168ce8a-72ab-4584-9142-fc72f364b3e3" width="200"/>
-  <img src="https://github.com/user-attachments/assets/ea3da0bb-cf29-4a3b-9bd3-e75d3acc0b29" width="200"/>
-</p>
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/958bdd08-6f76-4ec7-b205-a7d1c710c337" width="200"/>
-</p>
-
+![6 vertical]()
+![5 vertical](https://github.com/user-attachments/assets/eda52354-b91d-4951-b9fe-756be583b935)
+![4 vertical](https://github.com/user-attachments/assets/08c4f213-c902-4ad4-9fa9-5e1ca57765ab)
+![3 vertical](https://github.com/user-attachments/assets/fbc4aee3-e666-4ac5-8da0-85b6cea6a803)
+![2 vertical](https://github.com/user-attachments/assets/f010d2d6-6904-4b0b-a347-5403a9cddd66)
 
 ---
 
