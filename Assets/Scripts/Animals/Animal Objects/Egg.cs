@@ -55,6 +55,12 @@ public class Egg : Animal
 
         return newAnimal;
     }
+
+    public virtual bool CanMerge()
+    {
+        // Eggs cannot merge with other animals
+        return false;
+    }
     
     #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
