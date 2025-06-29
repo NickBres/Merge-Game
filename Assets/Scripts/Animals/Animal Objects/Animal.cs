@@ -11,6 +11,7 @@ public class Animal : MonoBehaviour
 
     [Header(" Data ")]
     [SerializeField] private AnimalType type;
+    [SerializeField] protected float explosionForce = 15f;
     protected bool canBeMerged = false;
     private Vector2 storedVelocity;
 
@@ -19,7 +20,7 @@ public class Animal : MonoBehaviour
     protected bool isExplosive = false;
 
     [Header(" Effects ")]
-    [SerializeField] private ParticleSystem mergeEffect;
+    protected ParticleSystem mergeEffect;
     private GameObject iceCube;
 
     [Header(" Actions ")]
@@ -172,14 +173,14 @@ public class Animal : MonoBehaviour
         }
 
 
-        //ResolveSpawnOverlaps();
     }
 
-    public void Disappear()
+    public virtual void Disappear()
     {
+        float killRadius = CalculateKillRadius();
         if (isExplosive)
         {
-            Explode(2f, 4f, 15f);
+            Explode(killRadius, killRadius * 2.5f, explosionForce);
             return;
         }
         if (mergeEffect != null)
@@ -190,6 +191,16 @@ public class Animal : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    protected virtual float CalculateKillRadius()
+    {
+        Collider2D collider = GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            return collider.bounds.extents.magnitude * 1.3f;
+        }
+        return 1f;
     }
 
     public AnimalType GetAnimalType()
@@ -276,6 +287,16 @@ public class Animal : MonoBehaviour
     protected void Explode(float killRadius, float pushRadius, float force = 5f)
     {
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, pushRadius);
+
+        // First pass: destroy eggs so their spawn logic works before others disappear
+        foreach (var hit in hitColliders)
+        {
+            if (hit.TryGetComponent(out Animal other) && other != this && other.GetAnimalType() == AnimalType.Egg)
+            {
+                other.Disappear(); // Should internally handle spawning from egg
+            }
+        }
+
         foreach (var hit in hitColliders)
         {
             if (hit.TryGetComponent(out Animal other) && other != this)
@@ -317,6 +338,19 @@ public class Animal : MonoBehaviour
         AudioManager.instance.PlayExplosionSound(transform.position);
         Destroy(gameObject);
     }
+
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        float killRadius = CalculateKillRadius();
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, killRadius);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, killRadius * 2.5f);
+    }
+#endif
 
 
 

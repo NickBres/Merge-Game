@@ -18,6 +18,9 @@ public class GameOverManager : MonoBehaviour
     private bool isGameOver = false;
     private bool canLoose = true;
 
+    public bool closeToDeath = false;
+    public bool isAboveLine = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -54,6 +57,7 @@ public class GameOverManager : MonoBehaviour
             {
                 GameOver();
             }
+            DeadLinePulse();
         }
         CheckAnimals();
     }
@@ -80,28 +84,41 @@ public class GameOverManager : MonoBehaviour
             Animal animal = child.GetComponent<Animal>();
             if (animal.HasCollided() && animal != GameplayController.instance.currentAnimal)
             {
-                CheckCloseToDeadLine(child);
-                if (child.position.y > deadLine.transform.position.y)
-                {
-                    StartTimer();
-                    return;
-                }
+                CheckCloseToDeadLine(animal);
+                CheckAbovoeDeadLine(animal);
             }
 
         }
 
-        StopTimer();
-    }
-
-    private void CheckCloseToDeadLine(Transform animal)
-    {
-        if (animal.position.y + deadLineActivateDistance >= deadLine.transform.position.y)
+        ActivateDeadLine(closeToDeath);
+        if (isAboveLine)
         {
-            ActivateDeadLine(true);
+            StartTimer();
         }
         else
         {
-            ActivateDeadLine(false);
+            StopTimer();
+            ResetDeadLine();
+        }
+    }
+
+    private void CheckCloseToDeadLine(Animal animal)
+    {
+        Collider2D collider = animal.GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            float topY = collider.bounds.max.y;
+            closeToDeath = topY + deadLineActivateDistance >= deadLine.transform.position.y;
+        }
+    }
+
+    private void CheckAbovoeDeadLine(Animal animal)
+    {
+        Collider2D collider = animal.GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            float topY = collider.bounds.max.y;
+            isAboveLine = topY > deadLine.transform.position.y;
         }
     }
 
@@ -142,5 +159,43 @@ public class GameOverManager : MonoBehaviour
         ActivateDeadLine(false);
         StopTimer();
         isGameOver = false;
+        closeToDeath = false;
+        isAboveLine = false;
+        ResetDeadLine();
+
+    }
+
+    private void ResetDeadLine()
+    {
+        if (deadLine == null) return;
+
+        var lineRenderer = deadLine.GetComponent<LineRenderer>();
+        if (lineRenderer != null)
+        {
+            lineRenderer.startColor = new Color(1f, 0f, 0f, 0.3f);
+            lineRenderer.endColor = new Color(1f, 0f, 0f, 0.3f);
+        }
+    }
+    
+    private float pulseTimer = 0f;
+    private float pulseInterval = 0.5f;
+    private bool pulseState = false;
+    private void DeadLinePulse()
+    {
+        if (deadLine == null) return;
+
+        pulseTimer += Time.deltaTime;
+        if (pulseTimer >= pulseInterval)
+        {
+            pulseState = !pulseState;
+            var lineRenderer = deadLine.GetComponent<LineRenderer>();
+            if (lineRenderer != null)
+            {
+                Color pulseColor = pulseState ? Color.red : Color.yellow;
+                lineRenderer.startColor = pulseColor;
+                lineRenderer.endColor = pulseColor;
+            }
+            pulseTimer = 0f;
+        }
     }
 }

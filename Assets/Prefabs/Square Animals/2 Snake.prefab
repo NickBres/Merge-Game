@@ -5354,6 +5354,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
+  killRadius: 0.7
+  effectRadius: 3.88
+  explosionForce: 15
   mergeEffect: {fileID: 0}
 --- !u!95 &-3131911983270790588
 Animator:

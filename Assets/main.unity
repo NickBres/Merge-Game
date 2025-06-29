@@ -3730,7 +3730,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 65.039, y: 108}
+  m_AnchoredPosition: {x: 65.039, y: 110.4}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &316570629
@@ -4220,6 +4220,8 @@ MonoBehaviour:
   scoreText: {fileID: 1868313110}
   coinsText: {fileID: 1878125291}
   durationThreshold: 3
+  closeToDeath: 0
+  isAboveLine: 0
 --- !u!1 &422575786
 GameObject:
   m_ObjectHideFlags: 0
@@ -15190,7 +15192,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 65.039, y: -64.8}
+  m_AnchoredPosition: {x: 65.039, y: -31.6}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1250518223
@@ -16224,7 +16226,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Frozen Animal - Can\u2019t merge until unfrozen. Merge nearby or use an
     explosion to unfreeze.\n\nExplosive Animal - Destroys all smaller animals around
-    it.\n\nCapybara - Merges with any animal, no matter the type."
+    it.\n\nCapybara - Merges with any animal, no matter the type.\n\nEgg -  Can be
+    destroyed only with explosion. Spawns random animals from surroundings."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1a39cf0cbfd7e4504b620a781c783a47, type: 2}
   m_sharedMaterial: {fileID: 879383064319680498, guid: 1a39cf0cbfd7e4504b620a781c783a47, type: 2}
@@ -16251,8 +16254,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 13
+  m_fontSizeBase: 13
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -16471,6 +16474,7 @@ RectTransform:
   - {fileID: 316570628}
   - {fileID: 1679318301}
   - {fileID: 1250518222}
+  - {fileID: 1818909156}
   m_Father: {fileID: 438504615}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -25433,7 +25437,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 65.039, y: 15.8}
+  m_AnchoredPosition: {x: 65.039, y: 31.6}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1679318302
@@ -27024,6 +27028,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1808112337}
+  m_CullTransparentMesh: 1
+--- !u!1 &1818909155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1818909156}
+  - component: {fileID: 1818909158}
+  - component: {fileID: 1818909157}
+  m_Layer: 0
+  m_Name: Image (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1818909156
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818909155}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1360209052}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 65.039, y: -115.2}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1818909157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818909155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 7ce9278cfdcda46d6a5c176814dfa90d, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1818909158
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818909155}
   m_CullTransparentMesh: 1
 --- !u!1 &1825759546
 GameObject:
@@ -29103,6 +29182,7 @@ MonoBehaviour:
   - {fileID: -3797133296387751621, guid: bc88797c24a404c528c1e4014a8cb531, type: 3}
   - {fileID: 2361062667458949247, guid: 9b6e2726ba4bd4d5ca2a19b3af1d4d49, type: 3}
   capybaraPrefab: {fileID: 2266302303415851310, guid: 0fedc167afc674f05a01c4b2ff7820f6, type: 3}
+  eggPrefab: {fileID: 6270324280366740102, guid: 2538d18ffa1ba44408e5804b484f856f, type: 3}
   defaultSpawnableAnimals: 02000000040000000800000010000000
   uiCanvas: {fileID: 1902308497}
   aimLine: {fileID: 1042894803}
@@ -29114,6 +29194,8 @@ MonoBehaviour:
   animalSpawnPoint: {fileID: 1159389544}
   spawnPositionOffset: 2
   iceChance: 0.25
+  eggLimit: 2
+  eggSpawnChance: 0.1
   enableGizmos: 1
 --- !u!114 &1970140888
 MonoBehaviour:

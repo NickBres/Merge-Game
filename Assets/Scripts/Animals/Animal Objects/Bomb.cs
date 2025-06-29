@@ -3,9 +3,8 @@ using UnityEngine;
 
 public class Bomb : Animal
 {
-    [SerializeField] private float explosionRadius = 2f;
-    [SerializeField] private float effectRadius = 4f;
     [SerializeField] private float explosionDelay = 2f;
+    [SerializeField] private float killRadius = 3f;
 
     private bool exploded = false;
     private bool coroutineStarted = false;
@@ -22,21 +21,11 @@ public class Bomb : Animal
     private IEnumerator ExplodeAfterDelay()
     {
         yield return new WaitForSeconds(explosionDelay);
-        Explode(effectRadius, explosionRadius);
+        Explode(killRadius, killRadius * 2.5f, explosionForce);
     }
 
 
 
-#if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, explosionRadius);
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, effectRadius);
-    }
-#endif
 
     // Override to disable default Animal merging behavior when colliding.
     protected override void OnCollisionStay2D(Collision2D collision)

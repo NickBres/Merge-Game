@@ -35,7 +35,7 @@ public class AimLine : MonoBehaviour
         Animal currentAnimal = GameplayController.instance.GetCurrentAnimal();
         if (currentAnimal != null && lineRenderer != null)
         {
-            float width = currentAnimal.transform.localScale.x;
+            float width = currentAnimal.GetComponent<Collider2D>()?.bounds.size.x ?? currentAnimal.transform.localScale.x;
             lineRenderer.startWidth = width;
             lineRenderer.endWidth = width;
         }

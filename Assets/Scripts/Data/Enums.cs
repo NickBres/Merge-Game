@@ -6,6 +6,7 @@ public enum GameMode
 }
 public enum AnimalType
 {
+    Egg = 0,
     Snake = 2,
     Parrot = 4,
     Rabbit = 8,

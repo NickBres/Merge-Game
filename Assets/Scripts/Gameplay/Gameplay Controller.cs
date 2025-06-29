@@ -25,6 +25,7 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private Animal[] animalPrefabsRound;
     [SerializeField] private Animal[] animalPrefabsSquare;
     [SerializeField] private Capybara capybaraPrefab;
+    [SerializeField] private Egg eggPrefab;
     [SerializeField] private List<AnimalType> defaultSpawnableAnimals;
     private HashSet<AnimalType> currentSpawnableAnimals;
     [SerializeField] private Canvas uiCanvas;
@@ -51,6 +52,8 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private Transform animalSpawnPoint;
     [SerializeField] private float spawnPositionOffset = 0;
     [SerializeField] private float iceChance = 0.1f;
+    [SerializeField] private int eggLimit = 2;
+    [SerializeField] private float eggSpawnChance = 0.1f; // Chance to spawn an egg instead of a normal animal
     private bool canControl = true;
     private Vector2 touchStartPos;
 
@@ -100,7 +103,7 @@ public class GameplayController : MonoBehaviour
         if (GameManager.instance.GetGameState() != GameState.Game) return;
 
         isTouchOverUI = EventSystem.current.IsPointerOverGameObject();
-        if(currentAnimal != null)
+        if (currentAnimal != null)
             aimLine.MoveLine(currentAnimal.transform.position);
     }
 
@@ -155,8 +158,11 @@ public class GameplayController : MonoBehaviour
     // Select a random next animal from current spawnable animals
     private void ResetNextAnimal()
     {
-        nextAnimalType = currentSpawnableAnimals.ElementAt(Random.Range(0, currentSpawnableAnimals.Count));
-        nextAnimal = GetAnimalFromType(nextAnimalType);
+        if (!TryToSpawnEgg())
+        {
+            nextAnimalType = currentSpawnableAnimals.ElementAt(Random.Range(0, currentSpawnableAnimals.Count));
+            nextAnimal = GetAnimalFromType(nextAnimalType);
+        }
         onNextAnimalSet?.Invoke();
     }
 
@@ -240,7 +246,7 @@ public class GameplayController : MonoBehaviour
     // Handle touch end input, including swipe detection and tap movement
     private void HandleTouchEnd(Vector3 screenPos)
     {
-        if (!GameManager.instance.IsGameState() || !canControl) 
+        if (!GameManager.instance.IsGameState() || !canControl)
             return;
 
         ReleaseAnimal();
@@ -337,9 +343,9 @@ public class GameplayController : MonoBehaviour
 
 
     // Instantiate a new animal prefab at a position
-    private Animal SpawnAnimal(Animal animal, Vector2 position)
+    public Animal SpawnAnimal(Animal animal, Vector2 position)
     {
-        
+
         Animal newAnimal = Instantiate(animal,
             position,
             Quaternion.identity,
@@ -355,6 +361,29 @@ public class GameplayController : MonoBehaviour
             AudioManager.instance.PlayChoirSound();
         }
         return newAnimal;
+    }
+
+    private bool TryToSpawnEgg()
+    {
+        float chance = Random.value;
+        if (chance > eggSpawnChance || CountEggs() >= eggLimit || GameOverManager.instance.closeToDeath) return false;
+        nextAnimal = eggPrefab;
+        nextAnimalType = AnimalType.Egg;
+        return true;
+    }
+
+    private int CountEggs()
+    {
+        int count = 0;
+        foreach (Transform child in animalsParent)
+        {
+            Animal animal = child.GetComponent<Animal>();
+            if (animal != null && animal.GetAnimalType() == AnimalType.Egg)
+            {
+                count++;
+            }
+        }
+        return count;
     }
 
     #endregion
@@ -373,7 +402,7 @@ public class GameplayController : MonoBehaviour
         {
             newAnimal.MakeExplosive();
         }
-        if (Random.value < iceChance)
+        if (Random.value < iceChance && !GameOverManager.instance.closeToDeath)
         {
             newAnimal.ApplyIce();
         }
