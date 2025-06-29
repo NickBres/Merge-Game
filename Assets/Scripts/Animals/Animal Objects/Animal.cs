@@ -3,6 +3,7 @@ using System;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 public class Animal : MonoBehaviour
 {
@@ -86,13 +87,36 @@ public class Animal : MonoBehaviour
 
     public void RemoveIce()
     {
+
+        StartCoroutine(DelayedRemoveIce());
+    }
+
+    public void RemoveIceImmediate()
+    {
         isIced = false;
         if (iceCube != null)
         {
             iceCube.SetActive(false);
             AudioManager.instance.PlayIceBreakSound();
         }
+    }
 
+    private System.Collections.IEnumerator DelayedRemoveIce()
+    {
+        if (iceCube != null)
+        {
+            Transform crack = iceCube.transform.Find("Ice Crack");
+            if (crack != null)
+            {
+                var sr = crack.GetComponent<SpriteRenderer>();
+                if (sr != null) sr.enabled = true;
+                AudioManager.instance.PlayIceBreakSound();
+            }
+        }
+
+        yield return new WaitForSeconds(Random.Range(1f, 1.5f));
+
+        RemoveIceImmediate();
     }
 
     public bool HasIce()
@@ -177,9 +201,10 @@ public class Animal : MonoBehaviour
 
     public virtual void Disappear()
     {
-        float killRadius = CalculateKillRadius();
+
         if (isExplosive)
         {
+            float killRadius = CalculateKillRadius();
             Explode(killRadius, killRadius * 2.5f, explosionForce);
             return;
         }
@@ -294,6 +319,7 @@ public class Animal : MonoBehaviour
             if (hit.TryGetComponent(out Animal other) && other != this && other.GetAnimalType() == AnimalType.Egg)
             {
                 other.Disappear(); // Should internally handle spawning from egg
+
             }
         }
 
@@ -310,7 +336,7 @@ public class Animal : MonoBehaviour
                     {
                         other.RemoveIce();
                     }
-                    else if (other.GetAnimalType() < this.GetAnimalType())
+                    else if (other.GetAnimalType() < this.GetAnimalType() && other.GetAnimalType() != AnimalType.Egg)
                     {
                         other.Disappear();
                         ScoreManager.instance.UpdateScore(other.GetAnimalType(), transform.position);

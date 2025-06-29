@@ -8,6 +8,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource choirSource;
     [SerializeField] private AudioSource icedSource;
     [SerializeField] private AudioSource iceBreakSource;
+    [SerializeField] private AudioSource eggCrackSource;
     [SerializeField] private AudioSource explosionSource;
     [SerializeField] private AudioSource clickSource;
     [SerializeField] private AudioSource coinsSource;
@@ -34,7 +35,14 @@ public class AudioManager : MonoBehaviour
     }
     public void PlayIceBreakSound()
     {
+        iceBreakSource.pitch = Random.Range(0.8f, 1.2f);
         iceBreakSource.Play();
+    }
+
+    public void PlayEggCrackSound()
+    {
+        eggCrackSource.pitch = Random.Range(0.8f, 1.2f);
+        eggCrackSource.Play();
     }
 
     public void PlayGameOverSound()
@@ -176,6 +184,7 @@ public class AudioManager : MonoBehaviour
         epicSource.mute = !isOn;
         wowSource.mute = !isOn;
         choirSource.mute = !isOn;
+        eggCrackSource.mute = !isOn;
     }
 
     private void ToggleMusic(bool isOn)
