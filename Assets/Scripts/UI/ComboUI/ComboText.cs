@@ -23,6 +23,13 @@ public class ComboText : MonoBehaviour
         cawabungaText.SetActive(false);
     }
 
+    public void Reset()
+    {
+        wowText.SetActive(false);
+        epicText.SetActive(false);
+        cawabungaText.SetActive(false);
+    }
+
 
 
     public void ShowWOW()

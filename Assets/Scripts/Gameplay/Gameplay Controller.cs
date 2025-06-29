@@ -51,7 +51,7 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private Transform animalSpawnPoint;
     [SerializeField] private float spawnPositionOffset = 0;
     [SerializeField] private float iceChance = 0.1f;
-    private bool canSpawn = true;
+    private bool canControl = true;
     private Vector2 touchStartPos;
 
 
@@ -123,7 +123,7 @@ public class GameplayController : MonoBehaviour
         currentAnimal = null;
         currentFallingSpeed = fallingSpeed;
         isFrozen = false;
-        canSpawn = true;
+        canControl = true;
         currentSpawnableAnimals = new HashSet<AnimalType>(defaultSpawnableAnimals);
         ResetNextAnimal();
         aimLine.DisableLine();
@@ -229,7 +229,7 @@ public class GameplayController : MonoBehaviour
     // Handle touch start input
     private void HandleTouchStart(Vector3 screenPos)
     {
-        if (!GameManager.instance.IsGameState() || isTouchOverUI || IsTouchOverUI(screenPos) || !canSpawn)
+        if (!GameManager.instance.IsGameState() || isTouchOverUI || IsTouchOverUI(screenPos) || !canControl)
             return;
 
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);
@@ -240,7 +240,7 @@ public class GameplayController : MonoBehaviour
     // Handle touch end input, including swipe detection and tap movement
     private void HandleTouchEnd(Vector3 screenPos)
     {
-        if (!GameManager.instance.IsGameState()) 
+        if (!GameManager.instance.IsGameState() || !canControl) 
             return;
 
         ReleaseAnimal();
@@ -250,7 +250,7 @@ public class GameplayController : MonoBehaviour
     private void HandleTouchHold(Vector3 screenPos)
     {
 
-        if (!GameManager.instance.IsGameState() || isTouchOverUI || IsTouchOverUI(screenPos))
+        if (!GameManager.instance.IsGameState() || !canControl)
             return;
 
         if (currentAnimal == null) return;
@@ -304,7 +304,7 @@ public class GameplayController : MonoBehaviour
         ResetNextAnimal();
         aimLine.EnableLine();
 
-        currentAnimal.onCollision += EnableSpawn;
+        currentAnimal.onCollision += ResetCurrent;
     }
 
     // Calculate spawn position with optional horizontal offset
@@ -321,23 +321,34 @@ public class GameplayController : MonoBehaviour
             return;
 
         currentAnimal.EnablePhysics();
-        currentAnimal.onCollision -= EnableSpawn;
-        currentAnimal = null;
+        canControl = false;
 
         ScoreManager.instance.ResetCombo();
         aimLine.DisableLine();
     }
 
 
+    public void ResetCurrent()
+    {
+        currentAnimal.onCollision -= ResetCurrent;
+        currentAnimal = null;
+        canControl = true;
+    }
+
+
     // Instantiate a new animal prefab at a position
     private Animal SpawnAnimal(Animal animal, Vector2 position)
     {
-        EnsureSpawnAreaClear(position, animal);
+        
         Animal newAnimal = Instantiate(animal,
             position,
             Quaternion.identity,
             animalsParent);
         ApplySkinToAnimal(newAnimal);
+
+        Vector2 adjustedPos = AdjustSpawnPoint(position, newAnimal);
+        newAnimal.transform.position = adjustedPos;
+        EnsureSpawnAreaClear(adjustedPos, newAnimal);
 
         if (newAnimal.GetComponent<Capybara>() != null)
         {
@@ -420,7 +431,7 @@ public class GameplayController : MonoBehaviour
             animal.DisablePhysics(true);
         }
         isFrozen = true;
-        canSpawn = false;
+        canControl = false;
         GameOverManager.instance.SetCanLoose(false);
     }
 
@@ -438,7 +449,7 @@ public class GameplayController : MonoBehaviour
                 animal.EnablePhysics();
         }
         isFrozen = false;
-        canSpawn = true;
+        canControl = true;
         GameOverManager.instance.SetCanLoose(true);
     }
 
@@ -475,10 +486,6 @@ public class GameplayController : MonoBehaviour
         return currentAnimal;
     }
 
-    public void EnableSpawn()
-    {
-        canSpawn = true;
-    }
 
     #endregion
 
@@ -487,7 +494,7 @@ public class GameplayController : MonoBehaviour
 
     private void EnsureSpawnAreaClear(Vector2 spawnPoint, Animal prefab)
     {
-        int maxAttempts = 10;
+        int maxAttempts = 20;
         float radius = prefab.GetComponent<Collider2D>().bounds.extents.magnitude;
         LayerMask animalLayer = LayerMask.GetMask("Animal"); // Ensure your animal objects are on the "Animal" layer
 
@@ -511,6 +518,30 @@ public class GameplayController : MonoBehaviour
             Physics2D.SyncTransforms(); // Make sure physics state is updated
         }
     }
+
+    private Vector2 AdjustSpawnPoint(Vector2 spawnPoint, Animal prefab)
+    {
+        Collider2D collider = prefab.GetComponent<Collider2D>();
+        float radius = Mathf.Max(collider.bounds.extents.x, collider.bounds.extents.y);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(spawnPoint, radius);
+        foreach (var hit in hits)
+        {
+            if (hit.CompareTag("Wall"))
+            {
+                Vector2 closestPoint = hit.ClosestPoint(spawnPoint);
+                Vector2 direction = spawnPoint - closestPoint;
+                float distance = direction.magnitude;
+                if (distance < radius)
+                {
+                    Vector2 correction = direction.normalized * (radius - distance);
+                    spawnPoint += correction;
+                }
+            }
+        }
+
+        return spawnPoint;
+    }
+
 
     #endregion
 

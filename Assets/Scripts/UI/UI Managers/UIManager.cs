@@ -169,10 +169,11 @@ public class UIManager : MonoBehaviour
         SetMenu();
         GameplayController.instance.ResetGameplay();
         GameOverManager.instance.Reset();
-        Skills.instance.Reset();
+        Abilities.instance.Reset();
         ScoreManager.instance.Reset();
         BackgroundManager.instance.Reset();
         GameManager.instance.SetGameState(GameState.Menu);
+        ComboText.instance.Reset();
         ClickAndVibrate();
     }
 

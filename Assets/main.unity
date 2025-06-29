@@ -4220,53 +4220,6 @@ MonoBehaviour:
   scoreText: {fileID: 1868313110}
   coinsText: {fileID: 1878125291}
   durationThreshold: 3
---- !u!1 &410296382
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 410296383}
-  - component: {fileID: 410296384}
-  m_Layer: 0
-  m_Name: MergePushEffect
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &410296383
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 410296382}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1491432006}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &410296384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 410296382}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e527de8e52ff4f10979c6c1d0b3b1a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pushMagnitude: 2
-  pushRadius: 1.3
-  enableGizmos: 1
 --- !u!1 &422575786
 GameObject:
   m_ObjectHideFlags: 0
@@ -23289,10 +23242,8 @@ Transform:
   - {fileID: 956123709}
   - {fileID: 1130887428}
   - {fileID: 1573367017}
-  - {fileID: 410296383}
   - {fileID: 2084702121}
   - {fileID: 730074096}
-  - {fileID: 1741298843}
   - {fileID: 1574400964}
   - {fileID: 974042207}
   - {fileID: 980308453}
@@ -25942,57 +25893,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1731623640}
   m_CullTransparentMesh: 1
---- !u!1 &1741298842
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1741298843}
-  - component: {fileID: 1741298844}
-  m_Layer: 0
-  m_Name: Wall Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1741298843
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1741298842}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1491432006}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1741298844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1741298842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c298e21244a144b84a98fec8bfbd78c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftWall: {fileID: 1133263759}
-  rightWall: {fileID: 0}
-  floor: {fileID: 912438053}
-  ceiling: {fileID: 0}
-  wallThickness: 1
-  wallVisibleOffset: 0
-  floorRaiseOffset: 1
 --- !u!1 &1743501662
 GameObject:
   m_ObjectHideFlags: 0

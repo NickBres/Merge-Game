@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skills : MonoBehaviour
+public class Abilities : MonoBehaviour
 {
-    public static Skills instance;
+    public static Abilities instance;
     [SerializeField] private UpgradeProgressUI progressUI;
     [SerializeField] private UpgradeProgressUI magicSweepCooldownUI;
     [SerializeField] private UpgradeProgressUI upgradeAnimalsCooldownUI;
