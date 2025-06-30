@@ -234,6 +234,8 @@ public class GameplayController : MonoBehaviour
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(screenPos);
         touchStartPos = new Vector2(screenPoint.x, screenPoint.y);
         RespawnAnimal(screenPos.x);
+
+        CheckExplosives();
     }
 
     // Handle touch end input, including swipe detection and tap movement
@@ -511,6 +513,30 @@ public class GameplayController : MonoBehaviour
 
 
     #region Helper Methods
+
+    private void CheckExplosives()
+    {
+        foreach (Transform child in animalsParent)
+        {
+            Animal animal = child.GetComponent<Animal>();
+            if (animal != null && animal.isExplosive)
+            {
+                return;
+            }
+        }
+
+        foreach (Transform child in animalsParent)
+        {
+            Animal animal = child.GetComponent<Animal>();
+            if (animal != null)
+            {
+                animal.MarkForExplosion(false);
+            }
+        }
+        
+
+        
+    }
 
     private void EnsureSpawnAreaClear(Vector2 spawnPoint, Animal prefab)
     {

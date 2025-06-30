@@ -11,6 +11,8 @@ public class Animal : MonoBehaviour
     private readonly HashSet<Animal> currentCollisions = new HashSet<Animal>();
     public List<Animal> GetCurrentCollisions() => new List<Animal>(currentCollisions);
 
+    protected bool exploded = false;
+
     [Header(" Data ")]
     [SerializeField] private AnimalType type;
     [SerializeField] protected float explosionForce = 15f;
@@ -19,7 +21,7 @@ public class Animal : MonoBehaviour
 
     [Header(" Bomb ")]
     private SpriteRenderer crackRenderer;
-    protected bool isExplosive = false;
+    public bool isExplosive = false;
 
     [Header(" Effects ")]
     protected ParticleSystem mergeEffect;
@@ -60,7 +62,8 @@ public class Animal : MonoBehaviour
     void Update()
     {
         FlashCrack();
-        PreviewExplosionRadius(CalculateKillRadius());
+        if(!exploded)
+            PreviewExplosionRadius(CalculateKillRadius());
     }
 
     protected void AllowMerge()
@@ -320,41 +323,60 @@ public class Animal : MonoBehaviour
 
     protected void Explode(float killRadius, float pushRadius, float force = 5f)
     {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, pushRadius);
+        exploded = true;
 
-        // First pass: destroy eggs so their spawn logic works before others disappear
-        foreach (var hit in hitColliders)
+        // Step 1: Mark animals
+        PreviewExplosionRadius(killRadius);
+
+        // Step 2: Handle eggs first
+        for (int i = animalsMarkedForExplosion.Count - 1; i >= 0; i--)
         {
-            if (hit.TryGetComponent(out Animal other) && other != this && other.GetAnimalType() == AnimalType.Egg)
+            Animal a = animalsMarkedForExplosion[i];
+            if (a == null) 
             {
-                other.Disappear(); // Should internally handle spawning from egg
+                animalsMarkedForExplosion.RemoveAt(i);
+                continue;
+            }
 
+            if (a.GetAnimalType() == AnimalType.Egg)
+            {
+                a.Disappear();
+                animalsMarkedForExplosion.RemoveAt(i);
             }
         }
 
+        // Step 3: Destroy others (check for ice and type)
+        for (int i = animalsMarkedForExplosion.Count - 1; i >= 0; i--)
+        {
+            Animal a = animalsMarkedForExplosion[i];
+            if (a == null) 
+            {
+                animalsMarkedForExplosion.RemoveAt(i);
+                continue;
+            }
+
+            if (a.HasIce())
+            {
+                a.RemoveIce();
+            }
+            else
+            {
+                a.Disappear();
+                ScoreManager.instance.UpdateScore(a.GetAnimalType(), transform.position);
+            }
+
+            animalsMarkedForExplosion.RemoveAt(i);
+        }
+
+        // Step 4: Push other animals in push radius
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, pushRadius);
         foreach (var hit in hitColliders)
         {
             if (hit.TryGetComponent(out Animal other) && other != this)
             {
                 float distance = Vector2.Distance(transform.position, other.transform.position);
-
-                // Destroy animals with lower type in kill radius
-                if (distance <= killRadius)
+                if (distance > killRadius && distance <= pushRadius)
                 {
-                    if (other.HasIce())
-                    {
-                        other.RemoveIce();
-                    }
-                    else if (other.GetAnimalType() < this.GetAnimalType() && other.GetAnimalType() != AnimalType.Egg)
-                    {
-                        other.Disappear();
-                        ScoreManager.instance.UpdateScore(other.GetAnimalType(), transform.position);
-                    }
-
-                }
-                else
-                {
-                    // Push animals within push radius
                     Vector2 pushDirection = (other.transform.position - transform.position).normalized;
                     float strength = Mathf.Lerp(force, 0f, distance / pushRadius);
                     other.Push(pushDirection * strength);
@@ -362,13 +384,14 @@ public class Animal : MonoBehaviour
             }
         }
 
-        // Optional: play effect and destroy self
+        // Step 5: Play effect
         if (mergeEffect != null)
         {
             mergeEffect.transform.SetParent(null);
             mergeEffect.Play();
         }
 
+        // Step 6: Cleanup
         VibrationManager.instance.Vibrate(VibrationType.Heavy);
         AudioManager.instance.PlayExplosionSound(transform.position);
         Destroy(gameObject);

@@ -5441,9 +5441,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db128f79e6e2a4593b57aa323eebd52c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glowMaterial: {fileID: 0}
   type: 32
   explosionForce: 15
+  isExplosive: 0
 --- !u!95 &-3131911983270790588
 Animator:
   serializedVersion: 7

@@ -6,13 +6,13 @@ public class Bomb : Animal
     [SerializeField] private float explosionDelay = 2f;
     [SerializeField] private float killRadius = 3f;
 
-    private bool exploded = false;
     private bool coroutineStarted = false;
 
     private void Update()
     {
+        if(exploded) return;
         PreviewExplosionRadius(killRadius);
-        if (!exploded && !coroutineStarted && hasCollided)
+        if (!coroutineStarted && hasCollided)
         {
             isExplosive = true;
             coroutineStarted = true;
