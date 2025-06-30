@@ -11,8 +11,10 @@ public class Bomb : Animal
 
     private void Update()
     {
+        PreviewExplosionRadius(killRadius);
         if (!exploded && !coroutineStarted && hasCollided)
         {
+            isExplosive = true;
             coroutineStarted = true;
             StartCoroutine(ExplodeAfterDelay());
         }

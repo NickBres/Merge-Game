@@ -38,17 +38,12 @@ public class GameplayController : MonoBehaviour
     private Animal nextAnimal;
     private AnimalType nextAnimalType;
     private bool isFrozen = false;
-    [SerializeField] private float rushAccelerationTime = 1f; // Time in seconds to reach max speed
 
     private bool isTouchOverUI;
 
 
 
     [Header(" Settings ")]
-    [SerializeField] private float fallingSpeed = 5f;
-    private float currentFallingSpeed;
-    [SerializeField] private float maxFallingSpeed = 10f;
-    [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Transform animalSpawnPoint;
     [SerializeField] private float spawnPositionOffset = 0;
     [SerializeField] private float iceChance = 0.1f;
@@ -87,7 +82,6 @@ public class GameplayController : MonoBehaviour
 
         GameManager.OnGameStateChanged += CheckState;
         raycaster = uiCanvas.GetComponent<GraphicRaycaster>();
-        currentFallingSpeed = fallingSpeed;
         aimLine.DisableLine();
     }
 
@@ -124,7 +118,6 @@ public class GameplayController : MonoBehaviour
             Destroy(child.gameObject);
         }
         currentAnimal = null;
-        currentFallingSpeed = fallingSpeed;
         isFrozen = false;
         canControl = true;
         currentSpawnableAnimals = new HashSet<AnimalType>(defaultSpawnableAnimals);
@@ -462,6 +455,7 @@ public class GameplayController : MonoBehaviour
         isFrozen = true;
         canControl = false;
         GameOverManager.instance.SetCanLoose(false);
+
     }
 
     // Unfreeze animals, enabling physics except for current animal which is unfrozen differently
@@ -472,10 +466,7 @@ public class GameplayController : MonoBehaviour
         foreach (Transform child in animalsParent)
         {
             Animal animal = child.GetComponent<Animal>();
-            if (animal == currentAnimal)
-                animal.Unfreeze();
-            else
-                animal.EnablePhysics();
+            animal.EnablePhysics();
         }
         isFrozen = false;
         canControl = true;

@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 
 public class Animal : MonoBehaviour
 {
+    protected readonly List<Animal> animalsMarkedForExplosion = new List<Animal>();
     private readonly HashSet<Animal> currentCollisions = new HashSet<Animal>();
     public List<Animal> GetCurrentCollisions() => new List<Animal>(currentCollisions);
 
@@ -23,6 +24,9 @@ public class Animal : MonoBehaviour
     [Header(" Effects ")]
     protected ParticleSystem mergeEffect;
     private GameObject iceCube;
+
+    [Header(" Explosion Preview ")]
+    private bool markedForExplosion = false;
 
     [Header(" Actions ")]
     public static Action<Animal> onCollisionWithAnimal;
@@ -48,12 +52,15 @@ public class Animal : MonoBehaviour
         // iceCube assignment retained, do not modify here
         if (iceCube != null)
             iceCube.SetActive(false);
+
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         FlashCrack();
+        PreviewExplosionRadius(CalculateKillRadius());
     }
 
     protected void AllowMerge()
@@ -145,7 +152,6 @@ public class Animal : MonoBehaviour
         storedVelocity = rigidBody.linearVelocity;
         rigidBody.linearVelocity = Vector2.zero;
         rigidBody.gravityScale = 0f;
-        //animalCollider.enabled = false;
         rigidBody.freezeRotation = true;
         isFrozen = disableMovement;
     }
@@ -182,21 +188,24 @@ public class Animal : MonoBehaviour
         if (collision.collider.CompareTag("Wall") || HasIce()) return;
         hasCollided = true;
 
-
         AllowMerge();
+
+        Animal other = collision.collider.GetComponent<Animal>() ?? collision.collider.GetComponentInParent<Animal>();
+        if (other != null && other != this && !currentCollisions.Contains(other))
+        {
+            currentCollisions.Add(other);
+        }
 
         if (!canBeMerged || isFrozen)
             return;
 
-        if (collision.collider.TryGetComponent(out Animal otherAnimal))
+        if (other != null)
         {
-            if (otherAnimal.GetAnimalType() != type || !otherAnimal.CanMerge())
+            if (other.GetAnimalType() != type || !other.CanMerge())
                 return;
 
             onCollisionWithAnimal?.Invoke(this);
         }
-
-
     }
 
     public virtual void Disappear()
@@ -379,5 +388,64 @@ public class Animal : MonoBehaviour
 #endif
 
 
+
+    public void ShowExplosionPreviewEffect()
+    {
+        Transform outline = transform.Find("Outline");
+        if (outline != null)
+            outline.gameObject.SetActive(true);
+    }
+
+    public void HideExplosionPreviewEffect()
+    {
+        Transform outline = transform.Find("Outline");
+        if (outline != null)
+            outline.gameObject.SetActive(false);
+    }
+
+    public void MarkForExplosion(bool enable)
+    {
+        markedForExplosion = enable;
+        if (enable)
+            ShowExplosionPreviewEffect();
+        else
+            HideExplosionPreviewEffect();
+    }
+
+
+    public void PreviewExplosionRadius(float killRadius)
+    {
+        if (!isExplosive) return;
+
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, killRadius);
+
+        HashSet<Animal> currentlyInRadius = new HashSet<Animal>();
+
+        foreach (var hit in hitColliders)
+        {
+            if (hit.TryGetComponent(out Animal other) && other != this)
+            {
+                if ((other.GetAnimalType() < this.GetAnimalType() || other.HasIce()) && !animalsMarkedForExplosion.Contains(other))
+                {
+                    other.MarkForExplosion(true);
+                    animalsMarkedForExplosion.Add(other);
+                }
+
+                currentlyInRadius.Add(other);
+            }
+        }
+
+        // Check previously marked animals and unmark those no longer in radius
+        for (int i = animalsMarkedForExplosion.Count - 1; i >= 0; i--)
+        {
+            Animal a = animalsMarkedForExplosion[i];
+            if (!currentlyInRadius.Contains(a))
+            {
+                if(a != null)
+                    a.MarkForExplosion(false);
+                animalsMarkedForExplosion.RemoveAt(i);
+            }
+        }
+    }
 
 }
