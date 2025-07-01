@@ -152,7 +152,7 @@ public class UIManager : MonoBehaviour
     public void PlayButtonCallback()
     {
         GameManager.instance.SetGameState(GameState.Game);
-
+        GameplayController.instance.ResetGameplay();
         SetGame();
         ClickAndVibrate();
     }

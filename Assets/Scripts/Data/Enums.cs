@@ -20,12 +20,12 @@ public enum AnimalType
     Special = 2048
 }
 
-   public enum VibrationType
-    {
-        Light,
-        Medium,
-        Heavy
-    }
+public enum VibrationType
+{
+    Light,
+    Medium,
+    Heavy
+}
 
 public enum Rarity
 {
@@ -43,3 +43,5 @@ public enum GameState
     GameOver,
     Pause
 }
+
+public enum ShapeState { Both, Square, Circle }

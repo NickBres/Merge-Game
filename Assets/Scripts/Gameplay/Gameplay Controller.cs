@@ -51,6 +51,7 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private float eggSpawnChance = 0.1f; // Chance to spawn an egg instead of a normal animal
     private bool canControl = true;
     private Vector2 touchStartPos;
+    private ShapeState animalsShape;
 
 
     [Header(" Debug ")]
@@ -123,6 +124,7 @@ public class GameplayController : MonoBehaviour
         currentSpawnableAnimals = new HashSet<AnimalType>(defaultSpawnableAnimals);
         ResetNextAnimal();
         aimLine.DisableLine();
+        animalsShape = GameManager.instance.GetAnimalShape();
     }
 
     #endregion
@@ -175,7 +177,19 @@ public class GameplayController : MonoBehaviour
     // Get an animal prefab by type, randomly choosing round or square variant
     public Animal GetAnimalFromType(AnimalType animalType)
     {
-        bool isRound = Random.value > 0.5f;
+        bool isRound = false;
+        switch (animalsShape)
+        {
+            case ShapeState.Circle:
+                isRound = true;
+                break;
+            case ShapeState.Square:
+                isRound = false;
+                break;
+            case ShapeState.Both:
+                isRound = Random.value < 0.5f; // Randomly choose between round and square
+                break;
+        }
         if (isRound)
         {
             for (int i = 0; i < animalPrefabsRound.Length; i++)
