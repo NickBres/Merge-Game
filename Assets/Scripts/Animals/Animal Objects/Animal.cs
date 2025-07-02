@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
+using UnityEngine.Video;
 
 public class Animal : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class Animal : MonoBehaviour
 
     [Header(" Bomb ")]
     private SpriteRenderer crackRenderer;
-    public bool isExplosive = false;
+    protected bool isExplosive = false;
 
     [Header(" Effects ")]
     protected ParticleSystem mergeEffect;
@@ -321,6 +322,11 @@ public class Animal : MonoBehaviour
             crackRenderer.enabled = true;
     }
 
+    public bool CanExplode()
+    {
+        return isExplosive && !exploded;
+    }
+
     protected void Explode(float killRadius, float pushRadius, float force = 5f)
     {
         exploded = true;
@@ -332,7 +338,7 @@ public class Animal : MonoBehaviour
         for (int i = animalsMarkedForExplosion.Count - 1; i >= 0; i--)
         {
             Animal a = animalsMarkedForExplosion[i];
-            if (a == null) 
+            if (a == null)
             {
                 animalsMarkedForExplosion.RemoveAt(i);
                 continue;
@@ -349,7 +355,7 @@ public class Animal : MonoBehaviour
         for (int i = animalsMarkedForExplosion.Count - 1; i >= 0; i--)
         {
             Animal a = animalsMarkedForExplosion[i];
-            if (a == null) 
+            if (a == null)
             {
                 animalsMarkedForExplosion.RemoveAt(i);
                 continue;

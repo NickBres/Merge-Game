@@ -187,6 +187,7 @@ public class AudioManager : MonoBehaviour
         eggCrackSource.mute = !isOn;
     }
 
+
     private void ToggleMusic(bool isOn)
     {
         musicSource.mute = !isOn;

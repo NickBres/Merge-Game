@@ -58,7 +58,18 @@ public class AnimalSelector : MonoBehaviour
             }
         }
 
-        animalTypes = (AnimalType[])System.Enum.GetValues(typeof(AnimalType));
+        animalTypes = new AnimalType[] {
+            AnimalType.Snake,
+            AnimalType.Parrot,
+            AnimalType.Rabbit,
+            AnimalType.Penguin,
+            AnimalType.Monkey,
+            AnimalType.Pig,
+            AnimalType.Panda,
+            AnimalType.Giraffe,
+            AnimalType.Hippo,
+            AnimalType.Elephant
+        };
 
         currentType = AnimalType.Snake;
         UpdateUI();
@@ -178,7 +189,7 @@ public class AnimalSelector : MonoBehaviour
     {
         return currentType;
     }
-     public void UpdateCurrentAnimalSkin()
+    public void UpdateCurrentAnimalSkin()
     {
         if (currentAnimalObj != null)
         {
@@ -186,4 +197,3 @@ public class AnimalSelector : MonoBehaviour
         }
     }
 }
-   

@@ -34,6 +34,10 @@ public class ShapeToggle : MonoBehaviour
         PlayerPrefs.SetInt(SHAPE_KEY, (int)currentState);
         PlayerPrefs.Save();
         UpdateVisual();
+
+        AudioManager.instance.PlayClickSound();
+        VibrationManager.instance.Vibrate(VibrationType.Light);
+
         OnShapeChanged?.Invoke((int)currentState);
     }
 

@@ -31,7 +31,10 @@ public class Abilities : MonoBehaviour
 
     public void MagicSweepSkill()
     {
-        if (isOnCooldown || !PlayerDataManager.instance.UseMagicSweep() || GameManager.instance.GetGameState() != GameState.Game)
+        if (isOnCooldown  // cannot use skill on colldown
+        || GameManager.instance.GetGameState() != GameState.Game // cannot use skill while pause
+        || !GameplayController.instance.HasAnimalsUpTo(magicSweepUpTo) // cannot use skill if there are no animals to sweep
+        || !PlayerDataManager.instance.UseMagicSweep()) // cannot use skill if player has no magic sweep
             return;
         GameOverManager.instance.SetCanLoose(false);
         AudioManager.instance.PlayMagicSound();
@@ -42,7 +45,8 @@ public class Abilities : MonoBehaviour
 
     public void UpgradeAnimalsSkill()
     {
-        if (isOnCooldown || !PlayerDataManager.instance.UseUpgrade() || GameManager.instance.GetGameState() != GameState.Game)
+        if (isOnCooldown  || GameManager.instance.GetGameState() != GameState.Game
+        || !PlayerDataManager.instance.UseUpgrade())
             return;
         AudioManager.instance.PlayUpgradeSound();
         progressUI.Show(true);
@@ -78,9 +82,10 @@ public class Abilities : MonoBehaviour
 
     public void BombSkill()
     {
-        if (isOnCooldown || !PlayerDataManager.instance.UseBomb() || GameManager.instance.GetGameState() != GameState.Game)
+        if (isOnCooldown || GameManager.instance.GetGameState() != GameState.Game
+        || !GameplayController.instance.HasAnimalsUpTo(AnimalType.Special) // cannot use skill if there are nothing 
+        || !PlayerDataManager.instance.UseBomb() )
             return;
-        AudioManager.instance.PlayFuseSound();
         GameplayController.instance.SetNextAnimal(AnimalType.Special);
         StartCoroutine(CooldownCoroutine());
     }

@@ -8,9 +8,19 @@ public class Bomb : Animal
 
     private bool coroutineStarted = false;
 
+    void Start()
+    {
+        AudioManager.instance.PlayFuseSound();
+    }
+
+    void OnDestroy()
+    {
+        AudioManager.instance.StopFuseSound();
+    }
+
     private void Update()
     {
-        if(exploded) return;
+        if (exploded) return;
         PreviewExplosionRadius(killRadius);
         if (!coroutineStarted && hasCollided)
         {

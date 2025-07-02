@@ -12,11 +12,7 @@ using UnityEngine.UI;
 public class GameplayController : MonoBehaviour
 {
     public static GameplayController instance;
-    // New fields for touch hold duration and move delay
-    private float holdDuration = 0f;
-    [SerializeField] private float moveDelay = 0.1f; // seconds before movement allowed
     [Header(" Elements ")]
-    [Header(" Boundaries ")]
     [SerializeField] private Transform leftWall;
     [SerializeField] private Transform rightWall;
     public float MinX => leftWall.position.x;
@@ -45,7 +41,6 @@ public class GameplayController : MonoBehaviour
 
     [Header(" Settings ")]
     [SerializeField] private Transform animalSpawnPoint;
-    [SerializeField] private float spawnPositionOffset = 0;
     [SerializeField] private float iceChance = 0.1f;
     [SerializeField] private int eggLimit = 2;
     [SerializeField] private float eggSpawnChance = 0.1f; // Chance to spawn an egg instead of a normal animal
@@ -100,6 +95,8 @@ public class GameplayController : MonoBehaviour
         isTouchOverUI = EventSystem.current.IsPointerOverGameObject();
         if (currentAnimal != null)
             aimLine.MoveLine(currentAnimal.transform.position);
+        else
+            canControl = true;
     }
 
     // Unsubscribe from events
@@ -143,6 +140,7 @@ public class GameplayController : MonoBehaviour
         }
         else
         {
+            ReleaseCurrentAnimal();
             FreezeAnimals();
         }
     }
@@ -258,7 +256,7 @@ public class GameplayController : MonoBehaviour
         if (!GameManager.instance.IsGameState() || !canControl)
             return;
 
-        ReleaseAnimal();
+        ReleaseCurrentAnimal();
     }
 
     // Handle touch hold input for continuous movement or positioning
@@ -283,7 +281,8 @@ public class GameplayController : MonoBehaviour
         newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
         newPos.y = animalSpawnPoint.position.y;
         newPos.z = currentAnimal.transform.position.z;
-        currentAnimal.SetPosition(newPos);
+        if(canControl)
+            currentAnimal.SetPosition(newPos);
     }
 
     // Check if a world position corresponds to a UI element
@@ -330,7 +329,7 @@ public class GameplayController : MonoBehaviour
     }
 
     // Enable physics on current animal and clear reference
-    private void ReleaseAnimal()
+    private void ReleaseCurrentAnimal()
     {
         if (currentAnimal == null)
             return;
@@ -347,7 +346,6 @@ public class GameplayController : MonoBehaviour
     {
         currentAnimal.onCollision -= ResetCurrent;
         currentAnimal = null;
-        canControl = true;
     }
 
 
@@ -422,6 +420,19 @@ public class GameplayController : MonoBehaviour
     #endregion
 
     #region Gameplay Mechanics
+
+    public bool HasAnimalsUpTo(AnimalType upTo)
+    {
+        foreach (Transform child in animalsParent)
+        {
+            Animal animal = child.GetComponent<Animal>();
+            if (animal != null && animal != currentAnimal && animal.GetAnimalType() < upTo)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // Remove all animals smaller than a given type, optionally adding to score
     public void RemoveAnimalsUpTo(AnimalType upTo, bool addToScore)
@@ -533,7 +544,7 @@ public class GameplayController : MonoBehaviour
         foreach (Transform child in animalsParent)
         {
             Animal animal = child.GetComponent<Animal>();
-            if (animal != null && animal.isExplosive)
+            if (animal != null && animal.CanExplode())
             {
                 return;
             }

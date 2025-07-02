@@ -19,7 +19,7 @@ public class GameOverManager : MonoBehaviour
     private bool canLoose = true;
 
     public bool closeToDeath = false;
-    public bool isAboveLine = false;
+    private int aboveLineCount = 0;
 
     private void Awake()
     {
@@ -53,7 +53,7 @@ public class GameOverManager : MonoBehaviour
         if (timerActive && canLoose)
         {
             timer += Time.deltaTime;
-            if (timer >= durationThreshold)
+            if (timer >= durationThreshold || aboveLineCount > 3)
             {
                 GameOver();
             }
@@ -79,20 +79,27 @@ public class GameOverManager : MonoBehaviour
         if (animalsParent.childCount == 0 || !canLoose)
             return;
 
+        bool hasAboveLine = false;
+
         foreach (Transform child in animalsParent)
         {
             Animal animal = child.GetComponent<Animal>();
             if (animal.HasCollided() && animal != GameplayController.instance.currentAnimal)
             {
                 CheckCloseToDeadLine(animal);
-                CheckAbovoeDeadLine(animal);
+                hasAboveLine = CheckAboveDeadLine(animal);
             }
 
         }
 
         ActivateDeadLine(closeToDeath);
-        if (isAboveLine)
+        if (hasAboveLine)
         {
+            if (aboveLineCount > 3)
+            {
+                GameOver();
+                return;
+            }
             StartTimer();
         }
         else
@@ -100,6 +107,7 @@ public class GameOverManager : MonoBehaviour
             StopTimer();
             ResetDeadLine();
         }
+        aboveLineCount = 0;
     }
 
     private void CheckCloseToDeadLine(Animal animal)
@@ -112,14 +120,17 @@ public class GameOverManager : MonoBehaviour
         }
     }
 
-    private void CheckAbovoeDeadLine(Animal animal)
+    private bool CheckAboveDeadLine(Animal animal)
     {
         Collider2D collider = animal.GetComponent<Collider2D>();
         if (collider != null)
         {
             float topY = collider.bounds.max.y;
-            isAboveLine = topY > deadLine.transform.position.y;
+            bool isAboveLine = topY > deadLine.transform.position.y;
+            aboveLineCount += isAboveLine ? 1 : 0;
+            return isAboveLine;
         }
+        return false;
     }
 
     private void StartTimer()
@@ -160,7 +171,7 @@ public class GameOverManager : MonoBehaviour
         StopTimer();
         isGameOver = false;
         closeToDeath = false;
-        isAboveLine = false;
+        aboveLineCount = 0;
         ResetDeadLine();
 
     }
