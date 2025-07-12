@@ -13,7 +13,7 @@ public class Capybara : Animal
 
         if (collision.collider.TryGetComponent(out Animal otherAnimal))
         {
-            if (otherAnimal == this || otherAnimal.GetAnimalType() == AnimalType.Egg || otherAnimal.GetAnimalType() == AnimalType.Special) return;
+            if (otherAnimal == this || otherAnimal.GetAnimalType() == AnimalType.Egg || otherAnimal.GetAnimalType() >= AnimalType.Bomb) return;
             if (otherAnimal.CanMerge() )
             {
                 this.SetAnimalType(otherAnimal.GetAnimalType()); // mimic the type of the other animal

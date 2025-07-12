@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject rewardPanel;
     [SerializeField] private GameObject optionsPanel;
     [SerializeField] private GameObject infoPanel;
+    [SerializeField] private GameObject alertPanel;
 
 
     void Awake()
@@ -83,6 +84,11 @@ public class UIManager : MonoBehaviour
         menuPanel.SetActive(false);
     }
 
+    private void SetAlert()
+    {
+        alertPanel.SetActive(true);
+    }
+
     private void SetShop()
     {
         menuPanel.SetActive(false);
@@ -104,6 +110,7 @@ public class UIManager : MonoBehaviour
         gameBackPanel.SetActive(true);
         wallsPanel.SetActive(true);
         pausePanel.SetActive(false);
+        alertPanel.SetActive(false);
     }
 
     private void SetGameOver()
@@ -151,6 +158,31 @@ public class UIManager : MonoBehaviour
 
     public void PlayButtonCallback()
     {
+
+        if (GameStateSaveController.instance.SaveExists())
+        {
+            SetAlert();
+            return;
+        }
+
+        GameManager.instance.SetGameState(GameState.Game);
+        GameplayController.instance.ResetGameplay();
+        SetGame();
+        ClickAndVibrate();
+    }
+
+    public void ContinueButtonCallback()
+    {
+        GameManager.instance.SetGameState(GameState.Game);
+        GameplayController.instance.ResetGameplay();
+        GameManager.instance.LoadGame();
+        SetGame();
+        ClickAndVibrate();
+    }
+
+    public void ResetGameButtonCallback()
+    {
+        GameStateSaveController.instance.DeleteSave();
         GameManager.instance.SetGameState(GameState.Game);
         GameplayController.instance.ResetGameplay();
         SetGame();
@@ -183,6 +215,7 @@ public class UIManager : MonoBehaviour
     {
         SetPause();
         GameManager.instance.SetGameState(GameState.Pause);
+        GameManager.instance.SaveGame();
         ClickAndVibrate();
     }
 

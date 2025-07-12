@@ -168,14 +168,17 @@ public class GameplayController : MonoBehaviour
 
     public void SetNextCapybara()
     {
+        nextAnimalType = AnimalType.Capybara;
         nextAnimal = capybaraPrefab;
         onNextAnimalSet?.Invoke();
     }
 
     // Get an animal prefab by type, randomly choosing round or square variant
-    public Animal GetAnimalFromType(AnimalType animalType)
+    public Animal GetAnimalFromType(AnimalType animalType, bool isRound = false)
     {
-        bool isRound = false;
+        if (animalType == AnimalType.Egg) return eggPrefab;
+        if (animalType == AnimalType.Capybara) return capybaraPrefab;
+
         switch (animalsShape)
         {
             case ShapeState.Circle:
@@ -194,6 +197,7 @@ public class GameplayController : MonoBehaviour
             {
                 if (animalPrefabsRound[i].GetAnimalType() == animalType)
                 {
+                    animalPrefabsRound[i].SetRound(true); // Ensure the animal is marked as round
                     return animalPrefabsRound[i];
                 }
             }
@@ -204,6 +208,7 @@ public class GameplayController : MonoBehaviour
             {
                 if (animalPrefabsSquare[i].GetAnimalType() == animalType)
                 {
+                    animalPrefabsSquare[i].SetRound(false); // Ensure the animal is marked as square
                     return animalPrefabsSquare[i];
                 }
             }
@@ -281,7 +286,7 @@ public class GameplayController : MonoBehaviour
         newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
         newPos.y = animalSpawnPoint.position.y;
         newPos.z = currentAnimal.transform.position.z;
-        if(canControl)
+        if (canControl)
             currentAnimal.SetPosition(newPos);
     }
 
@@ -558,9 +563,9 @@ public class GameplayController : MonoBehaviour
                 animal.MarkForExplosion(false);
             }
         }
-        
 
-        
+
+
     }
 
     private void EnsureSpawnAreaClear(Vector2 spawnPoint, Animal prefab)
@@ -613,6 +618,72 @@ public class GameplayController : MonoBehaviour
         return spawnPoint;
     }
 
+
+    #endregion
+
+    #region Data
+
+    private List<AnimalData> GetAnimalsData()
+    {
+        List<AnimalData> animalsData = new List<AnimalData>();
+        foreach (Transform child in animalsParent)
+        {
+            Animal animal = child.GetComponent<Animal>();
+            if (animal != null)
+            {
+                AnimalData data = new AnimalData
+                {
+                    animalType = animal.GetAnimalType(),
+                    position = animal.transform.position,
+                    rotationZ = animal.transform.rotation.eulerAngles.z,
+                    isRound = animal.IsRound(),
+                    isIced = animal.HasIce(),
+                    isExplosive = animal.CanExplode()
+                };
+                animalsData.Add(data);
+            }
+        }
+        return animalsData;
+    }
+
+    public GameSessionData GetSessionData()
+    {
+        GameSessionData sessionData = new GameSessionData
+        {
+            animals = GetAnimalsData(),
+            score = ScoreManager.instance.GetScoreData(),
+            nextAnimal = nextAnimalType
+        };
+        return sessionData;
+    }
+
+    public void LoadSessionData(GameSessionData sessionData)
+    {
+        ResetGameplay();
+        nextAnimalType = sessionData.nextAnimal;
+        nextAnimal = GetAnimalFromType(nextAnimalType);
+        onNextAnimalSet?.Invoke();
+        LoadAnimalsData(sessionData.animals);
+        UnfreezeAnimals();
+    }
+
+    private void LoadAnimalsData(List<AnimalData> animalsData)
+    {
+        foreach (AnimalData data in animalsData)
+        {
+            Animal prefab = GetAnimalFromType(data.animalType, data.isRound);
+            if (prefab != null)
+            {
+                Animal spawnedAnimal = SpawnAnimal(prefab, data.position);
+                spawnedAnimal.DisablePhysics(true, true);
+                spawnedAnimal.transform.position = data.position;
+                spawnedAnimal.transform.rotation = Quaternion.Euler(0, 0, data.rotationZ);
+                if (data.isIced) spawnedAnimal.ApplyIce();
+                if (data.isExplosive) spawnedAnimal.MakeExplosive();
+            }
+        }
+        isFrozen = true; // Ensure animals are frozen after loading
+    }
 
     #endregion
 

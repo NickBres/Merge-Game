@@ -160,7 +160,7 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-   
+
 
     public bool isEpicCombo()
     {
@@ -229,6 +229,24 @@ public class ScoreManager : MonoBehaviour
         AudioManager.instance.ResetMusicSpeed();
         frenzyTimer = 0f;
         isFrenzyActive = false;
+        UpdateTextScore();
+    }
+
+    public ScoreData GetScoreData()
+    {
+        ScoreData scoreData = new ScoreData
+        {
+            score = score,
+            comboCount = comboCount
+        };
+        return scoreData;
+    }
+
+    public void LoadScoreData(ScoreData scoreData)
+    {
+        score = scoreData.score;
+        comboCount = scoreData.comboCount;
+        
         UpdateTextScore();
     }
 }

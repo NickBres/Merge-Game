@@ -83,10 +83,10 @@ public class Abilities : MonoBehaviour
     public void BombSkill()
     {
         if (isOnCooldown || GameManager.instance.GetGameState() != GameState.Game
-        || !GameplayController.instance.HasAnimalsUpTo(AnimalType.Special) // cannot use skill if there are nothing 
+        || !GameplayController.instance.HasAnimalsUpTo(AnimalType.Bomb) // cannot use skill if there are nothing 
         || !PlayerDataManager.instance.UseBomb() )
             return;
-        GameplayController.instance.SetNextAnimal(AnimalType.Special);
+        GameplayController.instance.SetNextAnimal(AnimalType.Bomb);
         StartCoroutine(CooldownCoroutine());
     }
 

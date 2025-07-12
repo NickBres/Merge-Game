@@ -42,6 +42,7 @@ public class Animal : MonoBehaviour
     protected bool hasCollided = false;
     protected bool isIced = false;
     protected bool isFrozen = false;
+    protected bool isRound;
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -56,7 +57,7 @@ public class Animal : MonoBehaviour
         if (iceCube != null)
             iceCube.SetActive(false);
 
-        
+
     }
 
     // Update is called once per frame
@@ -325,6 +326,16 @@ public class Animal : MonoBehaviour
     public bool CanExplode()
     {
         return isExplosive && !exploded;
+    }
+
+    public bool IsRound()
+    {
+        return isRound;
+    }
+
+    public void SetRound(bool value)
+    {
+        isRound = value;
     }
 
     protected void Explode(float killRadius, float pushRadius, float force = 5f)

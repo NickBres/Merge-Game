@@ -51,7 +51,7 @@ public class Egg : Animal
         foreach (var col in nearby)
         {
             Animal a = col.GetComponent<Animal>();
-            if (a != null && a != this && a.GetAnimalType() != AnimalType.Egg && a.GetAnimalType() != AnimalType.Special)
+            if (a != null && a != this && a.GetAnimalType() != AnimalType.Egg && a.GetAnimalType() < AnimalType.Bomb)
 
             {
                 nearbyTypes.Add(a.GetAnimalType());

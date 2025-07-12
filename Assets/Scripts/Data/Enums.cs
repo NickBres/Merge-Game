@@ -17,7 +17,8 @@ public enum AnimalType
     Giraffe = 256,
     Hippo = 512,
     Elephant = 1024,
-    Special = 2048
+    Bomb = 2048,
+    Capybara = 2049
 }
 
 public enum VibrationType

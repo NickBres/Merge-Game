@@ -59,9 +59,26 @@ public class GameManager : MonoBehaviour
         {
             // App is in background
             SetGameState(GameState.Pause);
+            SaveGame();
         }
     }
 
+    public void SaveGame()
+    {
+        GameSessionData gameSessionData = GameplayController.instance.GetSessionData();
+        GameStateSaveController.instance.SaveGame(gameSessionData);
+    }
+
+    public void LoadGame()
+    {
+        GameSessionData loadedData = GameStateSaveController.instance.LoadGame();
+        if (loadedData == null) return;
+        GameplayController.instance.LoadSessionData(loadedData);
+        ScoreManager.instance.LoadScoreData(loadedData.score);
+
+        GameStateSaveController.instance.DeleteSave();
+    }
+    
 
     public ShapeState GetAnimalShape()
     {

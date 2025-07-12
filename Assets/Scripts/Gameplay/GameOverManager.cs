@@ -72,6 +72,7 @@ public class GameOverManager : MonoBehaviour
         GameManager.instance.SetGameState(GameState.GameOver);
         isGameOver = true;
         ResetTexts();
+        GameStateSaveController.instance.DeleteSave();
     }
 
     private void CheckAnimals()

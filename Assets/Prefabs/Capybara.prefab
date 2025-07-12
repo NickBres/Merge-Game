@@ -10268,5 +10268,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad63ecbac2a5d48f9a0f341c17907bbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2048
-  mergeEffect: {fileID: 4340005759128005167}
+  type: 2049
+  explosionForce: 15
