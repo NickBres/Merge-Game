@@ -3,6 +3,8 @@
 
 **Mergimals** is a cute and relaxing merge puzzle game developed in Unity. Combine animals to discover new species, unlock adorable skins, and chase high scores with satisfying combos and physics-based gameplay.
 
+[![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.yourcompany.mergimals)
+
 ---
 
 ## 🎮 Game Overview
