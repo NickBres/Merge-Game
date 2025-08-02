@@ -60,13 +60,43 @@ public class Animal : MonoBehaviour
 
     }
 
+    void Start()
+    {
+        Appear();   
+    }
+
+
     // Update is called once per frame
     void Update()
     {
         FlashCrack();
-        if(!exploded)
+        if (!exploded)
             PreviewExplosionRadius(CalculateKillRadius());
     }
+
+
+    public void Appear(float growDuration = 0.2f)
+    {
+        StartCoroutine(AppearCoroutine(growDuration));
+    }
+
+    private System.Collections.IEnumerator AppearCoroutine(float growDuration)
+    {
+        Vector3 originalScale = transform.localScale;
+        transform.localScale = Vector3.zero;
+
+        float timer = 0f;
+        while (timer < growDuration)
+        {
+            float t = timer / growDuration;
+            transform.localScale = Vector3.Lerp(Vector3.zero, originalScale, t);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localScale = originalScale;
+    }
+
 
     protected void AllowMerge()
     {
@@ -481,7 +511,7 @@ public class Animal : MonoBehaviour
             Animal a = animalsMarkedForExplosion[i];
             if (!currentlyInRadius.Contains(a))
             {
-                if(a != null)
+                if (a != null)
                     a.MarkForExplosion(false);
                 animalsMarkedForExplosion.RemoveAt(i);
             }
@@ -489,3 +519,4 @@ public class Animal : MonoBehaviour
     }
 
 }
+

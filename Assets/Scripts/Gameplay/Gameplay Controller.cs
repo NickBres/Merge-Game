@@ -366,7 +366,7 @@ public class GameplayController : MonoBehaviour
 
         Vector2 adjustedPos = AdjustSpawnPoint(position, newAnimal);
         newAnimal.transform.position = adjustedPos;
-        EnsureSpawnAreaClear(adjustedPos, newAnimal);
+        //EnsureSpawnAreaClear(adjustedPos, newAnimal);
 
         if (newAnimal.GetComponent<Capybara>() != null)
         {
