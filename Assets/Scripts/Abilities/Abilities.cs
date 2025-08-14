@@ -8,6 +8,7 @@ public class Abilities : MonoBehaviour
     [SerializeField] private UpgradeProgressUI magicSweepCooldownUI;
     [SerializeField] private UpgradeProgressUI upgradeAnimalsCooldownUI;
     [SerializeField] private UpgradeProgressUI bombCooldownUI;
+    [SerializeField] private ShowAbilities showAbilitiesUI;
 
     [Header(" Settings ")]
     [SerializeField] private AnimalType magicSweepUpTo;
@@ -31,6 +32,7 @@ public class Abilities : MonoBehaviour
 
     public void MagicSweepSkill()
     {
+        showAbilitiesUI.ToggleAbilities();
         if (isOnCooldown  // cannot use skill on colldown
         || GameManager.instance.GetGameState() != GameState.Game // cannot use skill while pause
         || !AnimalsParent.instance.HasAnimalsUpTo(magicSweepUpTo) // cannot use skill if there are no animals to sweep
@@ -45,7 +47,8 @@ public class Abilities : MonoBehaviour
 
     public void UpgradeAnimalsSkill()
     {
-        if (isOnCooldown  || GameManager.instance.GetGameState() != GameState.Game
+        showAbilitiesUI.ToggleAbilities();
+        if (isOnCooldown || GameManager.instance.GetGameState() != GameState.Game
         || !PlayerDataManager.instance.UseUpgrade())
             return;
         AudioManager.instance.PlayUpgradeSound();
@@ -82,9 +85,10 @@ public class Abilities : MonoBehaviour
 
     public void BombSkill()
     {
+        showAbilitiesUI.ToggleAbilities();
         if (isOnCooldown || GameManager.instance.GetGameState() != GameState.Game
         || !AnimalsParent.instance.HasAnimalsUpTo(AnimalType.Bomb) // cannot use skill if there are nothing 
-        || !PlayerDataManager.instance.UseBomb() )
+        || !PlayerDataManager.instance.UseBomb())
             return;
         GameplayController.instance.SetNextAnimal(AnimalType.Bomb);
         StartCoroutine(CooldownCoroutine());

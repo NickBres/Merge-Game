@@ -38,6 +38,7 @@ public class Animal : MonoBehaviour
     private Rigidbody2D rigidBody;
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer skinRenderer;
+    private Collider2D animalCollider;
 
     protected bool hasCollided = false;
     protected bool isIced = false;
@@ -47,6 +48,7 @@ public class Animal : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animalCollider = GetComponent<Collider2D>();
         mergeEffect = GetComponentInChildren<ParticleSystem>();
         skinRenderer = transform.Find("Skin/Skin Renderer")?.GetComponent<SpriteRenderer>();
         crackRenderer = transform.Find("Crack")?.GetComponent<SpriteRenderer>();
@@ -175,16 +177,21 @@ public class Animal : MonoBehaviour
     public void EnablePhysics()
     {
         rigidBody.bodyType = RigidbodyType2D.Dynamic;
+        gameObject.layer = LayerMask.NameToLayer("Animal");
         rigidBody.linearVelocity = storedVelocity;
         rigidBody.gravityScale = 1f;
-        //animalCollider.enabled = true;
+        animalCollider.enabled = true;
         rigidBody.freezeRotation = false;
         isFrozen = false;
     }
 
-    public void DisablePhysics(bool disableMovement, bool disableRB = true)
+    public void DisablePhysics(bool disableMovement, bool ghostAnimal = true)
     {
-        if (disableRB) rigidBody.bodyType = RigidbodyType2D.Kinematic;
+        if (ghostAnimal)
+        {
+            gameObject.layer = LayerMask.NameToLayer("GhostAnimal");
+            rigidBody.bodyType = RigidbodyType2D.Kinematic;
+        } 
         storedVelocity = rigidBody.linearVelocity;
         rigidBody.linearVelocity = Vector2.zero;
         rigidBody.gravityScale = 0f;

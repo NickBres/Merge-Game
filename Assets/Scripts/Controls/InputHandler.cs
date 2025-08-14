@@ -9,6 +9,8 @@ public static class InputHandler
     private static GraphicRaycaster raycaster;
     private static PointerEventData pointerEventData;
 
+    private static float offsetY = 1f;
+
     public static void Initialize(GameplayController controller, Canvas uiCanvas)
     {
         gameplay = controller;
@@ -51,17 +53,8 @@ public static class InputHandler
         if (currentAnimal == null) return;
 
         Vector3 newPos = screenPos;
-        float halfWidth = 0.5f;
-        var collider = currentAnimal.GetComponent<Collider2D>();
-        if (collider != null)
-        {
-            halfWidth = collider.bounds.extents.x + 0.2f;
-        }
 
-        float minX = gameplay.MinX + halfWidth;
-        float maxX = gameplay.MaxX - halfWidth;
-        newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
-        newPos.y = AnimalSpawner.instance.GetSpawnPoint().position.y;
+        newPos.y += offsetY;
         newPos.z = currentAnimal.transform.position.z;
         currentAnimal.SetPosition(newPos);
     }

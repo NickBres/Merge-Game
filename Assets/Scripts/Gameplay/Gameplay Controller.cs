@@ -10,8 +10,10 @@ public class GameplayController : MonoBehaviour
     [Header(" Elements ")]
     [SerializeField] private Transform leftWall;
     [SerializeField] private Transform rightWall;
+    [SerializeField] private Transform ground;
     public float MinX => leftWall.position.x;
     public float MaxX => rightWall.position.x;
+    public float MinY => ground.position.y;
     [SerializeField] private List<AnimalType> defaultSpawnableAnimals;
     private HashSet<AnimalType> currentSpawnableAnimals;
     [SerializeField] private Canvas uiCanvas;
@@ -155,9 +157,8 @@ public class GameplayController : MonoBehaviour
     // Spawn a new animal at a given horizontal position or default position
     public void RespawnAnimal(float x = 0)
     {
-        Vector2 spawnPosition = animalSpawner.CalculateSpawnPosition(x);
-        currentAnimal = animalSpawner.SpawnAnimal(nextAnimal, spawnPosition);
-        currentAnimal.DisablePhysics(false, false);
+        currentAnimal = animalSpawner.SpawnAnimal(nextAnimal, Vector2.zero);
+        currentAnimal.DisablePhysics(false, true);
         ResetNextAnimal();
         aimLine.EnableLine();
         currentAnimal.onCollision += ResetCurrent;
@@ -167,19 +168,61 @@ public class GameplayController : MonoBehaviour
     // Enable physics on current animal and clear reference
     public void ReleaseCurrentAnimal()
     {
-        if (currentAnimal == null)
-            return;
-
-        currentAnimal.EnablePhysics();
-        canControl = false;
-
+        if (CanBeReleased())
+        {
+            currentAnimal.EnablePhysics();
+            canControl = false;
+        }
+        else
+        {
+            ReturnToNext();
+        }
+            
         ScoreManager.instance.ResetCombo();
         aimLine.DisableLine();
+    }
+
+    private void ReturnToNext()
+    {
+        if (currentAnimal == null) return;
+        nextAnimalType = currentAnimal.GetAnimalType();
+        nextAnimal = animalSpawner.GetAnimalFromType(nextAnimalType);
+        onNextAnimalSet?.Invoke();
+        currentAnimal.onCollision -= ResetCurrent;
+        Destroy(currentAnimal.gameObject);
+        currentAnimal = null;
+    }
+
+    private bool CanBeReleased()
+    {
+        if (currentAnimal == null)
+            return false;
+
+        Vector2 position = currentAnimal.transform.position;
+
+        // 1. Check if inside board horizontally
+        if (position.x < MinX || position.x > MaxX || position.y < MinY)
+            return false;
+
+        // 2. Check if colliding with wall or other animal
+        Collider2D[] hits = Physics2D.OverlapCircleAll(position, 0.4f); // radius depends on animal size
+        foreach (var hit in hits)
+        {
+            if (hit.gameObject == currentAnimal.gameObject)
+                continue;
+
+            if (hit.CompareTag("Wall") || hit.GetComponent<Animal>() != null)
+                return false;
+        }
+
+        return true;
     }
 
 
     public void ResetCurrent()
     {
+        if (currentAnimal == null)
+            return;
         currentAnimal.onCollision -= ResetCurrent;
         currentAnimal = null;
     }

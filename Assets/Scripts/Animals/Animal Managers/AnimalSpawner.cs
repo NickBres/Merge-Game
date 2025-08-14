@@ -10,7 +10,6 @@ public class AnimalSpawner : MonoBehaviour
     [SerializeField] private Animal[] animalPrefabsSquare;
     [SerializeField] private Capybara capybaraPrefab;
     [SerializeField] private Egg eggPrefab;
-    [SerializeField] private Transform animalSpawnPoint;
     [SerializeField] private Transform animalsParent;
     private ShapeState shapeState;
 
@@ -76,11 +75,6 @@ public class AnimalSpawner : MonoBehaviour
         return newAnimal;
     }
 
-    public Vector2 CalculateSpawnPosition(float x)
-    {
-        return new Vector2(x, animalSpawnPoint.position.y);
-    }
-
     public bool TryToSpawnEgg(float eggSpawnChance, int eggLimit)
     {
         float chance = Random.value;
@@ -135,8 +129,6 @@ public class AnimalSpawner : MonoBehaviour
 
     public Egg GetEggPrefab() => eggPrefab;
     public Capybara GetCapybaraPrefab() => capybaraPrefab;
-
-    public Transform GetSpawnPoint() => animalSpawnPoint;
     
     
 }
