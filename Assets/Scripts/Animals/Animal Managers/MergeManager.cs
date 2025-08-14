@@ -79,6 +79,7 @@ public class MergeManager : MonoBehaviour
             if (closestPowerOfTwo > rawValue) closestPowerOfTwo /= 2;
             closestPowerOfTwo = Mathf.Min(closestPowerOfTwo, 2048);
             AnimalType newType = (AnimalType)closestPowerOfTwo;
+            SpawnMergedAnimal(newType, spawnPos);
             onMergeAnimal?.Invoke(newType, spawnPos);
         }
 
@@ -103,6 +104,25 @@ public class MergeManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         lastSender = null;
+    }
+
+    private void SpawnMergedAnimal(AnimalType type, Vector2 spawnPosition)
+    {
+        Animal newAnimal = GameplayController.instance.GetAnimalFromType(type);
+        newAnimal = GameplayController.instance.SpawnAnimal(newAnimal, spawnPosition);
+        newAnimal.EnablePhysics();
+        ComboPopUp.instance.ShowCombo(spawnPosition, ScoreManager.instance.GetComboCount());
+        ScoreManager.instance.IncrementCombo();
+
+        if (ScoreManager.instance.isEpicCombo())
+        {
+            newAnimal.MakeExplosive();
+        }
+
+        if (UnityEngine.Random.value < GameplayController.instance.GetIceChance() && !GameOverManager.instance.closeToDeath)
+        {
+            newAnimal.ApplyIce();
+        }
     }
 
     void OnDestroy()

@@ -97,7 +97,7 @@ public class AnimalSelector : MonoBehaviour
                     previousAnimalObj.SetAnimalType(animalTypes[currentIndex - 1]);
                     prevSprite.sprite = sprite;
                     prevSprite.enabled = true;
-                    GameplayController.instance.ApplySkinToAnimal(previousAnimalObj);
+                    previousAnimalObj.ApplySkin();
                 }
                 else
                 {
@@ -118,7 +118,7 @@ public class AnimalSelector : MonoBehaviour
                 currImage.sprite = currSprite;
             }
 
-            GameplayController.instance.ApplySkinToAnimal(currentAnimalObj);
+            currentAnimalObj.ApplySkin();
         }
 
         // Update next image
@@ -132,7 +132,7 @@ public class AnimalSelector : MonoBehaviour
                     nextAnimalObj.SetAnimalType(animalTypes[currentIndex + 1]);
                     nextImage.sprite = nextSprite;
                     nextImage.enabled = true;
-                    GameplayController.instance.ApplySkinToAnimal(nextAnimalObj);
+                    nextAnimalObj.ApplySkin();
                 }
                 else
                 {
@@ -193,7 +193,7 @@ public class AnimalSelector : MonoBehaviour
     {
         if (currentAnimalObj != null)
         {
-            GameplayController.instance.ApplySkinToAnimal(currentAnimalObj);
+           currentAnimalObj.ApplySkin();
         }
     }
 }

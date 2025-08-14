@@ -85,7 +85,7 @@ public class GameOverManager : MonoBehaviour
         foreach (Transform child in animalsParent)
         {
             Animal animal = child.GetComponent<Animal>();
-            if (animal.HasCollided() && animal != GameplayController.instance.currentAnimal)
+            if (animal.HasCollided() && animal != GameplayController.instance.GetCurrentAnimal())
             {
                 CheckCloseToDeadLine(animal);
                 hasAboveLine = CheckAboveDeadLine(animal);

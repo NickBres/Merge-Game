@@ -33,12 +33,12 @@ public class Abilities : MonoBehaviour
     {
         if (isOnCooldown  // cannot use skill on colldown
         || GameManager.instance.GetGameState() != GameState.Game // cannot use skill while pause
-        || !GameplayController.instance.HasAnimalsUpTo(magicSweepUpTo) // cannot use skill if there are no animals to sweep
+        || !AnimalsParent.instance.HasAnimalsUpTo(magicSweepUpTo) // cannot use skill if there are no animals to sweep
         || !PlayerDataManager.instance.UseMagicSweep()) // cannot use skill if player has no magic sweep
             return;
         GameOverManager.instance.SetCanLoose(false);
         AudioManager.instance.PlayMagicSound();
-        GameplayController.instance.RemoveAnimalsUpTo(magicSweepUpTo, true);
+        AnimalsParent.instance.RemoveAnimalsUpTo(magicSweepUpTo, true);
         GameOverManager.instance.SetCanLoose(true);
         StartCoroutine(CooldownCoroutine());
     }
@@ -83,7 +83,7 @@ public class Abilities : MonoBehaviour
     public void BombSkill()
     {
         if (isOnCooldown || GameManager.instance.GetGameState() != GameState.Game
-        || !GameplayController.instance.HasAnimalsUpTo(AnimalType.Bomb) // cannot use skill if there are nothing 
+        || !AnimalsParent.instance.HasAnimalsUpTo(AnimalType.Bomb) // cannot use skill if there are nothing 
         || !PlayerDataManager.instance.UseBomb() )
             return;
         GameplayController.instance.SetNextAnimal(AnimalType.Bomb);

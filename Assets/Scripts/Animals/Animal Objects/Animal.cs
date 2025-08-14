@@ -62,6 +62,7 @@ public class Animal : MonoBehaviour
 
     void Start()
     {
+        ApplySkin();
         Appear();   
     }
 
@@ -366,6 +367,20 @@ public class Animal : MonoBehaviour
     public void SetRound(bool value)
     {
         isRound = value;
+    }
+
+    public void ApplySkin()
+    {
+        var skin = SkinManager.instance.GetSkinForAnimal(GetAnimalType());
+        if (skin != null && skin.sprite != null)
+        {
+            var skinRenderer = transform.Find("Skin/Skin Renderer")?.GetComponent<SpriteRenderer>();
+            if (skinRenderer != null)
+            {
+                skinRenderer.sprite = skin.sprite;
+                skinRenderer.enabled = true;
+            }
+        }
     }
 
     protected void Explode(float killRadius, float pushRadius, float force = 5f)
