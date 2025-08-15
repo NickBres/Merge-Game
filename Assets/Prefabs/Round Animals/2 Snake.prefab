@@ -5372,6 +5372,7 @@ GameObject:
   - component: {fileID: -3131911983270790588}
   - component: {fileID: 7147289256549770034}
   - component: {fileID: 43710797698897747}
+  - component: {fileID: 6428192072556838987}
   m_Layer: 6
   m_Name: 2 Snake
   m_TagString: Untagged
@@ -5716,6 +5717,18 @@ PolygonCollider2D:
       - {x: -0.053333335, y: -0.48555556}
       - {x: -0.031111112, y: -0.4888889}
   m_UseDelaunayMesh: 0
+--- !u!210 &6428192072556838987
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7067737736262219735}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &7744360922328504622
 GameObject:
   m_ObjectHideFlags: 0

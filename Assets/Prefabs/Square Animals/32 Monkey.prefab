@@ -617,6 +617,7 @@ GameObject:
   - component: {fileID: -3131911983270790588}
   - component: {fileID: 6175671884742455392}
   - component: {fileID: 2683482760093863213}
+  - component: {fileID: 4763043685856470938}
   m_Layer: 6
   m_Name: 32 Monkey
   m_TagString: Untagged
@@ -686,7 +687,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db128f79e6e2a4593b57aa323eebd52c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glowMaterial: {fileID: 0}
   type: 32
   explosionForce: 15
 --- !u!95 &-3131911983270790588
@@ -891,6 +891,18 @@ PolygonCollider2D:
       - {x: 0.39555556, y: -0.4211111}
       - {x: 0.40555558, y: -0.41555557}
   m_UseDelaunayMesh: 0
+--- !u!210 &4763043685856470938
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7067737736262219735}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &7634614768091778715
 GameObject:
   m_ObjectHideFlags: 0

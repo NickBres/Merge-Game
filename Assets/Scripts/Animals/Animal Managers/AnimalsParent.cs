@@ -33,7 +33,8 @@ public class AnimalsParent : MonoBehaviour
                     rotationZ = animal.transform.rotation.eulerAngles.z,
                     isRound = animal.IsRound(),
                     isIced = animal.HasIce(),
-                    isExplosive = animal.CanExplode()
+                    isExplosive = animal.CanExplode(),
+                    IsMockup = animal.IsMockup()
                 };
                 animalsData.Add(data);
             }
@@ -45,15 +46,16 @@ public class AnimalsParent : MonoBehaviour
     {
         foreach (AnimalData data in animalsData)
         {
-            Animal prefab = animalSpawner.GetAnimalFromType(data.animalType, data.isRound);
+            Animal prefab = animalSpawner.GetAnimalFromType(data.animalType,true, data.isRound);
             if (prefab != null)
             {
                 Animal spawnedAnimal = animalSpawner.SpawnAnimal(prefab, data.position);
-                spawnedAnimal.DisablePhysics(true, true);
+                spawnedAnimal.DisablePhysics(true);
                 spawnedAnimal.transform.position = data.position;
                 spawnedAnimal.transform.rotation = Quaternion.Euler(0, 0, data.rotationZ);
                 if (data.isIced) spawnedAnimal.ApplyIce();
                 if (data.isExplosive) spawnedAnimal.MakeExplosive();
+                if (data.IsMockup) spawnedAnimal.MakeMockup();
             }
         }
         GameOverManager.instance.SetCanLoose(false);
@@ -87,7 +89,7 @@ public class AnimalsParent : MonoBehaviour
             foreach (Transform child in transform)
             {
                 Animal animal = child.GetComponent<Animal>();
-                if (animal != null && animal != GameplayController.instance.GetCurrentAnimal() && animal.GetAnimalType() < upTo)
+                if (animal != null && animal != GameplayController.instance.GetCurrentAnimal() && animal.GetAnimalType() < upTo && !animal.IsMockup())
                 {
                     if (addToScore)
                         ScoreManager.instance.UpdateScore(animal.GetAnimalType(), Vector2.zero);
@@ -121,9 +123,25 @@ public class AnimalsParent : MonoBehaviour
         foreach (Transform child in transform)
         {
             Animal animal = child.GetComponent<Animal>();
+            if (GameplayController.instance.IsMockup(animal))
+                continue;
             animal.EnablePhysics();
         }
         GameplayController.instance.SetCanControl(true);
         GameOverManager.instance.SetCanLoose(true);
+    }
+
+    public List<Animal> GetAnimals()
+    {
+        List<Animal> animals = new List<Animal>();
+        foreach (Transform child in transform)
+        {
+            Animal animal = child.GetComponent<Animal>();
+            if (animal != null)
+            {
+                animals.Add(animal);
+            }
+        }
+        return animals;
     }
 }

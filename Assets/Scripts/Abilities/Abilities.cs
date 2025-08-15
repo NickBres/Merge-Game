@@ -90,7 +90,7 @@ public class Abilities : MonoBehaviour
         || !AnimalsParent.instance.HasAnimalsUpTo(AnimalType.Bomb) // cannot use skill if there are nothing 
         || !PlayerDataManager.instance.UseBomb())
             return;
-        GameplayController.instance.SetNextAnimal(AnimalType.Bomb);
+        GameplayController.instance.SetNextBomb();
         StartCoroutine(CooldownCoroutine());
     }
 

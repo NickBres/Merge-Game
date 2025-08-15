@@ -5563,6 +5563,7 @@ GameObject:
   - component: {fileID: -3131911983270790588}
   - component: {fileID: 3599805313429451125}
   - component: {fileID: 6815877912545114646}
+  - component: {fileID: -8212028772124688460}
   m_Layer: 6
   m_Name: 4 Parrot
   m_TagString: Untagged
@@ -5913,6 +5914,18 @@ PolygonCollider2D:
       - {x: 0.07666667, y: -0.5233334}
       - {x: 0.09666667, y: -0.52000004}
   m_UseDelaunayMesh: 0
+--- !u!210 &-8212028772124688460
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7067737736262219735}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &8561701529447396596
 GameObject:
   m_ObjectHideFlags: 0

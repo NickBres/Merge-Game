@@ -5508,6 +5508,7 @@ GameObject:
   - component: {fileID: -3131911983270790588}
   - component: {fileID: 4553789562764384141}
   - component: {fileID: 3995897338335153972}
+  - component: {fileID: -2304193678960393592}
   m_Layer: 3
   m_Name: 16 Penguin
   m_TagString: Untagged
@@ -5829,6 +5830,18 @@ PolygonCollider2D:
       - {x: 0.08555556, y: -0.5}
       - {x: 0.09555556, y: -0.49666667}
   m_UseDelaunayMesh: 0
+--- !u!210 &-2304193678960393592
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7067737736262219735}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &8802903443093588849
 GameObject:
   m_ObjectHideFlags: 0

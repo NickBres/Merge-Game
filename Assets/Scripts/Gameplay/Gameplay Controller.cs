@@ -40,10 +40,6 @@ public class GameplayController : MonoBehaviour
     private ShapeState animalsShape;
     private AnimalSpawner animalSpawner;
 
-
-    [Header(" Actions ")]
-    public static Action onNextAnimalSet;
-
     #region Initialization
 
     // Initialize singleton, subscribe to events
@@ -72,7 +68,6 @@ public class GameplayController : MonoBehaviour
     void Start()
     {
         ResetGameplay();
-        
     }
 
     // Unsubscribe from events
@@ -94,53 +89,46 @@ public class GameplayController : MonoBehaviour
             aimLine.MoveLine(currentAnimal.transform.position);
         else
             canControl = true;
+
+        CheckMockupsEmptied();
     }
 
     public void ResetGameplay()
     {
-        if(animalSpawner == null)
+        if (animalSpawner == null)
             animalSpawner = AnimalSpawner.instance;
         animalSpawner.ResetAnimalsParent();
         currentAnimal = null;
         canControl = true;
         currentSpawnableAnimals = new HashSet<AnimalType>(defaultSpawnableAnimals);
-        ResetNextAnimal();
         aimLine.DisableLine();
         animalsShape = GameManager.instance.GetAnimalShape();
         animalSpawner.SetShapeState(animalsShape);
-
-        if(GameManager.instance.GetGameState() == GameState.Game)   
-            SpawnAnimalsToChooseFrom();
+        ClearSpawnAnimals();
     }
 
-    // Select a random next animal from current spawnable animals
-    private void ResetNextAnimal()
-    {
-        if (!animalSpawner.TryToSpawnEgg(eggSpawnChance, eggLimit))
-        {
-            nextAnimalType = currentSpawnableAnimals.ElementAt(Random.Range(0, currentSpawnableAnimals.Count));
-            nextAnimal = animalSpawner.GetAnimalFromType(nextAnimalType);
-        }
-        else
-        {
-            nextAnimal = animalSpawner.GetEggPrefab();
-            nextAnimalType = AnimalType.Egg;
-        }
-        onNextAnimalSet?.Invoke();
-    }
-
-    public void SetNextAnimal(AnimalType animalType)
+    public void SetNextAnimal(AnimalType animalType, bool setShape = false, bool toRound = false)
     {
         nextAnimalType = animalType;
-        nextAnimal = animalSpawner.GetAnimalFromType(animalType);
-        onNextAnimalSet?.Invoke();
+        nextAnimal = animalSpawner.GetAnimalFromType(animalType, setShape, toRound);
     }
 
     public void SetNextCapybara()
     {
-        nextAnimalType = AnimalType.Capybara;
-        nextAnimal = animalSpawner.GetCapybaraPrefab();
-        onNextAnimalSet?.Invoke();
+        ClearSpawnAnimals();
+        Animal animal = animalSpawner.GetCapybaraPrefab();
+        animal = animalSpawner.SpawnAnimal(animal, spawnPoints[1].position);
+        animal.MakeMockup();
+        mockups.Add(animal);
+    }
+
+    public void SetNextBomb()
+    {
+        ClearSpawnAnimals();
+        Animal animal = animalSpawner.GetAnimalFromType(AnimalType.Bomb);
+        animal = animalSpawner.SpawnAnimal(animal, spawnPoints[1].position);
+        animal.MakeMockup();
+        mockups.Add(animal);
     }
 
     // Replace current spawnable animals with a new list
@@ -151,7 +139,7 @@ public class GameplayController : MonoBehaviour
         {
             currentSpawnableAnimals.Add(animalType);
         }
-        ResetNextAnimal();
+        SpawnAnimalsToChooseFrom();
     }
 
     // Restore spawnable animals to default list
@@ -162,7 +150,7 @@ public class GameplayController : MonoBehaviour
         {
             currentSpawnableAnimals.Add(animalType);
         }
-        ResetNextAnimal();
+        SpawnAnimalsToChooseFrom();
     }
 
     // Spawn a new animal at a given horizontal position or default position
@@ -170,7 +158,6 @@ public class GameplayController : MonoBehaviour
     {
         currentAnimal = animalSpawner.SpawnAnimal(nextAnimal, Vector2.zero);
         currentAnimal.DisablePhysics(false, true);
-        ResetNextAnimal();
         aimLine.EnableLine();
         currentAnimal.onCollision += ResetCurrent;
         ExplosionHighlighter.instance.CheckExplosives();
@@ -184,7 +171,6 @@ public class GameplayController : MonoBehaviour
             currentAnimal.EnablePhysics();
             canControl = false;
             RemoveMockup(lastIndex);
-            CheckMockupsEmptied(); 
         }
         else
         {
@@ -247,15 +233,28 @@ public class GameplayController : MonoBehaviour
 
     private void SpawnAnimalsToChooseFrom()
     {
+        ClearSpawnAnimals();
         RefillAnimalsToChooseFrom();
-        mockups.Clear();
         for (int i = 0; i < animalsToChooseFrom.Length; i++)
         {
             Animal animal = animalSpawner.GetAnimalFromType(animalsToChooseFrom[i]);
+            if (animalSpawner.TryToSpawnEgg(eggSpawnChance, eggLimit)) animal = animalSpawner.GetEggPrefab();
             animal = animalSpawner.SpawnAnimal(animal, spawnPoints[i].position);
             animal.MakeMockup();
             mockups.Add(animal);
         }
+    }
+
+    private void ClearSpawnAnimals()
+    {
+        foreach (var mockup in mockups)
+        {
+            if (mockup != null)
+            {
+                Destroy(mockup.gameObject);
+            }
+        }
+        mockups.Clear();
     }
 
     private void HideMockup(int index)
@@ -268,12 +267,12 @@ public class GameplayController : MonoBehaviour
         {
             mockup.gameObject.SetActive(false);
         }
-        
+
     }
 
     private void ShowMockup(int index)
     {
-        if (index < 0 || index >= animalsToChooseFrom.Length)
+        if (index < 0 || index >= mockups.Count)
             return;
 
         Animal mockup = mockups[index];
@@ -324,9 +323,14 @@ public class GameplayController : MonoBehaviour
             return;
 
         HideMockup(index);
-        SetNextAnimal(mockup.GetAnimalType());
+        SetNextAnimal(mockup.GetAnimalType(), true, mockup.IsRound());
         lastIndex = index;
         RespawnAnimal();
+    }
+
+    public bool IsMockup(Animal animal)
+    {
+        return mockups.Contains(animal);
     }
 
     #endregion
@@ -375,10 +379,18 @@ public class GameplayController : MonoBehaviour
     public void LoadSessionData(GameSessionData sessionData)
     {
         ResetGameplay();
-        nextAnimalType = sessionData.nextAnimal;
-        nextAnimal = animalSpawner.GetAnimalFromType(nextAnimalType);
-        onNextAnimalSet?.Invoke();
         animalsParentManager.LoadAnimalsData(sessionData.animals, animalSpawner);
+
+        List<Animal> animals = animalsParentManager.GetAnimals();
+
+        foreach (var animal in animals)
+        {
+            if (animal.IsMockup())
+            {
+                mockups.Add(animal);
+            }
+        }
+        
         animalsParentManager.UnfreezeAnimals();
     }
 

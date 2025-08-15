@@ -77,6 +77,7 @@ private static void HandleTouchStart(Vector3 screenPos)
         newPos.y += offsetY;
         newPos.z = currentAnimal.transform.position.z;
         currentAnimal.SetPosition(newPos);
+        currentAnimal.SetSortingGroup(100); // Ensure the animal is above other  elements
     }
 
     private static bool IsTouchOverUI(Vector3 worldPos)

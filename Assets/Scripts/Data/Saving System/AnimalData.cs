@@ -9,5 +9,6 @@ public class AnimalData
     public bool isRound;
     public bool isIced;
     public bool isExplosive;
+    public bool IsMockup;
 
 }

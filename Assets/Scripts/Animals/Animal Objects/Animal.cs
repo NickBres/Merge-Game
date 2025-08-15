@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using UnityEngine.Video;
+using UnityEngine.Rendering;
 
 public class Animal : MonoBehaviour
 {
@@ -66,7 +67,7 @@ public class Animal : MonoBehaviour
     void Start()
     {
         ApplySkin();
-        Appear();   
+        Appear();
     }
 
 
@@ -192,7 +193,7 @@ public class Animal : MonoBehaviour
         {
             gameObject.layer = LayerMask.NameToLayer("GhostAnimal");
             rigidBody.bodyType = RigidbodyType2D.Kinematic;
-        } 
+        }
         storedVelocity = rigidBody.linearVelocity;
         rigidBody.linearVelocity = Vector2.zero;
         rigidBody.gravityScale = 0f;
@@ -218,6 +219,7 @@ public class Animal : MonoBehaviour
         {
             transform.localScale = Vector3.one; // fallback if x was 0
         }
+
         isMockup = true;
     }
 
@@ -565,6 +567,12 @@ public class Animal : MonoBehaviour
                 animalsMarkedForExplosion.RemoveAt(i);
             }
         }
+    }
+
+    public void SetSortingGroup(int sortingOrder)
+    {
+        if (this.GetComponent<SortingGroup>() == null) return;
+        this.GetComponent<SortingGroup>().sortingOrder = sortingOrder;
     }
 
 }

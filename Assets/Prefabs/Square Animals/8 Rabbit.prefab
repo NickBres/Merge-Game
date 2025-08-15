@@ -5425,6 +5425,7 @@ GameObject:
   - component: {fileID: -3131911983270790588}
   - component: {fileID: 4504370753346692399}
   - component: {fileID: 3737766957275862029}
+  - component: {fileID: 4665044815565584077}
   m_Layer: 6
   m_Name: 8 Rabbit
   m_TagString: Untagged
@@ -5703,6 +5704,18 @@ PolygonCollider2D:
       - {x: -0.18555556, y: -0.51666665}
       - {x: -0.18444444, y: -0.51555556}
   m_UseDelaunayMesh: 0
+--- !u!210 &4665044815565584077
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7067737736262219735}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &8423820007289236160
 GameObject:
   m_ObjectHideFlags: 0

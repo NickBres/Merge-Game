@@ -5421,6 +5421,7 @@ GameObject:
   - component: {fileID: -3131911983270790588}
   - component: {fileID: 6920232164993501097}
   - component: {fileID: 8993753722930739437}
+  - component: {fileID: 8599381241560333995}
   m_Layer: 6
   m_Name: 64 Pig
   m_TagString: Untagged
@@ -5490,7 +5491,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db128f79e6e2a4593b57aa323eebd52c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glowMaterial: {fileID: 0}
   type: 64
   explosionForce: 15
 --- !u!95 &-3131911983270790588
@@ -5742,6 +5742,18 @@ PolygonCollider2D:
       - {x: 0.075555556, y: -0.47222224}
       - {x: 0.112222224, y: -0.46666667}
   m_UseDelaunayMesh: 0
+--- !u!210 &8599381241560333995
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7067737736262219735}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &7446213496572460971
 GameObject:
   m_ObjectHideFlags: 0

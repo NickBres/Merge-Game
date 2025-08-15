@@ -158,8 +158,8 @@ public class UIManager : MonoBehaviour
 
     public void PlayButtonCallback()
     {
-
-        if (GameStateSaveController.instance.SaveExists())
+        bool isSave = GameStateSaveController.instance.SaveExists();
+        if (isSave)
         {
             SetAlert();
             return;

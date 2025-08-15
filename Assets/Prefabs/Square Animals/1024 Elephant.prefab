@@ -5421,6 +5421,7 @@ GameObject:
   - component: {fileID: -3131911983270790588}
   - component: {fileID: 8240908270008386448}
   - component: {fileID: 9149024147911790342}
+  - component: {fileID: -8473642183658394255}
   m_Layer: 6
   m_Name: 1024 Elephant
   m_TagString: Untagged
@@ -5490,7 +5491,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db128f79e6e2a4593b57aa323eebd52c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glowMaterial: {fileID: 0}
   type: 1024
   explosionForce: 15
 --- !u!95 &-3131911983270790588
@@ -5743,6 +5743,18 @@ PolygonCollider2D:
       - {x: 0.39666668, y: -0.19666667}
       - {x: 0.3977778, y: -0.19555557}
   m_UseDelaunayMesh: 0
+--- !u!210 &-8473642183658394255
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7067737736262219735}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &7731543800687635997
 GameObject:
   m_ObjectHideFlags: 0

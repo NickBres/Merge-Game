@@ -5334,6 +5334,7 @@ GameObject:
   - component: {fileID: -3131911983270790588}
   - component: {fileID: 6379469968670520234}
   - component: {fileID: 3837664759183925914}
+  - component: {fileID: 8398945914140211355}
   m_Layer: 6
   m_Name: 256 Giraffe
   m_TagString: Untagged
@@ -5403,7 +5404,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db128f79e6e2a4593b57aa323eebd52c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glowMaterial: {fileID: 0}
   type: 256
   explosionForce: 15
 --- !u!95 &-3131911983270790588
@@ -5643,6 +5643,18 @@ PolygonCollider2D:
       - {x: 0.34555557, y: -0.50111115}
       - {x: 0.37, y: -0.4766667}
   m_UseDelaunayMesh: 0
+--- !u!210 &8398945914140211355
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7067737736262219735}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &8691862471082425616
 GameObject:
   m_ObjectHideFlags: 0

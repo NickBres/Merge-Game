@@ -5111,6 +5111,7 @@ GameObject:
   - component: {fileID: -3131911983270790588}
   - component: {fileID: 8028572001481688887}
   - component: {fileID: 4746956216230161129}
+  - component: {fileID: -5807233459907157462}
   m_Layer: 6
   m_Name: 128 Panda
   m_TagString: Untagged
@@ -5180,7 +5181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db128f79e6e2a4593b57aa323eebd52c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glowMaterial: {fileID: 0}
   type: 128
   explosionForce: 15
 --- !u!95 &-3131911983270790588
@@ -5427,6 +5427,18 @@ PolygonCollider2D:
       - {x: 0.3288889, y: -0.5233334}
       - {x: 0.34444445, y: -0.5188889}
   m_UseDelaunayMesh: 0
+--- !u!210 &-5807233459907157462
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7067737736262219735}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &7201941217989582132
 GameObject:
   m_ObjectHideFlags: 0

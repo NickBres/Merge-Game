@@ -32,10 +32,11 @@ public class AnimalSpawner : MonoBehaviour
         shapeState = state;
     }
 
-    public Animal GetAnimalFromType(AnimalType animalType, bool isRound = false)
+    public Animal GetAnimalFromType(AnimalType animalType, bool setShape = false, bool toRound = false)
     {
         if (animalType == AnimalType.Egg) return eggPrefab;
         if (animalType == AnimalType.Capybara) return capybaraPrefab;
+        bool isRound = false;
 
         switch (shapeState)
         {
@@ -48,6 +49,11 @@ public class AnimalSpawner : MonoBehaviour
             case ShapeState.Both:
                 isRound = Random.value < 0.5f;
                 break;
+        }
+
+        if(setShape)
+        {
+            isRound = toRound;
         }
 
         Animal[] sourceArray = isRound ? animalPrefabsRound : animalPrefabsSquare;
@@ -67,6 +73,7 @@ public class AnimalSpawner : MonoBehaviour
         Animal newAnimal = Instantiate(prefab, position, Quaternion.identity, animalsParent);
         Vector2 adjustedPos = AdjustSpawnPoint(position, newAnimal);
         newAnimal.transform.position = adjustedPos;
+        newAnimal.SetRound(prefab.IsRound());
 
         if (newAnimal.GetComponent<Capybara>() != null)
         {
