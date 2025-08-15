@@ -760,7 +760,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &30874136
 Transform:
   m_ObjectHideFlags: 0
@@ -3243,7 +3243,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1493840226}
-  - {fileID: 465640260}
   - {fileID: 1825759547}
   - {fileID: 1606953987}
   - {fileID: 1926697884}
@@ -5112,82 +5111,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
---- !u!1 &465640259
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 465640260}
-  - component: {fileID: 465640262}
-  - component: {fileID: 465640261}
-  m_Layer: 0
-  m_Name: Next Animal
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &465640260
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465640259}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1912395290}
-  m_Father: {fileID: 231658979}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -65.1, y: -253}
-  m_SizeDelta: {x: 50, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &465640261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465640259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 468a33004f46a40549128715e2521560, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &465640262
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465640259}
-  m_CullTransparentMesh: 1
 --- !u!1 &480802282
 GameObject:
   m_ObjectHideFlags: 0
@@ -16298,9 +16221,9 @@ MonoBehaviour:
   upgradeAnimalsCooldownUI: {fileID: 1252443733}
   bombCooldownUI: {fileID: 965922506}
   showAbilitiesUI: {fileID: 1606953988}
-  magicSweepUpTo: 32
+  magicSweepUpTo: 64
   animalsUpgradeDuration: 10
-  animalsToSpawn: 800000002000000040000000
+  animalsToSpawn: 800000004000000020000000
   cooldownDuration: 30
 --- !u!1 &1252443729
 GameObject:
@@ -17202,7 +17125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7454361169899417445, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalScale.y
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7454361169899417445, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalPosition.x
@@ -17210,7 +17133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7454361169899417445, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.01
+      value: 3.32
       objectReference: {fileID: 0}
     - target: {fileID: 7454361169899417445, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalPosition.z
@@ -24998,7 +24921,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7454361169899417445, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.48
+      value: 10.64
       objectReference: {fileID: 0}
     - target: {fileID: 7454361169899417445, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalPosition.z
@@ -30201,81 +30124,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!1 &1912395289
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1912395290}
-  - component: {fileID: 1912395292}
-  - component: {fileID: 1912395291}
-  m_Layer: 0
-  m_Name: NextAnimal Image
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1912395290
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912395289}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 465640260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1912395291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912395289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 02048d6b5eae34f18b37ad91a7f4d3fc, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1912395292
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912395289}
-  m_CullTransparentMesh: 1
 --- !u!1 &1916851074
 GameObject:
   m_ObjectHideFlags: 0
@@ -30935,7 +30783,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1970140886}
   - component: {fileID: 1970140887}
-  - component: {fileID: 1970140888}
   - component: {fileID: 1970140889}
   - component: {fileID: 1970140890}
   m_Layer: 0
@@ -30985,19 +30832,6 @@ MonoBehaviour:
   iceChance: 0.25
   eggLimit: 2
   eggSpawnChance: 0.1
---- !u!114 &1970140888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1970140885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a04b4b55c88bc4b3a93efe039f0118da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nextAnimalImage: {fileID: 1912395291}
 --- !u!114 &1970140889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34623,7 +34457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7454361169899417445, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalScale.y
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7454361169899417445, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalPosition.x
@@ -34631,7 +34465,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7454361169899417445, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.01
+      value: 3.32
       objectReference: {fileID: 0}
     - target: {fileID: 7454361169899417445, guid: 92cbfb023d5b64144943269f794dadee, type: 3}
       propertyPath: m_LocalPosition.z

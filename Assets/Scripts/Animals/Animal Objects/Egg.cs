@@ -63,6 +63,7 @@ public class Egg : Animal
             nearbyTypes[Random.Range(0, nearbyTypes.Count)] : defaultAnimalType;
 
         Animal newAnimal = GameplayController.instance.GetAnimalFromType(chosenType);
+        newAnimal.EnablePhysics();
 
         // Randomly apply modifiers
         float rand = Random.value;

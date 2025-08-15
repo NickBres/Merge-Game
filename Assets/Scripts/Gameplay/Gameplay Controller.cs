@@ -188,6 +188,7 @@ public class GameplayController : MonoBehaviour
         currentAnimal.onCollision -= ResetCurrent;
         Destroy(currentAnimal.gameObject);
         currentAnimal = null;
+        AudioManager.instance.PlayClickSound();
     }
 
     private bool CanBeReleased()
@@ -201,8 +202,10 @@ public class GameplayController : MonoBehaviour
         if (position.x < MinX || position.x > MaxX || position.y < MinY)
             return false;
 
+        float currAnimalRadius = currentAnimal.GetComponent<Collider2D>()?.bounds.extents.x ?? 0.5f;
+
         // 2. Check if colliding with wall or other animal
-        Collider2D[] hits = Physics2D.OverlapCircleAll(position, 0.4f); // radius depends on animal size
+        Collider2D[] hits = Physics2D.OverlapCircleAll(position,currAnimalRadius); // radius depends on animal size
         foreach (var hit in hits)
         {
             if (hit.gameObject == currentAnimal.gameObject)
@@ -326,6 +329,7 @@ public class GameplayController : MonoBehaviour
         SetNextAnimal(mockup.GetAnimalType(), true, mockup.IsRound());
         lastIndex = index;
         RespawnAnimal();
+        AudioManager.instance.PlayWhooshSound();
     }
 
     public bool IsMockup(Animal animal)

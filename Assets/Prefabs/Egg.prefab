@@ -5111,6 +5111,7 @@ GameObject:
   - component: {fileID: 1043265007231913875}
   - component: {fileID: 3058638387518920944}
   - component: {fileID: 6270324280366740102}
+  - component: {fileID: 2239510771962887780}
   m_Layer: 6
   m_Name: Egg
   m_TagString: Untagged
@@ -5430,6 +5431,18 @@ MonoBehaviour:
   explosionForce: 15
   scanRadius: 2
   defaultAnimalType: 32
+--- !u!210 &2239510771962887780
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7067737736262219735}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &8177423132441159178
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,7 +22,14 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource cawabungaSource;
     [SerializeField] private AudioSource epicSource;
     [SerializeField] private AudioSource wowSource;
+    [SerializeField] private AudioSource whooshSource;
 
+
+    public void PlayWhooshSound()
+    {
+        whooshSource.pitch = Random.Range(0.8f, 1.2f);
+        whooshSource.Play();
+    }
 
     public void PlayIcedSound()
     {
@@ -185,6 +192,7 @@ public class AudioManager : MonoBehaviour
         wowSource.mute = !isOn;
         choirSource.mute = !isOn;
         eggCrackSource.mute = !isOn;
+        whooshSource.mute = !isOn;
     }
 
 
