@@ -5508,7 +5508,7 @@ GameObject:
   - component: {fileID: -3131911983270790588}
   - component: {fileID: 4553789562764384141}
   - component: {fileID: 3995897338335153972}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: 16 Penguin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5525,7 +5525,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.85, y: 0.85, z: 1.0624999}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 1.1249999}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 40328939657883658}
@@ -5553,7 +5553,7 @@ Rigidbody2D:
   m_Mass: 2.5
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -5564,7 +5564,7 @@ Rigidbody2D:
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &-3797133296387751621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5577,7 +5577,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db128f79e6e2a4593b57aa323eebd52c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glowMaterial: {fileID: 0}
   type: 16
   explosionForce: 15
 --- !u!95 &-3131911983270790588

@@ -3,6 +3,7 @@ using Random = UnityEngine.Random;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class GameplayController : MonoBehaviour
 {
@@ -18,12 +19,16 @@ public class GameplayController : MonoBehaviour
     private HashSet<AnimalType> currentSpawnableAnimals;
     [SerializeField] private Canvas uiCanvas;
     [SerializeField] private AimLine aimLine;
+    [SerializeField] private Transform[] spawnPoints;
 
     private AnimalsParent animalsParentManager;
 
     private Animal currentAnimal;
     private Animal nextAnimal;
     private AnimalType nextAnimalType;
+    private AnimalType[] animalsToChooseFrom = new AnimalType[3];
+    private List<Animal> mockups = new List<Animal>();
+    private int lastIndex = 0;
 
 
 
@@ -67,6 +72,7 @@ public class GameplayController : MonoBehaviour
     void Start()
     {
         ResetGameplay();
+        
     }
 
     // Unsubscribe from events
@@ -92,6 +98,8 @@ public class GameplayController : MonoBehaviour
 
     public void ResetGameplay()
     {
+        if(animalSpawner == null)
+            animalSpawner = AnimalSpawner.instance;
         animalSpawner.ResetAnimalsParent();
         currentAnimal = null;
         canControl = true;
@@ -100,6 +108,9 @@ public class GameplayController : MonoBehaviour
         aimLine.DisableLine();
         animalsShape = GameManager.instance.GetAnimalShape();
         animalSpawner.SetShapeState(animalsShape);
+
+        if(GameManager.instance.GetGameState() == GameState.Game)   
+            SpawnAnimalsToChooseFrom();
     }
 
     // Select a random next animal from current spawnable animals
@@ -172,22 +183,22 @@ public class GameplayController : MonoBehaviour
         {
             currentAnimal.EnablePhysics();
             canControl = false;
+            RemoveMockup(lastIndex);
+            CheckMockupsEmptied(); 
         }
         else
         {
-            ReturnToNext();
+            ReturnToLastIndex();
         }
             
         ScoreManager.instance.ResetCombo();
         aimLine.DisableLine();
     }
 
-    private void ReturnToNext()
+    private void ReturnToLastIndex()
     {
+        ShowMockup(lastIndex);
         if (currentAnimal == null) return;
-        nextAnimalType = currentAnimal.GetAnimalType();
-        nextAnimal = animalSpawner.GetAnimalFromType(nextAnimalType);
-        onNextAnimalSet?.Invoke();
         currentAnimal.onCollision -= ResetCurrent;
         Destroy(currentAnimal.gameObject);
         currentAnimal = null;
@@ -225,6 +236,97 @@ public class GameplayController : MonoBehaviour
             return;
         currentAnimal.onCollision -= ResetCurrent;
         currentAnimal = null;
+    }
+
+    private void RefillAnimalsToChooseFrom()
+    {
+        animalsToChooseFrom[0] = currentSpawnableAnimals.ElementAt(Random.Range(0, currentSpawnableAnimals.Count));
+        animalsToChooseFrom[1] = currentSpawnableAnimals.ElementAt(Random.Range(0, currentSpawnableAnimals.Count));
+        animalsToChooseFrom[2] = currentSpawnableAnimals.ElementAt(Random.Range(0, currentSpawnableAnimals.Count));
+    }
+
+    private void SpawnAnimalsToChooseFrom()
+    {
+        RefillAnimalsToChooseFrom();
+        mockups.Clear();
+        for (int i = 0; i < animalsToChooseFrom.Length; i++)
+        {
+            Animal animal = animalSpawner.GetAnimalFromType(animalsToChooseFrom[i]);
+            animal = animalSpawner.SpawnAnimal(animal, spawnPoints[i].position);
+            animal.MakeMockup();
+            mockups.Add(animal);
+        }
+    }
+
+    private void HideMockup(int index)
+    {
+        if (index < 0 || index >= animalsToChooseFrom.Length)
+            return;
+
+        Animal mockup = mockups[index];
+        if (mockup != null)
+        {
+            mockup.gameObject.SetActive(false);
+        }
+        
+    }
+
+    private void ShowMockup(int index)
+    {
+        if (index < 0 || index >= animalsToChooseFrom.Length)
+            return;
+
+        Animal mockup = mockups[index];
+        if (mockup != null)
+        {
+            mockup.gameObject.SetActive(true);
+        }
+    }
+    private void RemoveMockup(int index)
+    {
+        if (index < 0 || index >= animalsToChooseFrom.Length)
+            return;
+
+        Animal mockup = mockups[index];
+        if (mockup != null)
+        {
+            mockups.Remove(mockup);
+            Destroy(mockup.gameObject);
+        }
+    }
+
+    private void CheckMockupsEmptied()
+    {
+        if (mockups.Count == 0)
+        {
+            SpawnAnimalsToChooseFrom();
+        }
+    }
+
+    public List<Animal> GetMockupAnimals() => mockups;
+
+
+    public Animal GetAnimalFromMockup(int index)
+    {
+        if (index < 0 || index >= animalsToChooseFrom.Length)
+            return null;
+
+        return mockups[index] == null ? null : mockups[index];
+    }
+
+    public void HandleMockupTouch(int index)
+    {
+        if (index < 0 || index >= animalsToChooseFrom.Length)
+            return;
+
+        Animal mockup = GetAnimalFromMockup(index);
+        if (mockup == null)
+            return;
+
+        HideMockup(index);
+        SetNextAnimal(mockup.GetAnimalType());
+        lastIndex = index;
+        RespawnAnimal();
     }
 
     #endregion

@@ -44,6 +44,7 @@ public class Animal : MonoBehaviour
     protected bool isIced = false;
     protected bool isFrozen = false;
     protected bool isRound;
+    protected bool isMockup = false;
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -197,6 +198,27 @@ public class Animal : MonoBehaviour
         rigidBody.gravityScale = 0f;
         rigidBody.freezeRotation = true;
         isFrozen = disableMovement;
+    }
+
+    public void MakeMockup()
+    {
+        if (rigidBody == null) rigidBody = GetComponent<Rigidbody2D>();
+        DisablePhysics(true, true);
+
+        // Normalize scale: set x = 1, preserve y/z proportions
+        Vector3 currentScale = transform.localScale;
+        if (currentScale.x != 0)
+        {
+            float ratioY = currentScale.y / currentScale.x;
+            float ratioZ = currentScale.z / currentScale.x;
+
+            transform.localScale = new Vector3(1f, ratioY, ratioZ);
+        }
+        else
+        {
+            transform.localScale = Vector3.one; // fallback if x was 0
+        }
+        isMockup = true;
     }
 
     public void MoveTo(Vector3 newPosition)
@@ -371,6 +393,11 @@ public class Animal : MonoBehaviour
         return isRound;
     }
 
+    public bool IsMockup()
+    {
+        return isMockup;
+    }
+
     public void SetRound(bool value)
     {
         isRound = value;
@@ -517,7 +544,7 @@ public class Animal : MonoBehaviour
         {
             if (hit.TryGetComponent(out Animal other) && other != this)
             {
-                if ((other.GetAnimalType() < this.GetAnimalType() || other.HasIce()) && !animalsMarkedForExplosion.Contains(other))
+                if ((other.GetAnimalType() < this.GetAnimalType() || other.HasIce()) && !animalsMarkedForExplosion.Contains(other) && !other.isMockup)
                 {
                     other.MarkForExplosion(true);
                     animalsMarkedForExplosion.Add(other);

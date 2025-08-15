@@ -5388,8 +5388,8 @@ Transform:
   m_GameObject: {fileID: 7067737736262219735}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.08417963, y: -0.039927922, z: -1.1541152}
-  m_LocalScale: {x: 0.35, y: 0.35, z: 1.4}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 840733523202902866}
@@ -5417,7 +5417,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -5428,7 +5428,7 @@ Rigidbody2D:
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &-3797133296387751621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5441,7 +5441,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db128f79e6e2a4593b57aa323eebd52c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glowMaterial: {fileID: 0}
   type: 2
   explosionForce: 15
 --- !u!95 &-3131911983270790588

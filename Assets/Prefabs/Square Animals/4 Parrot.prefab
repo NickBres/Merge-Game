@@ -5438,7 +5438,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.55, y: 0.55, z: 1.3750001}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1.5000002}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3619191578133707611}
@@ -5466,7 +5466,7 @@ Rigidbody2D:
   m_Mass: 1.5
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -5477,7 +5477,7 @@ Rigidbody2D:
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &-3797133296387751621
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -28,13 +30,31 @@ public static class InputHandler
         InputManager.instance.OnTouchHold -= HandleTouchHold;
     }
 
-    private static void HandleTouchStart(Vector3 screenPos)
-    {
-        if (!GameManager.instance.IsGameState() || IsTouchOverUI(screenPos) || !gameplay.CanControl())
-            return;
+private static void HandleTouchStart(Vector3 screenPos)
+{
+    if (!GameManager.instance.IsGameState() || IsTouchOverUI(screenPos) || !gameplay.CanControl())
+        return;
 
-        gameplay.RespawnAnimal(screenPos.x);
+    List<Animal> mockups = gameplay.GetMockupAnimals();
+    Camera cam = Camera.main;
+
+    for (int i = 0; i < mockups.Count; i++)
+    {
+        Animal animal = mockups[i];
+        if (animal == null) continue;
+
+        Collider2D col = animal.GetComponent<Collider2D>();
+        if (col == null) continue;
+
+        if (col.OverlapPoint(screenPos))
+            {
+                gameplay.HandleMockupTouch(i);
+                return;
+            }
     }
+
+    Debug.Log($"Touch at {screenPos} - No mockup hit");
+}
 
     private static void HandleTouchEnd(Vector3 screenPos)
     {
