@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6e9fd23f9be3b44a0a6fefc16a18f1cb
+guid: 944a6cc346b4b4156961ea0e6ac90060
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2788949464801170402
-    second: mergimals hrowth_0
+      213: 7830339162663707296
+    second: CE6E8319-F7CF-49FC-97E6-6267CCCA994F_4_5005_c_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mergimals hrowth_0
+      name: CE6E8319-F7CF-49FC-97E6-6267CCCA994F_4_5005_c_0
       rect:
         serializedVersion: 2
-        x: 388
-        y: 17
-        width: 1888
-        height: 1405
+        x: 0
+        y: 0
+        width: 359
+        height: 780
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e1ca20efc39ab49d0800000000000000
-      internalID: -2788949464801170402
+      spriteID: 0a266654bf3faac60800000000000000
+      internalID: 7830339162663707296
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      mergimals hrowth_0: -2788949464801170402
+      CE6E8319-F7CF-49FC-97E6-6267CCCA994F_4_5005_c_0: 7830339162663707296
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

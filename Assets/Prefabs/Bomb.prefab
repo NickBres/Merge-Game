@@ -10002,7 +10002,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab2607118b30b474dbb125d693701863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2048
+  type: 2049
   explosionForce: 15
   explosionDelay: 1
   killRadius: 3

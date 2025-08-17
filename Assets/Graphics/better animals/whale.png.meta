@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7da55fd8256554b228a71cc32a872421
+guid: cc22b819714f24a65a56ac43ae349709
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6773531981352480283
-    second: pig square_0
+      213: -1241769935495920468
+    second: 7D26741F-2518-4201-98AF-C9C3B1F71338 Background Removed_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 900
@@ -114,7 +114,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pig square_0
+      name: 7D26741F-2518-4201-98AF-C9C3B1F71338 Background Removed_0
       rect:
         serializedVersion: 2
-        x: 36
-        y: 130
-        width: 954
-        height: 836
+        x: 47
+        y: 98
+        width: 925
+        height: 810
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b1e2347037b600e50800000000000000
-      internalID: 6773531981352480283
+      spriteID: ca48106a2d854cee0800000000000000
+      internalID: -1241769935495920468
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      pig square_0: 6773531981352480283
+      7D26741F-2518-4201-98AF-C9C3B1F71338 Background Removed_0: -1241769935495920468
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

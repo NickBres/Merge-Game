@@ -5509,7 +5509,7 @@ GameObject:
   - component: {fileID: 4553789562764384141}
   - component: {fileID: 3995897338335153972}
   - component: {fileID: -2304193678960393592}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: 16 Penguin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5526,7 +5526,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9, y: 0.9, z: 1.1249999}
+  m_LocalScale: {x: 1, y: 1, z: 1.2499999}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 40328939657883658}

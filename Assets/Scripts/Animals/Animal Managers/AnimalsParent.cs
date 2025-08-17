@@ -7,6 +7,8 @@ public class AnimalsParent : MonoBehaviour
 
     public static AnimalsParent instance;
 
+    bool animalsFrozen = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -46,15 +48,15 @@ public class AnimalsParent : MonoBehaviour
     {
         foreach (AnimalData data in animalsData)
         {
-            Animal prefab = animalSpawner.GetAnimalFromType(data.animalType,true, data.isRound);
+            Animal prefab = animalSpawner.GetAnimalFromType(data.animalType, true, data.isRound);
             if (prefab != null)
             {
                 Animal spawnedAnimal = animalSpawner.SpawnAnimal(prefab, data.position);
                 spawnedAnimal.DisablePhysics(true);
                 spawnedAnimal.transform.position = data.position;
                 spawnedAnimal.transform.rotation = Quaternion.Euler(0, 0, data.rotationZ);
-                if (data.isIced) spawnedAnimal.ApplyIce();
-                if (data.isExplosive) spawnedAnimal.MakeExplosive();
+                spawnedAnimal.SetIce(data.isIced);
+                spawnedAnimal.SetExplosive(data.isExplosive);
                 if (data.IsMockup) spawnedAnimal.MakeMockup();
             }
         }
@@ -109,6 +111,7 @@ public class AnimalsParent : MonoBehaviour
 
     public void FreezeAnimals()
     {
+        animalsFrozen = true;
         foreach (Transform child in transform)
         {
             Animal animal = child.GetComponent<Animal>();
@@ -120,6 +123,7 @@ public class AnimalsParent : MonoBehaviour
 
     public void UnfreezeAnimals()
     {
+        animalsFrozen = false;
         foreach (Transform child in transform)
         {
             Animal animal = child.GetComponent<Animal>();
@@ -144,4 +148,6 @@ public class AnimalsParent : MonoBehaviour
         }
         return animals;
     }
+    
+    public bool AnimalsFrozen() => animalsFrozen;
 }

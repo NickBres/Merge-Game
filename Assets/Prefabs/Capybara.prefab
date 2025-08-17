@@ -10269,7 +10269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad63ecbac2a5d48f9a0f341c17907bbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2049
+  type: 2050
   explosionForce: 15
 --- !u!210 &-6660286534416185127
 SortingGroup:

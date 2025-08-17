@@ -15,6 +15,8 @@ public class PlayerDataManager : MonoBehaviour
     private int upgrdesCount = 0;
     private int bombsCount = 0;
 
+    private bool whaleUnlocked = false;
+
     public static Action OnCoinsChanged;
     public static Action OnAbilitiesChanged;
 
@@ -183,6 +185,22 @@ public class PlayerDataManager : MonoBehaviour
         }
     }
 
+    public bool IsWhaleUnlocked()
+    {
+        LoadData();
+        return whaleUnlocked;
+    }
+
+    public void UnlockWhale()
+    {
+        if (whaleUnlocked)
+            return;
+
+        LoadData();
+        whaleUnlocked = true;
+        SaveData();
+    }
+
     // Save and Load
     private void SaveData()
     {
@@ -192,7 +210,8 @@ public class PlayerDataManager : MonoBehaviour
             ownedSkins = ownedSkins.ToList(),
             magicSweepCount = magicSweepCount,
             upgrdesCount = upgrdesCount,
-            bombsCount = bombsCount
+            bombsCount = bombsCount,
+            whaleUnlocked = whaleUnlocked
         };
         string json = JsonUtility.ToJson(data);
         PlayerPrefs.SetString("PlayerData", json);
@@ -210,6 +229,7 @@ public class PlayerDataManager : MonoBehaviour
             magicSweepCount = data.magicSweepCount;
             upgrdesCount = data.upgrdesCount;
             bombsCount = data.bombsCount;
+            whaleUnlocked = data.whaleUnlocked;
         }
     }
 
@@ -221,5 +241,6 @@ public class PlayerDataManager : MonoBehaviour
         public int magicSweepCount;
         public int upgrdesCount;
         public int bombsCount;
+        public bool whaleUnlocked;
     }
 }

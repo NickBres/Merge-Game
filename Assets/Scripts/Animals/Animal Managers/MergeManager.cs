@@ -77,7 +77,7 @@ public class MergeManager : MonoBehaviour
             int rawValue = (int)mergeType * toMerge.Count;
             int closestPowerOfTwo = Mathf.NextPowerOfTwo(rawValue);
             if (closestPowerOfTwo > rawValue) closestPowerOfTwo /= 2;
-            closestPowerOfTwo = Mathf.Min(closestPowerOfTwo, 2048);
+            closestPowerOfTwo = Mathf.Min(closestPowerOfTwo, 2049); // limit to bomb
             AnimalType newType = (AnimalType)closestPowerOfTwo;
             SpawnMergedAnimal(newType, spawnPos);
             onMergeAnimal?.Invoke(newType, spawnPos);
@@ -116,12 +116,23 @@ public class MergeManager : MonoBehaviour
 
         if (ScoreManager.instance.isEpicCombo())
         {
-            newAnimal.MakeExplosive();
+            newAnimal.SetExplosive(true);
         }
 
         if (UnityEngine.Random.value < GameplayController.instance.GetIceChance() && !GameOverManager.instance.closeToDeath)
         {
-            newAnimal.ApplyIce();
+            newAnimal.SetIce(true);
+        }
+
+        if (type == AnimalType.Bomb)
+        {
+            GameplayController.instance.IncreaseDifficulty();
+        }
+
+        if (type == AnimalType.Whale && !PlayerDataManager.instance.IsWhaleUnlocked())
+        {
+            PlayerDataManager.instance.UnlockWhale();
+            AudioManager.instance.PlayWowSound();
         }
     }
 

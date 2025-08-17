@@ -398,6 +398,14 @@ public class GameplayController : MonoBehaviour
         animalsParentManager.UnfreezeAnimals();
     }
 
+    public void IncreaseDifficulty()
+    {
+        eggLimit++;
+        if (eggLimit > 4) eggLimit = 4;
+        iceChance += 0.05f;
+        if (iceChance > 0.5f) iceChance = 0.5f;
+    }
+
     #endregion
 
 
@@ -406,7 +414,7 @@ public class GameplayController : MonoBehaviour
     public bool CanControl() => canControl;
 
     public Animal GetAnimalFromType(AnimalType type) => animalSpawner.GetAnimalFromType(type);
-    public Animal SpawnAnimal(Animal animal, Vector2 position) => animalSpawner.SpawnAnimal(animal, position);
+    public Animal SpawnAnimal(Animal animal, Vector2 position, bool physics = false) => animalSpawner.SpawnAnimal(animal, position, physics);
     
     public float GetIceChance() => iceChance;
 

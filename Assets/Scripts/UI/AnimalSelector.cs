@@ -68,7 +68,8 @@ public class AnimalSelector : MonoBehaviour
             AnimalType.Panda,
             AnimalType.Giraffe,
             AnimalType.Hippo,
-            AnimalType.Elephant
+            AnimalType.Elephant,
+            AnimalType.Whale
         };
 
         currentType = AnimalType.Snake;

@@ -48,13 +48,7 @@ public class Animal : MonoBehaviour
     protected bool isMockup = false;
     private void Awake()
     {
-        rigidBody = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        animalCollider = GetComponent<Collider2D>();
-        mergeEffect = GetComponentInChildren<ParticleSystem>();
-        skinRenderer = transform.Find("Skin/Skin Renderer")?.GetComponent<SpriteRenderer>();
-        crackRenderer = transform.Find("Crack")?.GetComponent<SpriteRenderer>();
-        iceCube = transform.Find("IceCube")?.gameObject;
+        GetComponents();
         if (crackRenderer != null)
             crackRenderer.enabled = false;
         // iceCube assignment retained, do not modify here
@@ -62,6 +56,17 @@ public class Animal : MonoBehaviour
             iceCube.SetActive(false);
 
 
+    }
+
+    private void GetComponents()
+    {
+        rigidBody = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animalCollider = GetComponent<Collider2D>();
+        mergeEffect = GetComponentInChildren<ParticleSystem>();
+        skinRenderer = transform.Find("Skin/Skin Renderer")?.GetComponent<SpriteRenderer>();
+        crackRenderer = transform.Find("Crack")?.GetComponent<SpriteRenderer>();
+        iceCube = transform.Find("IceCube")?.gameObject;
     }
 
     void Start()
@@ -122,13 +127,13 @@ public class Animal : MonoBehaviour
 
         canBeMerged = true;
     }
-    public void ApplyIce()
+    public void SetIce(bool toIce)
     {
-        isIced = true;
+        isIced = toIce;
         if (iceCube != null)
         {
-            iceCube.SetActive(true);
-            AudioManager.instance.PlayIcedSound();
+            iceCube.SetActive(toIce);
+            if (toIce) AudioManager.instance.PlayIcedSound();
         }
     }
 
@@ -378,11 +383,11 @@ public class Animal : MonoBehaviour
         crackRenderer.color = c;
     }
 
-    public void MakeExplosive()
+    public void SetExplosive(bool toExplosive)
     {
-        isExplosive = true;
+        isExplosive = toExplosive;
         if (crackRenderer != null)
-            crackRenderer.enabled = true;
+            crackRenderer.enabled = toExplosive;
     }
 
     public bool CanExplode()
@@ -573,6 +578,12 @@ public class Animal : MonoBehaviour
     {
         if (this.GetComponent<SortingGroup>() == null) return;
         this.GetComponent<SortingGroup>().sortingOrder = sortingOrder;
+    }
+
+    public void Reset()
+    {
+        SetIce(false);
+        SetExplosive(false);   
     }
 
 }

@@ -6,6 +6,7 @@ public class Egg : Animal
 {
     [SerializeField] private float scanRadius = 2f;
     [SerializeField] private AnimalType defaultAnimalType = AnimalType.Monkey;
+    private bool destroyed = false;
     protected override void OnCollisionStay2D(Collision2D collision)
     {
         // Prevent merging logic
@@ -13,6 +14,8 @@ public class Egg : Animal
 
     public override void Disappear()
     {
+        if (destroyed) return;
+        destroyed = true;
         Transform crack = transform.Find("Egg Crack");
         if (crack != null)
         {
@@ -35,7 +38,7 @@ public class Egg : Animal
         }
 
        
-        GameplayController.instance.SpawnAnimal(animalToSpawn, transform.position);
+        GameplayController.instance.SpawnAnimal(animalToSpawn, transform.position, true);
 
         Destroy(gameObject);
         AudioManager.instance.PlayEggCrackSound();
@@ -63,14 +66,13 @@ public class Egg : Animal
             nearbyTypes[Random.Range(0, nearbyTypes.Count)] : defaultAnimalType;
 
         Animal newAnimal = GameplayController.instance.GetAnimalFromType(chosenType);
-        newAnimal.EnablePhysics();
 
         // Randomly apply modifiers
         float rand = Random.value;
         if (rand < 0.33f)
-            newAnimal.ApplyIce();
+            newAnimal.SetIce(true);
         else if (rand < 0.66f)
-            newAnimal.MakeExplosive();
+            newAnimal.SetExplosive(true);
 
         return newAnimal;
     }

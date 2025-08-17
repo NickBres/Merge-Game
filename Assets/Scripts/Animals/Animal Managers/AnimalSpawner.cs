@@ -51,7 +51,7 @@ public class AnimalSpawner : MonoBehaviour
                 break;
         }
 
-        if(setShape)
+        if(setShape && shapeState == ShapeState.Both)
         {
             isRound = toRound;
         }
@@ -68,12 +68,18 @@ public class AnimalSpawner : MonoBehaviour
         return null;
     }
 
-    public Animal SpawnAnimal(Animal prefab, Vector2 position)
+    public Animal SpawnAnimal(Animal prefab, Vector2 position, bool physics = false)
     {
         Animal newAnimal = Instantiate(prefab, position, Quaternion.identity, animalsParent);
         Vector2 adjustedPos = AdjustSpawnPoint(position, newAnimal);
         newAnimal.transform.position = adjustedPos;
         newAnimal.SetRound(prefab.IsRound());
+        newAnimal.SetExplosive(prefab.CanExplode());
+        newAnimal.SetIce(prefab.HasIce());
+        prefab.Reset(); 
+
+        if (!physics || AnimalsParent.instance.AnimalsFrozen()) newAnimal.DisablePhysics(true);
+        else newAnimal.EnablePhysics();
 
         if (newAnimal.GetComponent<Capybara>() != null)
         {

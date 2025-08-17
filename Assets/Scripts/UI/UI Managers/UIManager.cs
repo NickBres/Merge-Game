@@ -21,7 +21,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject rewardPanel;
     [SerializeField] private GameObject optionsPanel;
     [SerializeField] private GameObject infoPanel;
-    [SerializeField] private GameObject alertPanel;
+    [SerializeField] private GameObject saveAlertPanel;
+    [SerializeField] private GameObject skinAlertPanel;
 
 
     void Awake()
@@ -86,7 +87,7 @@ public class UIManager : MonoBehaviour
 
     private void SetAlert()
     {
-        alertPanel.SetActive(true);
+        saveAlertPanel.SetActive(true);
     }
 
     private void SetShop()
@@ -110,7 +111,7 @@ public class UIManager : MonoBehaviour
         gameBackPanel.SetActive(true);
         wallsPanel.SetActive(true);
         pausePanel.SetActive(false);
-        alertPanel.SetActive(false);
+        saveAlertPanel.SetActive(false);
     }
 
     private void SetGameOver()
@@ -228,8 +229,27 @@ public class UIManager : MonoBehaviour
 
     public void SkinsButtonCallback()
     {
+        ClickAndVibrate();
         GameManager.instance.SetGameState(GameState.Menu);
-        SetSkins();
+        if (PlayerDataManager.instance.IsWhaleUnlocked())
+        {
+            SetSkins();
+        }
+        else
+        {
+            ShowSkinAlert();
+        }
+        
+    }
+
+    private void ShowSkinAlert()
+    {
+        skinAlertPanel.SetActive(true);
+    }
+
+    public void OnSkinAlertClilck()
+    {
+        skinAlertPanel.SetActive(false);
         ClickAndVibrate();
     }
 
