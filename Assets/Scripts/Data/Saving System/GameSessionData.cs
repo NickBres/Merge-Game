@@ -7,4 +7,8 @@ public class GameSessionData
     public ScoreData score;
     public AnimalType nextAnimal;
 
+    public int eggLimit;
+    public float eggSpawnChance;
+    public float iceChance;
+
 }

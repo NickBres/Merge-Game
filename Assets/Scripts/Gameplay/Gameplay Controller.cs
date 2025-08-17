@@ -93,7 +93,7 @@ public class GameplayController : MonoBehaviour
         CheckMockupsEmptied();
     }
 
-    public void ResetGameplay()
+    public void ResetGameplay(bool resetDifficulty = true)
     {
         if (animalSpawner == null)
             animalSpawner = AnimalSpawner.instance;
@@ -104,6 +104,12 @@ public class GameplayController : MonoBehaviour
         aimLine.DisableLine();
         animalsShape = GameManager.instance.GetAnimalShape();
         animalSpawner.SetShapeState(animalsShape);
+        if (resetDifficulty)
+        {
+            eggLimit = 2;
+            eggSpawnChance = 0.1f;
+            iceChance = 0.25f;
+        }
         ClearSpawnAnimals();
     }
 
@@ -375,14 +381,17 @@ public class GameplayController : MonoBehaviour
         {
             animals = GetAnimalsData(),
             score = ScoreManager.instance.GetScoreData(),
-            nextAnimal = nextAnimalType
+            nextAnimal = nextAnimalType,
+            eggLimit = eggLimit,
+            eggSpawnChance = eggSpawnChance,
+            iceChance = iceChance
         };
         return sessionData;
     }
 
     public void LoadSessionData(GameSessionData sessionData)
     {
-        ResetGameplay();
+        ResetGameplay(false);
         animalsParentManager.LoadAnimalsData(sessionData.animals, animalSpawner);
 
         List<Animal> animals = animalsParentManager.GetAnimals();
@@ -394,8 +403,11 @@ public class GameplayController : MonoBehaviour
                 mockups.Add(animal);
             }
         }
-        
+
         animalsParentManager.UnfreezeAnimals();
+        eggLimit = sessionData.eggLimit;
+        eggSpawnChance = sessionData.eggSpawnChance;
+        iceChance = sessionData.iceChance;
     }
 
     public void IncreaseDifficulty()

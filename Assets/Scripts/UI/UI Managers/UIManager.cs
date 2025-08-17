@@ -175,7 +175,7 @@ public class UIManager : MonoBehaviour
     public void ContinueButtonCallback()
     {
         GameManager.instance.SetGameState(GameState.Game);
-        GameplayController.instance.ResetGameplay();
+        GameplayController.instance.ResetGameplay(false);
         GameManager.instance.LoadGame();
         SetGame();
         ClickAndVibrate();
@@ -242,8 +242,9 @@ public class UIManager : MonoBehaviour
         
     }
 
-    private void ShowSkinAlert()
+    public void ShowSkinAlert()
     {
+        AudioManager.instance.PlayErrorSound();
         skinAlertPanel.SetActive(true);
     }
 

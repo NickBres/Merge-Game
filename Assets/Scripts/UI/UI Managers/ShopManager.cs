@@ -79,6 +79,12 @@ public class ShopManager : MonoBehaviour
 
     public void BuyChest()
     {
+        if (!PlayerDataManager.instance.IsWhaleUnlocked())
+        {
+            VibrationManager.instance.Vibrate(VibrationType.Heavy);
+            UIManager.instance.ShowSkinAlert();
+            return;
+        }
         if (PlayerDataManager.instance.GetBalance() >= chestPrice)
         {
             PlayerDataManager.instance.SpendCoins(chestPrice);
