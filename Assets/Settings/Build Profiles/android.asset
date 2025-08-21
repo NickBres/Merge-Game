@@ -1029,7 +1029,7 @@ MonoBehaviour:
         m_ExplicitArrayBoundsChecks: 0
         m_CompressionType: 2
         m_InstallInBuildFolder: 0
-        m_BuildSubtarget: 0
+        m_BuildSubtarget: 6
         m_BuildSystem: 1
         m_ExportAsGoogleAndroidProject: 0
         m_DebugSymbolLevel: 2

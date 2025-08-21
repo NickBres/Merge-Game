@@ -5369,7 +5369,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 10.24, y: 10.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -5526,8 +5526,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.90000004, y: 0.90000004, z: 1.4999999}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.90000004, y: 0.90000004, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7218681813353786051}
   - {fileID: 6324312690485795411}
